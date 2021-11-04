@@ -47,9 +47,23 @@ int max(int a, int b)
 /   Function: floor_ss
 /   Function Description: Returns a fixed point value rounded down to the subsample grid.
 */
+
+/*
+from rast_types.h
+r_shift; // number of fractional bits in fixed point representation
+ss_w_lg2; // log2(subsample_width): numerically equal to # of bits required to encode subsample_width
+*/
+
 int floor_ss(int val, int r_shift, int ss_w_lg2)
 {
   // START CODE HERE
+  // remove r_shift-ss_w_lg2 bits from end of val
+  // in other words, mask val with 0xb11111...10000
+    int n_bits_to_trunc=r_shift-ss_w_lg2;
+    val=val >> n_bits_to_trunc;
+    val=val << n_bits_to_trunc;
+    return val;
+
   // END CODE HERE
 }
 
@@ -90,6 +104,10 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   }
 
   // round down to subsample grid
+
+  /////////
+  // should use floor_ss function on each current_min and max here
+  /////////
 
   int samples[1024];
   // int length = 1024/ss; ss_i
@@ -178,6 +196,30 @@ bool sample_test(Triangle triangle, Sample sample)
   bool isHit;
 
   // START CODE HERE
+
+  //shift to new coordinate system with sample at origin
+  int v0_x=triangle.v[0].x-sample.x;
+  int v0_y=triangle.v[0].y-sample.y;
+  int v1_x=triangle.v[1].x-sample.x;
+  int v1_y=triangle.v[1].y-sample.y;
+  int v2_x=triangle.v[2].x-sample.x;
+  int v2_y=triangle.v[2].y-sample.y;
+
+  // get distance of all 3 new edges
+  int dist0=v0_x*v1_y-v1_x*v0_y;
+  int dist1=v1_x*v2_y-v2_x*v1_y;
+  int dist2=v2_x*v0_y-v0_x*v2_y;
+
+  // is the sample (origin) to the right side of these edges?
+  bool b0 = dist0 <= 0;
+  bool b1 = dist1 < 0;
+  bool b2 = dist2 <= 0;
+
+  // if the sample is to the same side of all edges, record a hit
+  isHit=(b0&&b1&&b2)||(!b0&&!b1&&!b2);
+  //for some reason pseudocode only checks if all are on the right. this should be fine, too?
+
+
   // END CODE HERE
 
   return isHit;
