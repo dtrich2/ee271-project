@@ -1,6 +1,6 @@
 #include "rasterizer.h"
 #include <stdlib.h>
-
+#include <stdio.h> //TODO REMOVE
 #ifdef __cplusplus
 #include <vector>
 #endif
@@ -86,14 +86,16 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   // initialize bounding box to first vertex
 
   ColorVertex3D v0 = triangle.v[0];
-  ColorVertex3D v1 = triangle.v[0];
-  ColorVertex3D v2 = triangle.v[0];
+ // ColorVertex3D v1 = triangle.v[0];
+ //  ColorVertex3D v2 = triangle.v[0];
 
   int current_min_x = v0.x;
   int current_min_y = v0.y;
   int current_max_x = v0.x;
   int current_max_y = v0.y;
+ 
 
+  fprintf(stderr, "do we get here 1 \n");
   // iterate over remaining vertices
   for (int i = 1; i < 3; i++)
   {
@@ -108,7 +110,8 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   /////////
   // should use floor_ss function on each current_min and max here
   /////////
-
+	
+  fprintf(stderr, "do we get here 2 \n");
   int samples[1024];
   // int length = 1024/ss; ss_i
   int index = 0;
@@ -118,6 +121,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     samples[index] = j;
   }
 
+  fprintf(stderr, "do we get here 3 \n");
   int min_x = current_min_x;
   int min_y = current_min_y;
   int max_x = current_max_x;
@@ -133,6 +137,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     max_y = (min_x > current_min_y - index) ? current_min_x - index : max_y;
   }
 
+  fprintf(stderr, "do we get here 4 \n");
   int index_x = current_min_x - min_x;
   int index_y = current_min_y - min_y;
   int index_max_x = current_max_x - max_x;
@@ -140,6 +145,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
 
   // clip to screen
 
+  fprintf(stderr, "do we get here 5 \n");
   if (index_x < 0)
   {
     index_x = 0;
@@ -158,6 +164,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     index_y = 1024;
   }
 
+  fprintf(stderr, "do we get here 6 \n");
   // check if bbox is valid
   Vertex2D lower_left;
   lower_left.x = index_x;
@@ -170,6 +177,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   bbox.lower_left = lower_left;
   bbox.upper_right = upper_right;
 
+  fprintf(stderr, "do we get here 7 \n");
   bool valid = true;
   if (index_max_x < 0 && index_max_y < 0)
   {
@@ -181,6 +189,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     valid = false;
   }
 
+  fprintf(stderr, "do we get here 8 \n");
   // END CODE HERE
   return bbox;
 }
