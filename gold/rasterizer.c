@@ -88,11 +88,12 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   ColorVertex3D v0 = triangle.v[0];
   // ColorVertex3D v1 = triangle.v[0];
   //  ColorVertex3D v2 = triangle.v[0];
+  int mask = 0b11111;
 
   int current_min_x = v0.x;
-  int current_min_y = v0.y;
-  int current_max_x = v0.x;
-  int current_max_y = v0.y;
+  int current_min_y = v0.y >> r_shift;
+  int current_max_x = v0.x >> r_shift;
+  int current_max_y = v0.y >> r_shift;
 
   fprintf(stderr, "do we get here 1 \n");
   // iterate over remaining vertices
@@ -132,15 +133,18 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     min_y = 0;
   }
 
-  if (max_x >= 1024)
+  int width_shift = 1024 << r_shift -2;
+  if (max_x >= width_shift)
   {
-    max_x = 1024;
+    max_x = width_shift;
   }
-  if (max_y >= 1024)
+  if (max_y >= width_shift)
   {
-    max_y = 1024;
+    max_y = width_shift;
   }
 
+  fprintf(stderr, "This is min_x after screen and floor %d \n", min_x >> r_shift -2);
+  fprintf(stderr, "This is max_x after screen and floor %d \n", max_x >> r_shift -2);
   fprintf(stderr, "do we get here 6 \n");
   // check if bbox is valid
   Vertex2D lower_left;
@@ -161,13 +165,15 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     valid = false;
   }
 
-  if (min_x >= 1024 && min_y >= 1024)
+  if (min_x >= width_shift && min_y >= width_shift)
   {
     valid = false;
   }
 
+  fprintf(stderr, "This is valid %d \n", valid);
   fprintf(stderr, "do we get here 8 \n");
   // END CODE HERE
+  bbox.valid = valid;
   return bbox;
 }
 
