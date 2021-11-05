@@ -59,10 +59,10 @@ int floor_ss(int val, int r_shift, int ss_w_lg2)
   // START CODE HERE
   // remove r_shift-ss_w_lg2 bits from end of val
   // in other words, mask val with 0xb11111...10000
-    int n_bits_to_trunc=r_shift-ss_w_lg2;
-    val=val >> n_bits_to_trunc;
-    val=val << n_bits_to_trunc;
-    return val;
+  int n_bits_to_trunc = r_shift - ss_w_lg2;
+  val = val >> n_bits_to_trunc;
+  val = val << n_bits_to_trunc;
+  return val;
 
   // END CODE HERE
 }
@@ -86,14 +86,13 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   // initialize bounding box to first vertex
 
   ColorVertex3D v0 = triangle.v[0];
- // ColorVertex3D v1 = triangle.v[0];
- //  ColorVertex3D v2 = triangle.v[0];
+  // ColorVertex3D v1 = triangle.v[0];
+  //  ColorVertex3D v2 = triangle.v[0];
 
   int current_min_x = v0.x;
   int current_min_y = v0.y;
   int current_max_x = v0.x;
   int current_max_y = v0.y;
- 
 
   fprintf(stderr, "do we get here 1 \n");
   // iterate over remaining vertices
@@ -110,81 +109,59 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   /////////
   // should use floor_ss function on each current_min and max here
   /////////
-	
-  fprintf(stderr, "do we get here 2 \n");
-  int samples[1024];
-  // int length = 1024/ss; ss_i
-  int index = 0;
-  // Fill in sampled indeces
-  for (int j = -1 * ss_i; j < ss_i; j += ss) //Check this
-  {
-    samples[index] = j;
-  }
 
-  fprintf(stderr, "do we get here 3 \n");
   int min_x = current_min_x;
   int min_y = current_min_y;
   int max_x = current_max_x;
   int max_y = current_max_y;
-  // From sampled indices, find find nearest to current vals
-  for (int k = 0; k < 2 * ss_i; k += 1) //check this
-  {
 
-    int index = samples[k];
-    min_x = (min_x > current_min_x - index) ? current_min_x - index : min_x;
-    min_y = (min_y > current_min_y - index) ? current_min_y - index : min_y;
-    max_x = (max_x > current_min_y - index) ? current_min_x - index : max_x;
-    max_y = (min_x > current_min_y - index) ? current_min_x - index : max_y;
-  }
-
-  fprintf(stderr, "do we get here 4 \n");
-  int index_x = current_min_x - min_x;
-  int index_y = current_min_y - min_y;
-  int index_max_x = current_max_x - max_x;
-  int index_max_y = current_max_y - max_y;
+  min_x = floor_ss(min_x, r_shift, ss_w_lg2);
+  min_y = floor_ss(min_y, r_shift, ss_w_lg2);
+  max_x = floor_ss(max_x, r_shift, ss_w_lg2);
+  max_y = floor_ss(max_y, r_shift, ss_w_lg2);
 
   // clip to screen
 
   fprintf(stderr, "do we get here 5 \n");
-  if (index_x < 0)
+  if (min_x < 0)
   {
-    index_x = 0;
+    min_x = 0;
   }
-  if (index_y < 0)
+  if (min_x < 0)
   {
-    index_y = 0;
+    min_y = 0;
   }
 
-  if (index_max_x >= 1024)
+  if (max_x >= 1024)
   {
-    index_x = 1024;
+    max_x = 1024;
   }
-  if (index_max_y >= 1024)
+  if (max_y >= 1024)
   {
-    index_y = 1024;
+    max_y = 1024;
   }
 
   fprintf(stderr, "do we get here 6 \n");
   // check if bbox is valid
   Vertex2D lower_left;
-  lower_left.x = index_x;
-  lower_left.y = index_y;
+  lower_left.x = min_x;
+  lower_left.y = min_y;
 
   Vertex2D upper_right;
-  upper_right.x = index_max_x;
-  upper_right.y = index_max_y;
+  upper_right.x = max_x;
+  upper_right.y = max_y;
 
   bbox.lower_left = lower_left;
   bbox.upper_right = upper_right;
 
   fprintf(stderr, "do we get here 7 \n");
   bool valid = true;
-  if (index_max_x < 0 && index_max_y < 0)
+  if (max_x < 0 && max_y < 0)
   {
     valid = false;
   }
 
-  if (index_x >= 1024 && index_y > 1024)
+  if (min_x >= 1024 && min_y >= 1024)
   {
     valid = false;
   }
@@ -207,17 +184,17 @@ bool sample_test(Triangle triangle, Sample sample)
   // START CODE HERE
 
   //shift to new coordinate system with sample at origin
-  int v0_x=triangle.v[0].x-sample.x;
-  int v0_y=triangle.v[0].y-sample.y;
-  int v1_x=triangle.v[1].x-sample.x;
-  int v1_y=triangle.v[1].y-sample.y;
-  int v2_x=triangle.v[2].x-sample.x;
-  int v2_y=triangle.v[2].y-sample.y;
+  int v0_x = triangle.v[0].x - sample.x;
+  int v0_y = triangle.v[0].y - sample.y;
+  int v1_x = triangle.v[1].x - sample.x;
+  int v1_y = triangle.v[1].y - sample.y;
+  int v2_x = triangle.v[2].x - sample.x;
+  int v2_y = triangle.v[2].y - sample.y;
 
   // get distance of all 3 new edges
-  int dist0=v0_x*v1_y-v1_x*v0_y;
-  int dist1=v1_x*v2_y-v2_x*v1_y;
-  int dist2=v2_x*v0_y-v0_x*v2_y;
+  int dist0 = v0_x * v1_y - v1_x * v0_y;
+  int dist1 = v1_x * v2_y - v2_x * v1_y;
+  int dist2 = v2_x * v0_y - v0_x * v2_y;
 
   // is the sample (origin) to the right side of these edges?
   bool b0 = dist0 <= 0;
@@ -225,9 +202,8 @@ bool sample_test(Triangle triangle, Sample sample)
   bool b2 = dist2 <= 0;
 
   // if the sample is to the same side of all edges, record a hit
-  isHit=(b0&&b1&&b2)||(!b0&&!b1&&!b2);
+  isHit = (b0 && b1 && b2) || (!b0 && !b1 && !b2);
   //for some reason pseudocode only checks if all are on the right. this should be fine, too?
-
 
   // END CODE HERE
 
