@@ -91,11 +91,11 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   int mask = 0b11111;
 
   int current_min_x = v0.x;
-  int current_min_y = v0.y >> r_shift;
-  int current_max_x = v0.x >> r_shift;
-  int current_max_y = v0.y >> r_shift;
+  int current_min_y = v0.y;
+  int current_max_x = v0.x;
+  int current_max_y = v0.y;
 
-  fprintf(stderr, "do we get here 1 \n");
+  // fprintf(stderr, "do we get here 1 \n");
   // iterate over remaining vertices
   for (int i = 1; i < 3; i++)
   {
@@ -123,7 +123,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
 
   // clip to screen
 
-  fprintf(stderr, "do we get here 5 \n");
+  //fprintf(stderr, "do we get here 5 \n");
   if (min_x < 0)
   {
     min_x = 0;
@@ -143,9 +143,9 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     max_y = width_shift;
   }
 
-  fprintf(stderr, "This is min_x after screen and floor %d \n", min_x >> r_shift -2);
-  fprintf(stderr, "This is max_x after screen and floor %d \n", max_x >> r_shift -2);
-  fprintf(stderr, "do we get here 6 \n");
+ // fprintf(stderr, "This is min_x after screen and floor %d \n", min_x >> r_shift -2);
+ // fprintf(stderr, "This is max_x after screen and floor %d \n", max_x >> r_shift -2);
+ // fprintf(stderr, "do we get here 6 \n");
   // check if bbox is valid
   Vertex2D lower_left;
   lower_left.x = min_x;
@@ -158,7 +158,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   bbox.lower_left = lower_left;
   bbox.upper_right = upper_right;
 
-  fprintf(stderr, "do we get here 7 \n");
+ // fprintf(stderr, "do we get here 7 \n");
   bool valid = true;
   if (max_x < 0 && max_y < 0)
   {
@@ -170,8 +170,8 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     valid = false;
   }
 
-  fprintf(stderr, "This is valid %d \n", valid);
-  fprintf(stderr, "do we get here 8 \n");
+ // fprintf(stderr, "This is valid %d \n", valid);
+ // fprintf(stderr, "do we get here 8 \n");
   // END CODE HERE
   bbox.valid = valid;
   return bbox;
