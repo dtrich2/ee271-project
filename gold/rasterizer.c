@@ -5,6 +5,8 @@
 #include <vector>
 #endif
 
+
+#define BITS sizeof(int) * 8 
 /* Utility Functions */
 
 /*
@@ -124,23 +126,29 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
   // clip to screen
 
   //fprintf(stderr, "do we get here 5 \n");
+  int msb = 1 << (BITS - 1);
+  //fprintf(stderr, "this is msb %d \n", msb);
   if (min_x < 0)
   {
+    fprintf(stderr, "We are here");
     min_x = 0;
   }
-  if (min_x < 0)
+  if (min_y < 0)
   {
+    fprintf(stderr, "We are here y");
     min_y = 0;
   }
 
   int width_shift = 1024 << r_shift -2;
-  if (max_x >= width_shift)
+  int screen_shift = 1024 << r_shift;
+  //int msb = 1 << (BITS - 1);
+  if (max_x >= screen_shift)
   {
-    max_x = width_shift;
+    max_x = screen_shift;
   }
-  if (max_y >= width_shift)
+  if (max_y >= screen_shift)
   {
-    max_y = width_shift;
+    max_y = screen_shift;
   }
 
  // fprintf(stderr, "This is min_x after screen and floor %d \n", min_x >> r_shift -2);
@@ -160,12 +168,12 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
 
  // fprintf(stderr, "do we get here 7 \n");
   bool valid = true;
-  if (max_x < 0 && max_y < 0)
+  if (max_x < 0  || max_y < 0)
   {
     valid = false;
   }
 
-  if (min_x >= width_shift && min_y >= width_shift)
+  if (min_x >= screen_shift || min_y >= screen_shift)
   {
     valid = false;
   }
