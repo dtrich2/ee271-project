@@ -139,14 +139,14 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     min_y = 0;
   }
 
-  int width_shift = 1024 << r_shift -2;
   int screen_shift = 1024 << r_shift;
+  int width_shift = 1024 << r_shift - ss_w_lg2;
   //int msb = 1 << (BITS - 1);
-  if (max_x >= screen_shift)
+  if (max_x > screen_shift)
   {
     max_x = screen_shift;
   }
-  if (max_y >= screen_shift)
+  if (max_y > screen_shift)
   {
     max_y = screen_shift;
   }
@@ -173,7 +173,7 @@ BoundingBox get_bounding_box(Triangle triangle, Screen screen, Config config)
     valid = false;
   }
 
-  if (min_x >= screen_shift || min_y >= screen_shift)
+  if (min_x > screen_shift || min_y > screen_shift)
   {
     valid = false;
   }
@@ -216,7 +216,7 @@ bool sample_test(Triangle triangle, Sample sample)
   bool b2 = dist2 <= 0;
 
   // if the sample is to the same side of all edges, record a hit
-  isHit = (b0 && b1 && b2) || (!b0 && !b1 && !b2);
+  isHit = (b0 && b1 && b2); // || (!b0 && !b1 && !b2);
   //for some reason pseudocode only checks if all are on the right. this should be fine, too?
 
   // END CODE HERE
