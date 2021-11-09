@@ -411,7 +411,69 @@ endgenerate
 
         //////// ASSIGN "out_box_R10S" and "outvalid_R10H"
         // START CODE HERE
+
+        // Clamping:
+
+          // NOTE:
+        // box_R10S[0][0]: LL X
+        // box_R10S[0][1]: LL Y
+        // box_R10S[1][0]: UR X
+        // box_R10S[1][1]: UR Y
+
+
+        //TODO: Check if shift has been applied to screen
+
+        // LL X
+        if (rounded_box_R10S[0][0] <  0) begin
+            out_box_R10S[0][0] = 0;
+        end
+        else begin
+            out_box_R10S[0][0] = rounded_box_R10S[0][0] ;
+        end
+
+        // LL Y
+        if (rounded_box_R10S[0][1] <  0) begin
+            out_box_R10S[0][1] = 0;
+        end
+        else begin
+            out_box_R10S[0][1] = rounded_box_R10S[0][1] ;
+        end
+
+        // UR X
+        if (rounded_box_R10S[1][0] >=  screen_RnnnnS[0]) begin
+            out_box_R10S[1][0] = screen_RnnnnS[0];
+        end
+        else begin
+            out_box_R10S[1][0] = rounded_box_R10S[1][0] ;
+        end
+
+        // UR Y
+        if (rounded_box_R10S[1][1] >=  screen_RnnnnS[1]) begin
+            out_box_R10S[1][1] = screen_RnnnnS[1];
+        end
+        else begin
+            out_box_R10S[1][1] = rounded_box_R10S[1][1] ;
+        end
+
+        //END Clamping
+
+        //Begin Valid Check
+
+        if ((rounded_box_R10S[1][0] <  0) || (rounded_box_R10S[1][1] <  0) || (rounded_box_R10S[0][0] >=  screen_RnnnnS[0]) || (rounded_box_R10S[0][1] >=  screen_RnnnnS[1])) begin
+            outvalid_R10H = 1'b0;
+        end
+        else
+            outvalid_R10H = 1'b1;
+        end
+
+
+
+        //END Valid Check
+  
+
         // END CODE HERE
+
+
 
     end
 
@@ -563,15 +625,5 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
-
-
-
-
-
-
-
-
-
-
 
 
