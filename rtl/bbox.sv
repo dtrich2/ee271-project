@@ -256,6 +256,7 @@ module bbox
             3'b001: box_R10S[1][0] = tri_R10S[0][0];
             3'b010: box_R10S[1][0] = tri_R10S[1][0]; 
             3'b100: box_R10S[1][0] = tri_R10S[2][0]; 
+            default: box_R10S[1][0] = tri_R10S[0][0];
         endcase 
  
         //LL X
@@ -263,6 +264,7 @@ module bbox
             3'b001: box_R10S[0][0] = tri_R10S[0][0];
             3'b010: box_R10S[0][0] = tri_R10S[1][0]; 
             3'b100: box_R10S[0][0] = tri_R10S[2][0]; 
+            default: box_R10S[0][0] = tri_R10S[0][0];
         endcase 
 
         //UR Y
@@ -270,6 +272,7 @@ module bbox
             3'b001: box_R10S[1][1] = tri_R10S[0][1];
             3'b010: box_R10S[1][1] = tri_R10S[1][1]; 
             3'b100: box_R10S[1][1] = tri_R10S[2][1]; 
+            default: box_R10S[1][1] = tri_R10S[0][1];
         endcase 
 
          //UR X
@@ -277,6 +280,7 @@ module bbox
             3'b001: box_R10S[0][1] = tri_R10S[0][1];
             3'b010: box_R10S[0][1] = tri_R10S[1][1]; 
             3'b100: box_R10S[0][1] = tri_R10S[2][1]; 
+            default: box_R10S[0][1] = tri_R10S[0][1];
         endcase 
 
     end
@@ -334,6 +338,50 @@ for(genvar i = 0; i < 2; i = i + 1) begin
 
             //////// ASSIGN FRACTIONAL PORTION
             // START CODE HERE
+
+            //              * For signal subSample_RnnnnU (logic [3:0])
+            //  * 1000 for  1x MSAA eq to 1 sample per pixel
+            //  * 0100 for  4x MSAA eq to 4 samples per pixel,
+            //  *              a sample is half a pixel on a side
+            //  * 0010 for 16x MSAA eq to 16 sample per pixel,
+            //  *              a sample is a quarter pixel on a side.
+            //  * 0001 for 64x MSAA eq to 64 samples per pixel,
+            //  *              a sample is an eighth of a pixel on a side.
+
+            logic mask [RADIX-1:0] =  10'b0;
+
+            //TODO: Need to check how to actually make this mask
+            case (subSample_RnnnnU)
+                4'b1000:begin
+                    mask = 10'b1111111110; 
+                    rounded_box_R10S[i][j][RADIX-1:0]
+                    = (box_R10S[i][j][RADIX-1:0] & mask);
+
+                end
+                4'b0100:begin
+                    mask = 10'b1111111100;
+                    rounded_box_R10S[i][j][RADIX-1:0]
+                    = (box_R10S[i][j][RADIX-1:0] & mask);
+                    
+                end
+                4'b0010: begin
+                    mask = 10'b1111110000;
+                    rounded_box_R10S[i][j][RADIX-1:0]
+                     = (box_R10S[i][j][RADIX-1:0] & mask);  
+                end
+                4'b0001:begin
+                    mask = 10'b1111000000;
+                    rounded_box_R10S[i][j][RADIX-1:0]
+                    = (box_R10S[i][j][RADIX-1:0] & mask);  
+                end
+                default: begin
+                    mask = 10'b1111111110;
+                    rounded_box_R10S[i][j][RADIX-1:0]
+                    = (box_R10S[i][j][RADIX-1:0] & mask);  
+                end
+
+            endcase
+
             // END CODE HERE
 
         end // always_comb
@@ -515,7 +563,6 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
-
 
 
 
