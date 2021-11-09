@@ -190,55 +190,55 @@ module bbox
 
         // Get largest x-coordinate
         if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0]) ) begin
-            bbox_sel_R10H[1][0] = 3'b001
+            bbox_sel_R10H[1][0] = 3'b001;
         end
 
         else if((tri_R10S[1][0] >= tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0])) begin
-            bbox_sel_R10H[1][0] = 3'b010
+            bbox_sel_R10H[1][0] = 3'b010;
         end
 
         else begin
-             bbox_sel_R10H[1][0] = 3'b100
+             bbox_sel_R10H[1][0] = 3'b100;
         end
 
         // Get smallest x-coordinate
         if ((tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0]) ) begin
-            bbox_sel_R10H[0][0] = 3'b001
+            bbox_sel_R10H[0][0] = 3'b001;
         end
 
         else if((tri_R10S[1][0] <= tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0])) begin
-            bbox_sel_R10H[0][0] = 3'b010
+            bbox_sel_R10H[0][0] = 3'b010;
         end
 
         else begin
-             bbox_sel_R10H[0][0] = 3'b100
+             bbox_sel_R10H[0][0] = 3'b100;
         end
 
         // Get largest y-coordinate
         if ((tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1]) ) begin
-            bbox_sel_R10H[1][1] = 3'b001
+            bbox_sel_R10H[1][1] = 3'b001;
         end
 
         else if((tri_R10S[1][1] >= tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1])) begin
-            bbox_sel_R10H[1][1] = 3'b010
+            bbox_sel_R10H[1][1] = 3'b010;
         end
 
         else begin
-             bbox_sel_R10H[1][1] = 3'b100
+             bbox_sel_R10H[1][1] = 3'b100;
         end
 
 
         // Get smallet y-coordinate
         if ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1]) ) begin
-            bbox_sel_R10H[0][1] = 3'b001
+            bbox_sel_R10H[0][1] = 3'b001;
         end
 
         else if((tri_R10S[1][1] <= tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
-            bbox_sel_R10H[0][1] = 3'b010
+            bbox_sel_R10H[0][1] = 3'b010;
         end
 
         else begin
-             bbox_sel_R10H[0][1] = 3'b100
+             bbox_sel_R10H[0][1] = 3'b100;
         end
 
 
@@ -515,9 +515,6 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
-
-
-
 
 
 
