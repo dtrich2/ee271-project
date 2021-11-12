@@ -32,11 +32,20 @@ import "DPI" pure function int check_hit_count(
     int   screen_w,    //Screen
     int   screen_h,    //Screen
     int   r_shift,     //Config
-    int   r_val        //Congig
+    int   r_val        //Config
 );
 
 // Import the DPI function for checking the hash module
 // START CODE HERE
+import "DPI" pure function int check_hash(
+    int s_x,
+    int s_y,
+    int ss_w_lg2,
+    int jitter_x,
+    int jitter_y,
+    int s_j_x,
+    int s_j_y
+);
 // END CODE HERE
 
 module smpl_cnt_sb
@@ -114,6 +123,20 @@ module smpl_cnt_sb
     // Call the DPI function that checks that the hash produces the correct jittered samples
     // Should only be called if reset is not asserted
     // START CODE HERE
+    always @( posedge clk ) begin
+        if(!reset) begin
+            if(one != check_hash(
+                        int'(sample_RnnS[0]), //s_x
+                        int'(sample_RnnS[0]), //s_y,
+                        int'(ss_w_lg2),       //ss_w_lg2
+                        int'(jitter_x_RnnS),    //jitter_x,
+                        int'(jitter_y_RnnS),    //jitter_y,
+                        int'(s_j_x_RnnS),       //s_j_x,
+                        int'(s_j_y_RnnS)        //s_j_y
+                    )) begin
+                $finish();
+            end
+        end
     // END CODE HERE
 
     //Check that the Number of Hits is Correct

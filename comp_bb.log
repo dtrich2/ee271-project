@@ -1,0 +1,40 @@
+
+Warning-[LNX_OS_VERUN] Unsupported Linux version
+  Linux version 'CentOS Linux release 7.9.2009 (Core)' is not supported on 
+  'x86_64' officially, assuming linux compatibility by default. Set 
+  VCS_ARCH_OVERRIDE to linux or suse32 to override.
+  Please refer to release notes for information on supported platforms.
+
+
+Warning-[DBGACC_DBG] Multiple debug options being used
+  The debug switches '-debug_access' and '-debug_pp' are being used together. 
+  For better performance, consider using only '-debug_access'.
+
+*** Using c compiler gcc instead of cc ...
+*** Using loader gcc instead of cc ...
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+                         Chronologic VCS (TM)
+         Version M-2017.03_Full64 -- Fri Nov 12 13:22:38 2021
+               Copyright (c) 1991-2017 by Synopsys Inc.
+                         ALL RIGHTS RESERVED
+
+This program is proprietary and confidential information of Synopsys Inc.
+and may be used and disclosed only as authorized in a license agreement
+controlling such use and disclosure.
+
+Parsing design file 'params/rast_params.sv'
+Parsing design file 'rtl/bbox.sv'
+
+Error-[SE] Syntax error
+  Following verilog source has syntax error :
+  "rtl/bbox.sv", 351: token is 'logic'
+              logic mask [RADIX-1:0] =  10'b0;
+                   ^
+  SystemVerilog  keyword 'logic' is not expected to be used in this context.
+
+1 error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
+(standard_in) 1: syntax error
