@@ -324,9 +324,11 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                 // Otherwise we stay in waitn
                 if (validTri_R13H) begin
                     next_state_R14H = 1'b1;
+	  	    next_halt_RnnnnL = 1'b1;
                 end
                 else begin
                     next_state_R14H = 1'b0;
+ 		    next_halt_RnnnnL = 1'b0;
                 end
 
 
@@ -339,9 +341,11 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                 // Otherwise we keep iterating
                 if (at_end_box_R14H) begin
                     next_state_R14H = 1'b0;
+	            next_halt_RnnnnL = 1'b0;
                 end
                 else begin
                     next_state_R14H = 1'b1;
+ 		    next_halt_RnnnnL = 1'b1;
                 end
 
             end
