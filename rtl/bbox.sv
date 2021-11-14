@@ -183,6 +183,7 @@ module bbox
     // x-coordinate of triangle "vertex a". 
     
     //  DECLARE ANY OTHER SIGNALS YOU NEED
+    logic mask [RADIX-1:0] =  10'b0;
 
     // Try declaring an always_comb block to assign values to box_R10S
 
@@ -348,7 +349,7 @@ for(genvar i = 0; i < 2; i = i + 1) begin
             //  * 0001 for 64x MSAA eq to 64 samples per pixel,
             //  *              a sample is an eighth of a pixel on a side.
 
-            logic mask [RADIX-1:0] =  10'b0;
+        
 
             //TODO: Need to check how to actually make this mask
             //I followed the logic of rasterizer.c
