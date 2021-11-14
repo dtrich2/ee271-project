@@ -183,7 +183,7 @@ module bbox
     // x-coordinate of triangle "vertex a". 
     
     //  DECLARE ANY OTHER SIGNALS YOU NEED
-    logic [RADIX-1:0] mask;  
+    //logic [RADIX-1:0] mask;  
 
     // Try declaring an always_comb block to assign values to box_R10S
 
@@ -355,31 +355,34 @@ for(genvar i = 0; i < 2; i = i + 1) begin
             //I followed the logic of rasterizer.c
             case (subSample_RnnnnU)
                 4'b1000:begin
-                    mask = 10'b0000000000; 
+                    //logic [RADIX-1:0] mask = 10'b0000000000; 
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & mask);
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);
 
                 end
                 4'b0100:begin
-                    mask = 10'b0000000001;
+                   // logic [RADIX-1:0] mask = 10'b0000000001;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & mask);
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000001);
                     
                 end
                 4'b0010: begin
-                    mask = 10'b0000000011;
+                   // mask = 10'b0000000011;
+		   // logic [RADIX-1:0] mask = 10'b0000000011;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                     = (box_R10S[i][j][RADIX-1:0] & mask);  
+                     = (box_R10S[i][j][RADIX-1:0] & 10'b0000000011);  
                 end
                 4'b0001:begin
-                    mask = 10'b0000000111;
+                   // mask = 10'b0000000111;
+		   // logic [RADIX-1:0] mask = 10'b0000000111;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & mask);  
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000111);  
                 end
                 default: begin
-                    mask = 10'b0000000000;
+                   // mask = 10'b0000000000;
+	           //logic [RADIX-1:0] mask = 10'b0000000000;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & mask);  
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);  
                 end
 
             endcase
