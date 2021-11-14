@@ -305,6 +305,42 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // Combinational logic for state transitions
     always_comb begin
         // START CODE HERE
+
+        case(state_R14H) 
+
+            1'b0: begin
+
+                //If we are in waiting, and we see a valid signal, we switch to testing
+                // Otherwise we stay in waitn
+                if (validTri_R13H) begin
+                    next_state_R14H = 1'b1;
+                end
+                else begin
+                    next_state_R14H = 1'b0;
+                end
+
+
+            end
+
+
+            1'b1:begin
+                
+                //If we are in testing, and reach the top right corner, we move to waiting
+                // Otherwise we keep iterating
+                if (at_end_box_R14H) begin
+                    next_state_R14H = 1'b0;
+                end
+                else begin
+                    next_state_R14H = 1'b1;
+                end
+
+            end
+      
+        endcase
+
+
+
+
         // Try using a case statement on state_R14H
         // END CODE HERE
     end // always_comb
@@ -358,6 +394,10 @@ end
 endgenerate
 
 endmodule
+
+
+
+
 
 
 
