@@ -1,4 +1,4 @@
-*
+/*
  * Bounding Box Module
  *
  * Inputs:
