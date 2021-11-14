@@ -464,7 +464,7 @@ endgenerate
         if ((rounded_box_R10S[1][0] <  0) || (rounded_box_R10S[1][1] <  0) || (rounded_box_R10S[0][0] >=  screen_RnnnnS[0]) || (rounded_box_R10S[0][1] >=  screen_RnnnnS[1])) begin
             outvalid_R10H = 1'b0;
         end
-        else
+        else begin
             outvalid_R10H = 1'b1;
         end
 
@@ -627,6 +627,9 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
+
+
+
 
 
 
