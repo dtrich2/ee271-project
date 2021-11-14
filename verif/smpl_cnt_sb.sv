@@ -124,7 +124,7 @@ module smpl_cnt_sb
     // Should only be called if reset is not asserted
     // START CODE HERE
     always @( posedge clk ) begin
-        if(!reset) begin
+        if(!rst) begin
             if(one != check_hash(
                         int'(sample_RnnS[0]), //s_x
                         int'(sample_RnnS[0]), //s_y,
@@ -137,6 +137,7 @@ module smpl_cnt_sb
                 $finish();
             end
         end
+    end
     // END CODE HERE
 
     //Check that the Number of Hits is Correct

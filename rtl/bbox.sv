@@ -183,7 +183,7 @@ module bbox
     // x-coordinate of triangle "vertex a". 
     
     //  DECLARE ANY OTHER SIGNALS YOU NEED
-    logic mask [RADIX-1:0] =  10'b0;
+    logic [RADIX-1:0] mask;  
 
     // Try declaring an always_comb block to assign values to box_R10S
 

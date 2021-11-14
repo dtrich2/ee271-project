@@ -250,9 +250,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // at the begining of the module for the help on
     // understanding the signals here
 
-    at_right_edg_R14H = 1'b0;
-    at_top_edg_R14H = 1'b0;
-    at_end_box_R14H = 1'b0;
+//    at_right_edg_R14H = 1'b0;
+//    at_top_edg_R14H = 1'b0;
+//    at_end_box_R14H = 1'b0;
     always_comb begin
         // START CODE HERE
 
