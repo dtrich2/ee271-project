@@ -1,4 +1,4 @@
-/*
+*
  * Bounding Box Module
  *
  * Inputs:
@@ -351,31 +351,32 @@ for(genvar i = 0; i < 2; i = i + 1) begin
             logic mask [RADIX-1:0] =  10'b0;
 
             //TODO: Need to check how to actually make this mask
+            //I followed the logic of rasterizer.c
             case (subSample_RnnnnU)
                 4'b1000:begin
-                    mask = 10'b1111111110; 
+                    mask = 10'b0000000000; 
                     rounded_box_R10S[i][j][RADIX-1:0]
                     = (box_R10S[i][j][RADIX-1:0] & mask);
 
                 end
                 4'b0100:begin
-                    mask = 10'b1111111100;
+                    mask = 10'b0000000001;
                     rounded_box_R10S[i][j][RADIX-1:0]
                     = (box_R10S[i][j][RADIX-1:0] & mask);
                     
                 end
                 4'b0010: begin
-                    mask = 10'b1111110000;
+                    mask = 10'b0000000011;
                     rounded_box_R10S[i][j][RADIX-1:0]
                      = (box_R10S[i][j][RADIX-1:0] & mask);  
                 end
                 4'b0001:begin
-                    mask = 10'b1111000000;
+                    mask = 10'b0000000111;
                     rounded_box_R10S[i][j][RADIX-1:0]
                     = (box_R10S[i][j][RADIX-1:0] & mask);  
                 end
                 default: begin
-                    mask = 10'b1111111110;
+                    mask = 10'b0000000000;
                     rounded_box_R10S[i][j][RADIX-1:0]
                     = (box_R10S[i][j][RADIX-1:0] & mask);  
                 end
@@ -421,7 +422,7 @@ endgenerate
         // box_R10S[1][1]: UR Y
 
 
-        //TODO: Check if shift has been applied to screen
+        //TODO: Check if shift has been applied to screen (it has)
 
         // LL X
         if (rounded_box_R10S[0][0] <  0) begin
@@ -625,5 +626,8 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
+
+
+
 
 
