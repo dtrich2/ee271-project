@@ -250,8 +250,48 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // at the begining of the module for the help on
     // understanding the signals here
 
+    at_right_edg_R14H = 1'b0;
+    at_top_edg_R14H = 1'b0;
+    at_end_box_R14H = 1'b0;
     always_comb begin
         // START CODE HERE
+
+        if (sample_R14S[0] == box_R13S[1][0]) begin
+            at_right_edg_R14H = 1'b1;
+
+            //Reset X, Update Y
+            next_rt_samp_R14S[1:0] =  box_R13S[0][0];
+            next_up_samp_R14S[1:0] =  sample_R14S[1] + subSample_RnnnnU;
+        end
+        else begin
+             at_right_edg_R14H = 1'b0;
+
+             //Update X, leave Y alone
+             next_rt_samp_R14S[1:0] = sample_R14S[0] + subSample_RnnnnU;
+             next_up_samp_R14S[1:0] =  sample_R14S[1];
+        end
+
+        if (sample_R14S[1] == box_R13S[1][1]) begin
+            at_top_edg_R14H = 1'b1;
+
+        end
+        else begin
+             at_top_edg_R14H = 1'b0;
+             //Reset X, Reset Y
+            next_rt_samp_R14S[1:0] =  box_R13S[0][0];
+            next_up_samp_R14S[1:0] =  box_R13S[0][1];
+        end
+
+        if (at_right_edg_R14H && at_top_edg_R14H) begin
+             at_end_box_R14H = 1'b1;
+        end
+        else begin
+             at_end_box_R14H = 1'b0;
+        end
+
+
+
+
         // END CODE HERE
     end
 
@@ -318,6 +358,8 @@ end
 endgenerate
 
 endmodule
+
+
 
 
 
