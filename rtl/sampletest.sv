@@ -125,7 +125,7 @@ module sampletest
             dist_lg_R16S[i]=edge_R16S[i][0][0]*edge_R16S[i][1][1]-edge_R16S[i][1][0]*edge_R16S[i][0][1];
         end
     // (4) Check distance and assign hit_valid_R16H.
-        hit_valid_R16H=1;   //true unless one of the following values returns false
+        hit_valid_R16H=1 & validSamp_R16H;   //true unless one of the following values returns false
         for (int i=0; i<EDGES ; i++) begin
             if (dist_lg_R16S[i]>0) begin
                 hit_valid_R16H=0;
