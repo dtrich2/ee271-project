@@ -105,6 +105,7 @@ module sampletest
 
     // START CODE HERE
     // (1) Shift X, Y coordinates such that the fragment resides on the (0,0) position.
+    logic b;
 
   always_comb begin
         for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
@@ -113,23 +114,28 @@ module sampletest
             end
         end
     // (2) Organize edges (form three edges for triangles)
-        for (int i=0; i<EDGES ; i++) begin        //over each edge in triangle
-            for (int j=0; j<2 ; j++) begin        //over each vertex in edge
-                for (int k=0; k<2 ; k++) begin    //over x and y in each vertex
+        for (int k=0; k<2 ; k++) begin    //over x and y in each vertex
+            for (int j=0; j<2 ; j++) begin        //over each vertex in edge        
+                for (int i=0; i<EDGES-1 ; i++) begin        //over each edge in triangle
                     edge_R16S[i][j][k]=tri_shift_R16S[i+j][k];  //assign to value from triangle
                 end
             end
+            edge_R16S[EDGES-1][0][k]=tri_shift_R16S[EDGES-1][k];  //assign to value from triangle
+            edge_R16S[EDGES-1][1][k]=tri_shift_R16S[0][k];  //assign to value from triangle
         end
     // (3) Calculate distance x_1 * y_2 - x_2 * y_1
         for (int i=0; i<EDGES ; i++) begin    //over each edge in triangle
             dist_lg_R16S[i]=edge_R16S[i][0][0]*edge_R16S[i][1][1]-edge_R16S[i][1][0]*edge_R16S[i][0][1];
         end
     // (4) Check distance and assign hit_valid_R16H.
-        hit_valid_R16H=1 & validSamp_R16H;   //true unless one of the following values returns false
+        hit_valid_R16H=1 & validSamp_R16H;
         for (int i=0; i<EDGES ; i++) begin
-            if (dist_lg_R16S[i]>0) begin
-                hit_valid_R16H=0;
+            if (i==1) begin
+                b=(dist_lg_R16S[i]<0);
+            end else begin
+                b = (dist_lg_R16S[i]<=0);
             end
+            hit_valid_R16H=hit_valid_R16H & b;
         end
     end
     // END CODE HERE

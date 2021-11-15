@@ -124,10 +124,11 @@ module smpl_cnt_sb
     // Should only be called if reset is not asserted
     // START CODE HERE
     always @( posedge clk ) begin
-        if(!rst) begin
+        #10;
+        if(reset_to_zero && validSamp_RnnH) begin
             if(one != check_hash(
                         int'(sample_RnnS[0]), //s_x
-                        int'(sample_RnnS[0]), //s_y,
+                        int'(sample_RnnS[1]), //s_y,
                         int'(ss_w_lg2),       //ss_w_lg2
                         int'(jitter_x_RnnS),    //jitter_x,
                         int'(jitter_y_RnnS),    //jitter_y,
