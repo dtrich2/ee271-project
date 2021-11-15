@@ -257,12 +257,45 @@ if(MOD_FSM == 0) begin // Using baseline FSM
         // START CODE HERE
 
          //Set next right sample
-         next_rt_samp_R14S[0] = sample_R14S[0]  + subSample_RnnnnU;
+
+         case(subSample_RnnnnU)
+
+            //MSAA 1
+            4'b1000: begin
+                next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
+                next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
+
+            end
+
+            //MSAA 2
+            4'b0100: begin
+                next_rt_samp_R14S[0] = sample_R14S[0]  + 10'b1000000000;
+                next_up_samp_R14S[1] =  sample_R14S[1] + 10'b1000000000;
+            end
+
+            //MSAA 3
+            4'b0010: begin
+                next_rt_samp_R14S[0] = sample_R14S[0]  +  9'b100000000;
+                next_up_samp_R14S[1] =  sample_R14S[1] +  9'b100000000;
+            end
+
+
+            //MSAA 4
+            4'b0001: begin
+                next_rt_samp_R14S[0] = sample_R14S[0]  + 8'b10000000;
+                next_up_samp_R14S[1] =  sample_R14S[1] + 8'b10000000;
+            end
+
+
+            
+
+         endcase
+         
          next_rt_samp_R14S[1] = sample_R14S[1];
 
          //Set next up sample
          next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
-         next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
+        
 
         if (sample_R14S[0] >= box_R14S[1][0]) begin
             at_right_edg_R14H = 1'b1;
