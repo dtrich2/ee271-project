@@ -258,10 +258,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
          //Set next right sample
          next_rt_samp_R14S[0] = sample_R14S[0]  + subSample_RnnnnU;
-         next_rt_samp_R14S[1] = sample_R14S[1]
+         next_rt_samp_R14S[1] = sample_R14S[1];
 
          //Set next up sample
-         next_up_samp_R14S[0] =  box_R14S[0][0] //Back to min x coord
+         next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
          next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
 
         if (sample_R14S[0] >= box_R14S[1][0]) begin
