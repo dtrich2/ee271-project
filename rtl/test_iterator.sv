@@ -472,7 +472,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // Write assertions to verify your FSM transition sequence
     // Can you verify that:
     property sig_trans_con( rst, a , b , c );
-        @(posedge clk) rst | ((a==WAIT_STATE && b==TEST_STATE) | !c);
+        @(posedge clk) rst | ((a==WAIT_STATE && b==TEST_STATE) | (!c || a != TEST_STATE );
     endproperty
     // 1) A validTri_R13H signal causes a transition from WAIT state to TEST state
      assert property( sig_trans_con( rst, state_R14H , next_state_R14H, validTri_R13H ));
@@ -520,7 +520,6 @@ end
 endgenerate
 
 endmodule
-
 
 
 
