@@ -339,7 +339,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     //Set current bbox to input bounding box:
                     next_box_R14S = box_R13S;
 
-                    // Next sample is invalid
+                    // Next sample is valid
                     next_validSamp_R14H = 1'b1;
 
                     //Next sample is lower left vertex
