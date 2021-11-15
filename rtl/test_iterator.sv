@@ -256,40 +256,48 @@ if(MOD_FSM == 0) begin // Using baseline FSM
  always_comb begin
         // START CODE HERE
 
-        if (sample_R14S[0] >= box_R13S[1][0]) begin
+         //Set next right sample
+         next_rt_samp_R14S[0] = sample_R14S[0]  + subSample_RnnnnU;
+         next_rt_samp_R14S[1] = sample_R14S[1]
+
+         //Set next up sample
+         next_up_samp_R14S[0] =  box_R14S[0][0] //Back to min x coord
+         next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
+
+        if (sample_R14S[0] >= box_R14S[1][0]) begin
             at_right_edg_R14H = 1'b1;
 
             //Reset X, Update Y
-            next_rt_samp_R14S[0] =  box_R13S[0][0];
-            next_rt_samp_R14S[1] =  box_R13S[0][1];
+            // next_rt_samp_R14S[0] =  box_R13S[0][0];
+            // next_rt_samp_R14S[1] =  box_R13S[0][1];
 
-            next_up_samp_R14S[0] =  box_R13S[0][0];
-            next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
+            // next_up_samp_R14S[0] =  box_R13S[0][0];
+            // next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
         end
         else begin
              at_right_edg_R14H = 1'b0;
 
              //Update X, leave Y alone
-             next_rt_samp_R14S[0] = sample_R14S[0] + subSample_RnnnnU;
-             next_rt_samp_R14S[1] = sample_R14S[1];
+            //  next_rt_samp_R14S[0] = sample_R14S[0] + subSample_RnnnnU;
+            //  next_rt_samp_R14S[1] = sample_R14S[1];
 
-             next_up_samp_R14S[0] =  sample_R14S[0];
-             next_up_samp_R14S[1] =  sample_R14S[1];
+            //  next_up_samp_R14S[0] =  sample_R14S[0];
+            //  next_up_samp_R14S[1] =  sample_R14S[1];
         end
 
-        if (sample_R14S[1] >= box_R13S[1][1]) begin
+        if (sample_R14S[1] >= box_R14S[1][1]) begin
             at_top_edg_R14H = 1'b1;
 
         end
         else begin
              at_top_edg_R14H = 1'b0;
              //Reset X, Reset Y
-            next_rt_samp_R14S[0] =  box_R13S[0][0];
-            next_rt_samp_R14S[1] =  box_R13S[0][1];
+            // next_rt_samp_R14S[0] =  box_R13S[0][0];
+            // next_rt_samp_R14S[1] =  box_R13S[0][1];
 
 
-            next_up_samp_R14S[0] =  box_R13S[0][0];
-            next_up_samp_R14S[1] =  box_R13S[0][1];
+            // next_up_samp_R14S[0] =  box_R13S[0][0];
+            // next_up_samp_R14S[1] =  box_R13S[0][1];
         end
 
         if (at_right_edg_R14H && at_top_edg_R14H) begin
@@ -321,31 +329,124 @@ if(MOD_FSM == 0) begin // Using baseline FSM
             1'b0: begin
 
                 //If we are in waiting, and we see a valid signal, we switch to testing
-                // Otherwise we stay in waitn
+                // Otherwise we stay in waiting
                 if (validTri_R13H) begin
                     next_state_R14H = TEST_STATE;
-	  	    next_halt_RnnnnL = 1'b0;
+
+                    //Once we see a valid, we will halt the bounding box above
+	  	            next_halt_RnnnnL = 1'b0;
+
+                    //Set current bbox to input bounding box:
+                    next_box_R14S = box_R13S;
+
+                    // Next sample is invalid
+                    next_validSamp_R14H = 1'b1;
+
+                    //Next sample is lower left vertex
+                    next_sample_R14S = box_R13S[0][0];
+
+
+                    // Set current tri to input tri
+                    next_tri_R14S = tri_R13S;
+
+                    // Set current to input
+                    next_color_R14U = color_R13U;
+
+        
+
+
+
                 end
                 else begin
                     next_state_R14H = WAIT_STATE;
- 		    next_halt_RnnnnL = 1'b1;
-                end
 
+                    // We keep waiting, and do not hold the pipline above
+ 		            next_halt_RnnnnL = 1'b1;
+
+                    next_box_R14S = box_R13S;
+
+                    // Next sample is invalid
+                    next_validSamp_R14H = 1'b0;
+
+                     //Next sample is lower left vertex
+                    next_sample_R14S = box_R13S[0][0];
+
+
+                    // Set current tri to input tri
+                    next_tri_R14S = tri_R13S;
+
+                     // Set current to input
+                    next_color_R14U = color_R13U;
+                    
+                end
 
             end
 
-
-            1'b1:begin
+            1'b1: begin
                 
                 //If we are in testing, and reach the top right corner, we move to waiting
-                // Otherwise we keep iterating
+                // Our next sample is invalid
+                // And we no longer halt
+                // Next sample is LL vertex
                 if (at_end_box_R14H) begin
                     next_state_R14H = WAIT_STATE;
-	            next_halt_RnnnnL = 1'b1;
+
+                    // No longer halt -> iterating is over
+	                next_halt_RnnnnL = 1'b1;
+
+                     // Preserve bounding box (will be reset in next state)
+                    next_box_R14S = box_R14S;
+
+                    // Next sample is invalid
+                    next_validSamp_R14H = 1'b0;
+
+
+                    //Next sample is lower left vertex
+                    next_sample_R14S = box_R14S[0][0];
+
+
+                    //Hold
+                    next_tri_R14S = tri_R14S;
+
+                     // Set current to input
+                    next_color_R14U = color_R14U;
+                    
+
                 end
                 else begin
+
+                    // We remain in testing
                     next_state_R14H = TEST_STATE;
- 		    next_halt_RnnnnL = 1'b0;
+
+                    //Since we are iterating, the halt signal is 0 (ie we halt bbox)
+ 		            next_halt_RnnnnL = 1'b0;
+
+
+                    // Preserve current bounding box
+                    next_box_R14S = box_R14S;
+
+                    // Next sample is valid
+                    next_validSamp_R14H = 1'b1;
+
+                    // Hold
+                    next_tri_R14S = tri_R14S;
+
+
+                    next_color_R14U = color_R14U;
+
+
+                    // Set next sample
+                    
+                    if (at_right_edg_R14H) begin
+                        // If we are at the right edge we get the next up sample
+                        next_sample_R14S = next_up_samp_R14S;
+                    end
+                    else begin
+                        // If we are NOT at the right edge we get the next right sample
+                         next_sample_R14S = next_rt_samp_R14S;
+                        
+                    end
+
                 end
 
             end
@@ -408,9 +509,6 @@ end
 endgenerate
 
 endmodule
-
-
-
 
 
 
