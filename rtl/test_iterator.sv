@@ -287,6 +287,14 @@ if(MOD_FSM == 0) begin // Using baseline FSM
             end
 
 
+                        //MSAA 4
+            default: begin
+                next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
+                next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
+            end
+
+
+
             
 
          endcase
@@ -553,6 +561,11 @@ end
 endgenerate
 
 endmodule
+
+
+
+
+
 
 
 
