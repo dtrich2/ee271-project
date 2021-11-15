@@ -343,7 +343,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_validSamp_R14H = 1'b1;
 
                     //Next sample is lower left vertex
-                    next_sample_R14S = box_R13S[0][0];
+                    next_sample_R14S[0] = box_R13S[0][0];
+
+                    next_sample_R14S[1] = box_R13S[0][1];
 
 
                     // Set current tri to input tri
@@ -369,7 +371,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_validSamp_R14H = 1'b0;
 
                      //Next sample is lower left vertex
-                    next_sample_R14S = box_R13S[0][0];
+                     next_sample_R14S[0] = box_R13S[0][0];
+
+                     next_sample_R14S[1] = box_R13S[0][1];
 
 
                     // Set current tri to input tri
@@ -402,7 +406,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
 
                     //Next sample is lower left vertex
-                    next_sample_R14S = box_R14S[0][0];
+
+                    next_sample_R14S[0] = box_R14S[0][0];
+
+                    next_sample_R14S[1] = box_R14S[0][1];
 
 
                     //Hold
@@ -509,6 +516,8 @@ end
 endgenerate
 
 endmodule
+
+
 
 
 
