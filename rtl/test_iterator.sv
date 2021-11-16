@@ -513,22 +513,28 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // Write assertions to verify your FSM transition sequence
     // Can you verify that:
     // 1) A validTri_R13H signal causes a transition from WAIT state to TEST state
-     assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && validTri_R13H ) |-> (next_state_R14H == TEST_STATE) );
-
+    
     // 2) An end_box_R14H signal causes a transition from TEST state to WAIT state
 
-    assert property(@(posedge clk) ((state_R14H == TEST_STATE) && at_end_box_R14H ) |-> (next_state_R14H == WAIT_STATE) );
-
+   
     // 3) What are you missing?
 
     //Your assertions goes here
     // START CODE HERE
+	    
+     // 1) 
+	    
+     assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && validTri_R13H ) |-> (next_state_R14H == TEST_STATE) );
 
-       // IN wait state, non valid input box
-      assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && !validTri_R13H ) |-> (next_state_R14H == WAIT_STATE) );
+     // 2)
+     assert property(@(posedge clk) ((state_R14H == TEST_STATE) && at_end_box_R14H ) |-> (next_state_R14H == WAIT_STATE) );
 
+	    
+    // 3)
+    // IN wait state, non valid input box, stay in wait state
+    assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && !validTri_R13H ) |-> (next_state_R14H == WAIT_STATE) );
 
-	// In testing state, not at top right
+    // In testing state, not at top right, stay in test state
     assert property(@(posedge clk) ((state_R14H == TEST_STATE) && !at_end_box_R14H ) |-> (next_state_R14H == TEST_STATE) );
 
     // END CODE HERE
@@ -551,9 +557,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // START CODE HERE
 
     assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0], validSamp_R14H));
-assert property(rb_lt(rst, sample_R14S[0], box_R14S[1][0],  validSamp_R14H));
-assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1], validSamp_R14H));
-  assert property(rb_lt(rst, sample_R14S[1], box_R14S[1][1],  validSamp_R14H));
+    assert property(rb_lt(rst, sample_R14S[0], box_R14S[1][0],  validSamp_R14H));
+    assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1], validSamp_R14H));
+    assert property(rb_lt(rst, sample_R14S[1], box_R14S[1][1],  validSamp_R14H));
   // END CODE HERE
     //Check that Proposed Sample is in BBox
 
