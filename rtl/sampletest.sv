@@ -128,14 +128,13 @@ module sampletest
             dist_lg_R16S[i]=edge_R16S[i][0][0]*edge_R16S[i][1][1]-edge_R16S[i][1][0]*edge_R16S[i][0][1];
         end
     // (4) Check distance and assign hit_valid_R16H.
-        hit_valid_R16H=1 & validSamp_R16H;
         for (int i=0; i<EDGES ; i++) begin
             if (i==1) begin
                 b=(dist_lg_R16S[i]<0);
             end else begin
                 b = (dist_lg_R16S[i]<=0);
             end
-            hit_valid_R16H=hit_valid_R16H & b;
+            hit_valid_R16H=validSamp_R16H & b;
         end
     end
     // END CODE HERE
