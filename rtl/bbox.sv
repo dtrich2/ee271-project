@@ -303,6 +303,13 @@ module bbox
     assert property(@(posedge clk) $onehot(bbox_sel_R10H[1][1]));
 
     //Assertions to check UR is never less than LL
+    //  assert property(@(posedge clk)  (!(box_R10S[1][0] <  box_R10S[0][0]));
+    //  assert property(@(posedge clk)  (!(box_R10S[1][1] <  box_R10S[1][0]));
+
+    assert property( rb_lt( rst, box_R13S[0][0], box_R13S[1][0], validTri_R13H ));
+    assert property( rb_lt( rst, box_R13S[0][1], box_R13S[1][1], validTri_R13H ));
+
+
     // END CODE HERE
 
 
@@ -363,20 +370,20 @@ for(genvar i = 0; i < 2; i = i + 1) begin
                 4'b0100:begin
                    // logic [RADIX-1:0] mask = 10'b0000000001;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1000000000);
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000001);
                     
                 end
                 4'b0010: begin
                    // mask = 10'b0000000011;
 		   // logic [RADIX-1:0] mask = 10'b0000000011;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                     = (box_R10S[i][j][RADIX-1:0] & 10'b1100000000);  
+                     = (box_R10S[i][j][RADIX-1:0] & 10'b0000000011);  
                 end
                 4'b0001:begin
                    // mask = 10'b0000000111;
 		   // logic [RADIX-1:0] mask = 10'b0000000111;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1110000000);  
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000111);  
                 end
                 default: begin
                    // mask = 10'b0000000000;
@@ -619,7 +626,7 @@ endgenerate
     //
     //  a should be less than b
     property rb_lt( rst, a, b, c );
-        @(posedge clk) rst | ((a<=b) | !c );
+        @(posedge clk) rst | ((a<=b) | !c);
     endproperty
 
     //Check that Lower Left of Bounding Box is less than equal Upper Right
