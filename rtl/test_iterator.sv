@@ -512,18 +512,25 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
     // Write assertions to verify your FSM transition sequence
     // Can you verify that:
-    //property sig_trans_con( rst, a , b , c );
-      //  @(posedge clk) rst | (((a == WAIT_STATE) && c) |-> (b == TEST_STATE));
-    //endproperty
     // 1) A validTri_R13H signal causes a transition from WAIT state to TEST state
-   // assert property( sig_trans_con( rst, state_R14H , next_state_R14H, validTri_R13H ));
      assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && validTri_R13H ) |-> (next_state_R14H == TEST_STATE) );
 
     // 2) An end_box_R14H signal causes a transition from TEST state to WAIT state
+
+    assert property(@(posedge clk) ((state_R14H == TEST_STATE) && at_end_box_R14H ) |-> (next_state_R14H == WAIT_STATE) );
+
     // 3) What are you missing?
 
     //Your assertions goes here
     // START CODE HERE
+
+       // IN wait state, non valid input box
+      assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && !validTri_R13H ) |-> (next_state_R14H == WAIT_STATE) );
+
+
+	// In testing state, not at top right
+    assert property(@(posedge clk) ((state_R14H == TEST_STATE) && !at_end_box_R14H ) |-> (next_state_R14H == TEST_STATE) );
+
     // END CODE HERE
     // Assertion ends
 
@@ -542,7 +549,12 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
     //Check that Proposed Sample is in BBox
     // START CODE HERE
-    // END CODE HERE
+
+    assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0], validSamp_R14H));
+assert property(rb_lt(rst, sample_R14S[0], box_R14S[1][0],  validSamp_R14H));
+assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1], validSamp_R14H));
+  assert property(rb_lt(rst, sample_R14S[1], box_R14S[1][1],  validSamp_R14H));
+  // END CODE HERE
     //Check that Proposed Sample is in BBox
 
     //Error Checking Assertions
