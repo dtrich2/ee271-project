@@ -190,57 +190,45 @@ module bbox
     always_comb begin
 
         // Get largest x-coordinate
-        if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0]) ) begin
-            bbox_sel_R10H[1][0] = 3'b001;
-        end
+	bbox_sel_R10H[1][0][0] = (tri_R10S[0][0] > tri_R10S[1][0]) &&  (tri_R10S[0][0] > tri_R10S[2][0]);
 
-        else if((tri_R10S[1][0] >= tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0])) begin
-            bbox_sel_R10H[1][0] = 3'b010;
-        end
+	bbox_sel_R10H[1][0][1] = (tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] > tri_R10S[2][0]);
 
-        else begin
-             bbox_sel_R10H[1][0] = 3'b100;
-        end
+	bbox_sel_R10H[1][0][2] = (tri_R10S[2][0] > tri_R10S[0][0]) &&  (tri_R10S[2][0] > tri_R10S[1][0]);
+
+
+
+
 
         // Get smallest x-coordinate
-        if ((tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0]) ) begin
-            bbox_sel_R10H[0][0] = 3'b001;
-        end
+        bbox_sel_R10H[0][0][0] = (tri_R10S[0][0] < tri_R10S[1][0]) &&  (tri_R10S[0][0] < tri_R10S[2][0]);
 
-        else if((tri_R10S[1][0] <= tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0])) begin
-            bbox_sel_R10H[0][0] = 3'b010;
-        end
+        bbox_sel_R10H[0][0][1] = (tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] < tri_R10S[2][0]);
 
-        else begin
-             bbox_sel_R10H[0][0] = 3'b100;
-        end
+        bbox_sel_R10H[0][0][2] = (tri_R10S[2][0] < tri_R10S[0][0]) &&  (tri_R10S[2][0] < tri_R10S[1][0]);
+
+
 
         // Get largest y-coordinate
-        if ((tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1]) ) begin
-            bbox_sel_R10H[1][1] = 3'b001;
-        end
+        bbox_sel_R10H[1][1][0] = (tri_R10S[0][1] > tri_R10S[1][1]) &&  (tri_R10S[0][1] > tri_R10S[2][1]);
 
-        else if((tri_R10S[1][1] >= tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1])) begin
-            bbox_sel_R10H[1][1] = 3'b010;
-        end
+        bbox_sel_R10H[1][1][1] = (tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] > tri_R10S[2][1]);
 
-        else begin
-             bbox_sel_R10H[1][1] = 3'b100;
-        end
+        bbox_sel_R10H[1][1][2] = (tri_R10S[2][1] > tri_R10S[0][1]) &&  (tri_R10S[2][1] > tri_R10S[2][1]);
+
+
+
+
 
 
         // Get smallet y-coordinate
-        if ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1]) ) begin
-            bbox_sel_R10H[0][1] = 3'b001;
-        end
 
-        else if((tri_R10S[1][1] <= tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
-            bbox_sel_R10H[0][1] = 3'b010;
-        end
+	bbox_sel_R10H[1][1][0] = (tri_R10S[0][1] < tri_R10S[1][1]) &&  (tri_R10S[0][1] < tri_R10S[2][1]);
 
-        else begin
-             bbox_sel_R10H[0][1] = 3'b100;
-        end
+        bbox_sel_R10H[1][1][1] = (tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] < tri_R10S[2][1]);
+
+        bbox_sel_R10H[1][1][2] = (tri_R10S[2][1] < tri_R10S[0][1]) &&  (tri_R10S[2][1] < tri_R10S[2][1]);
+
 
 
 
@@ -637,7 +625,6 @@ endgenerate
     //Error Checking Assertions
 
 endmodule
-
 
 
 
