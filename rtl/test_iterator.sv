@@ -204,7 +204,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     // we iterate sample points
 
     // define two more states, box_R14S and state_R14H
-    logic signed [SIGFIG-1:0]   box_R14S[1:0][1:0];    		// the state for current bounding box
+    logic signed [SIGFIG-1:0]   box_R14S[1:0][1:0];         // the state for current bounding box
     logic signed [SIGFIG-1:0]   next_box_R14S[1:0][1:0];
 
     state_t                     state_R14H;     //State Designation (Waiting or Testing)
@@ -258,46 +258,54 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
          //Set next right sample
 
-         case(subSample_RnnnnU)
+         //case(subSample_RnnnnU)
 
             //MSAA 1
-            4'b1000: begin
-                next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
-                next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
+            next_rt_samp_R14S[0] = sample_R14S[0]  + (subSample_RnnnnU << RADIX-3);
+            next_up_samp_R14S[1] =  sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
 
-            end
-
-            //MSAA 2
-            4'b0100: begin
-                next_rt_samp_R14S[0] = sample_R14S[0]  + 10'b1000000000;
-                next_up_samp_R14S[1] =  sample_R14S[1] + 10'b1000000000;
-            end
-
-            //MSAA 3
-            4'b0010: begin
-                next_rt_samp_R14S[0] = sample_R14S[0]  +  9'b100000000;
-                next_up_samp_R14S[1] =  sample_R14S[1] +  9'b100000000;
-            end
+             
 
 
-            //MSAA 4
-            4'b0001: begin
-                next_rt_samp_R14S[0] = sample_R14S[0]  + 8'b10000000;
-                next_up_samp_R14S[1] =  sample_R14S[1] + 8'b10000000;
-            end
 
 
-                        //MSAA 4
-            default: begin
-                next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
-                next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
-            end
+            // 4'b1000: begin
+            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
+            //     next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
+
+            // end
+
+            // //MSAA 2
+            // 4'b0100: begin
+            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 10'b1000000000;
+            //     next_up_samp_R14S[1] =  sample_R14S[1] + 10'b1000000000;
+            // end
+
+            // //MSAA 3
+            // 4'b0010: begin
+            //     next_rt_samp_R14S[0] = sample_R14S[0]  +  9'b100000000;
+            //     next_up_samp_R14S[1] =  sample_R14S[1] +  9'b100000000;
+            // end
+
+
+            // //MSAA 4
+            // 4'b0001: begin
+            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 8'b10000000;
+            //     next_up_samp_R14S[1] =  sample_R14S[1] + 8'b10000000;
+            // end
+
+
+            //             //MSAA 4
+            // default: begin
+            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
+            //     next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
+            // end
 
 
 
             
 
-         endcase
+         //endcase
          
          next_rt_samp_R14S[1] = sample_R14S[1];
 
@@ -375,7 +383,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_state_R14H = TEST_STATE;
 
                     //Once we see a valid, we will halt the bounding box above
-	  	            next_halt_RnnnnL = 1'b0;
+                    next_halt_RnnnnL = 1'b0;
 
                     //Set current bbox to input bounding box:
                     next_box_R14S = box_R13S;
@@ -404,7 +412,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_state_R14H = WAIT_STATE;
 
                     // We keep waiting, and do not hold the pipline above
- 		            next_halt_RnnnnL = 1'b1;
+                    next_halt_RnnnnL = 1'b1;
 
                     next_box_R14S = box_R13S;
 
@@ -437,7 +445,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_state_R14H = WAIT_STATE;
 
                     // No longer halt -> iterating is over
-	                next_halt_RnnnnL = 1'b1;
+                    next_halt_RnnnnL = 1'b1;
 
                      // Preserve bounding box (will be reset in next state)
                     next_box_R14S = box_R14S;
@@ -467,7 +475,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_state_R14H = TEST_STATE;
 
                     //Since we are iterating, the halt signal is 0 (ie we halt bbox)
- 		            next_halt_RnnnnL = 1'b0;
+                    next_halt_RnnnnL = 1'b0;
 
 
                     // Preserve current bounding box
@@ -521,15 +529,15 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
     //Your assertions goes here
     // START CODE HERE
-	    
+        
      // 1) 
-	    
+        
      assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && validTri_R13H ) |-> (next_state_R14H == TEST_STATE) );
 
      // 2)
      assert property(@(posedge clk) ((state_R14H == TEST_STATE) && at_end_box_R14H ) |-> (next_state_R14H == WAIT_STATE) );
 
-	    
+        
     // 3)
     // IN wait state, non valid input box, stay in wait state
     assert property(@(posedge clk) ((state_R14H == WAIT_STATE) && !validTri_R13H ) |-> (next_state_R14H == WAIT_STATE) );

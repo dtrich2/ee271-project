@@ -7,7 +7,7 @@ package rast_params;
     localparam COLORS = 3; // Number of color channels
     localparam PIPES_BOX = 3; // Number of Pipe Stages in bbox module
     localparam PIPES_ITER = 1; // Number of Pipe Stages in iter module
-    localparam PIPES_HASH = 3; // Number of pipe stages in hash module
+    localparam PIPES_HASH = 2; // Number of pipe stages in hash module
     localparam PIPES_SAMP = 2; // Number of Pipe Stages in sample module
 
 endpackage
