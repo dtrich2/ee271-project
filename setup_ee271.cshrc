@@ -73,11 +73,14 @@ setenv EE271_PROJ /afs/ir/class/ee271/project
 setenv EE271_VECT ${EE271_PROJ}/vect
 
 ### env for AHA tools
-setenv PATH /usr/bin:/cad/aha/brew/bin:/cad/aha/bin:/cad/aha/verific/yosys:$PATH
+setenv PATH /usr/bin:/cad/aha/brew/bin:/cad/aha/bin:/afs/ir.stanford.edu/class/ee271/tabby/bin:$PATH
+
+setenv YOSYSHQ_LICENSE /afs/ir.stanford.edu/class/ee271/michael_oduoza.lic
 source /cad/aha/venv/bin/activate.csh
 setenv LD_LIBRARY_PATH /cad/aha/venv/lib:/cad/aha/venv/coreir/lib:$LD_LIBRARY_PATH
 
-setenv VERIFIC_LICENSE_FILE /cad/aha/verific_200817.license
+#setenv VERIFIC_LICENSE_FILE /cad/aha/verific_200817.license
+#setenv SYMBIOTIC_LICENSE /cad/aha/yosys/symbiotic-serp-stanford-barrett.lic
 
 setenv VERDI_HOME /cad/synopsys/verdi/L-2016.06-SP1-1/
 
