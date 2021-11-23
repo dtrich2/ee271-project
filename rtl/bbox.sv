@@ -398,42 +398,44 @@ for(genvar i = 0; i < 2; i = i + 1) begin
             //  *              a sample is an eighth of a pixel on a side.
 
         
-
+        rounded_box_R10S[i][j][RADIX-1:0]
+            = (box_R10S[i][j][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2]   ,7'b0000000000});
+            
             //TODO: Need to check how to actually make this mask
             //I followed the logic of rasterizer.c
-            case (subSample_RnnnnU)
-                4'b1000:begin
-                    //logic [RADIX-1:0] mask = 10'b0000000000; 
-                    rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);
+//             case (subSample_RnnnnU)
+//                 4'b1000:begin
+//                     //logic [RADIX-1:0] mask = 10'b0000000000; 
+//                     rounded_box_R10S[i][j][RADIX-1:0]
+//                     = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);
 
-                end
-                4'b0100:begin
-                   // logic [RADIX-1:0] mask = 10'b0000000001;
-                    rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1000000000);
+//                 end
+//                 4'b0100:begin
+//                    // logic [RADIX-1:0] mask = 10'b0000000001;
+//                     rounded_box_R10S[i][j][RADIX-1:0]
+//                     = (box_R10S[i][j][RADIX-1:0] & 10'b1000000000);
                     
-                end
-                4'b0010: begin
-                   // mask = 10'b0000000011;
-           // logic [RADIX-1:0] mask = 10'b0000000011;
-                    rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1100000000);  
-                end
-                4'b0001:begin
-                   // mask = 10'b0000000111;
-           // logic [RADIX-1:0] mask = 10'b0000000111;
-                    rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1110000000);  
-                end
-                default: begin
-                   // mask = 10'b0000000000;
-               //logic [RADIX-1:0] mask = 10'b0000000000;
-                    rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);  
-                end
+//                 end
+//                 4'b0010: begin
+//                    // mask = 10'b0000000011;
+//            // logic [RADIX-1:0] mask = 10'b0000000011;
+//                     rounded_box_R10S[i][j][RADIX-1:0]
+//                     = (box_R10S[i][j][RADIX-1:0] & 10'b1100000000);  
+//                 end
+//                 4'b0001:begin
+//                    // mask = 10'b0000000111;
+//            // logic [RADIX-1:0] mask = 10'b0000000111;
+//                     rounded_box_R10S[i][j][RADIX-1:0]
+//                     = (box_R10S[i][j][RADIX-1:0] & 10'b1110000000);  
+//                 end
+//                 default: begin
+//                    // mask = 10'b0000000000;
+//                //logic [RADIX-1:0] mask = 10'b0000000000;
+//                     rounded_box_R10S[i][j][RADIX-1:0]
+//                     = (box_R10S[i][j][RADIX-1:0] & 10'b0000000000);  
+//                 end
 
-            endcase
+//             endcase
 
             // END CODE HERE
 
