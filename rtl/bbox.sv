@@ -189,141 +189,141 @@ module bbox
 
     always_comb begin
         
-        // Get largest x-coordinate
+//         // Get largest x-coordinate
         
-        if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0])) begin
-            box_R10S[1][0] = tri_R10S[0][0];
-        end
-        else if ((tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0])) begin
-            box_R10S[1][0] = tri_R10S[1][0];
-        end
-        else begin
-            box_R10S[1][0] = tri_R10S[2][0];
-        end
+//         if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0])) begin
+//             box_R10S[1][0] = tri_R10S[0][0];
+//         end
+//         else if ((tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0])) begin
+//             box_R10S[1][0] = tri_R10S[1][0];
+//         end
+//         else begin
+//             box_R10S[1][0] = tri_R10S[2][0];
+//         end
         
         
-        // Get Smallest x-coordinate
+//         // Get Smallest x-coordinate
         
-        if ((tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0])) begin
-            box_R10S[0][0] = tri_R10S[0][0];
-        end
-        else if ((tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0])) begin
-            box_R10S[0][0] = tri_R10S[1][0];
-        end
-        else begin
-            box_R10S[0][0] = tri_R10S[2][0];
-        end
-
-
-        // Get largest y-coordinate
-        
-        if  ((tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1])) begin
-            box_R10S[1][1] = tri_R10S[0][1];
-        end
-        else if ((tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1])) begin
-            box_R10S[1][1] = tri_R10S[1][1];
-        end
-        else begin
-            box_R10S[1][1] = tri_R10S[2][1];
-        end
-        
-
-        // Get smallet y-coordinate
-        
-        if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
-            box_R10S[0][1] = tri_R10S[0][1];
-        end
-        else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
-            box_R10S[0][1] = tri_R10S[1][1];
-        end
-        else begin
-            box_R10S[0][1] = tri_R10S[2][1];
-        end
-        
-
-
-        // Get largest x-coordinate
-//     bbox_sel_R10H[1][0][0] = (tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0]);
-
-//     bbox_sel_R10H[1][0][1] = (tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0]);
-
-//     bbox_sel_R10H[1][0][2] = (tri_R10S[2][0] > tri_R10S[0][0]) &&  (tri_R10S[2][0] > tri_R10S[1][0]);
-
-
-
-
-
-//         // Get smallest x-coordinate
-//         bbox_sel_R10H[0][0][0] = (tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0]);
-
-//         bbox_sel_R10H[0][0][1] = (tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0]);
-
-//         bbox_sel_R10H[0][0][2] = (tri_R10S[2][0] < tri_R10S[0][0]) &&  (tri_R10S[2][0] < tri_R10S[1][0]);
-
+//         if ((tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0])) begin
+//             box_R10S[0][0] = tri_R10S[0][0];
+//         end
+//         else if ((tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0])) begin
+//             box_R10S[0][0] = tri_R10S[1][0];
+//         end
+//         else begin
+//             box_R10S[0][0] = tri_R10S[2][0];
+//         end
 
 
 //         // Get largest y-coordinate
-//         bbox_sel_R10H[1][1][0] = (tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[1][1][1] = (tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[1][1][2] = (tri_R10S[2][1] > tri_R10S[0][1]) &&  (tri_R10S[2][1] > tri_R10S[1][1]);
-
-
-
-
-
+        
+//         if  ((tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1])) begin
+//             box_R10S[1][1] = tri_R10S[0][1];
+//         end
+//         else if ((tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1])) begin
+//             box_R10S[1][1] = tri_R10S[1][1];
+//         end
+//         else begin
+//             box_R10S[1][1] = tri_R10S[2][1];
+//         end
+        
 
 //         // Get smallet y-coordinate
+        
+//         if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
+//             box_R10S[0][1] = tri_R10S[0][1];
+//         end
+//         else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
+//             box_R10S[0][1] = tri_R10S[1][1];
+//         end
+//         else begin
+//             box_R10S[0][1] = tri_R10S[2][1];
+//         end
+        
 
-//     bbox_sel_R10H[0][1][0] = (tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1]);
 
-//         bbox_sel_R10H[0][1][1] = (tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1]);
+        // Get largest x-coordinate
+    bbox_sel_R10H[1][0][0] = (tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0]);
 
-//         bbox_sel_R10H[0][1][2] = (tri_R10S[2][1] < tri_R10S[0][1]) &&  (tri_R10S[2][1] < tri_R10S[1][1]);
+    bbox_sel_R10H[1][0][1] = (tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0]);
+
+    bbox_sel_R10H[1][0][2] = (tri_R10S[2][0] > tri_R10S[0][0]) &&  (tri_R10S[2][0] > tri_R10S[1][0]);
 
 
 
 
-//         // Set actual bounding box values
 
-//         // NOTE:
-//         // box_R10S[0][0]: LL X
-//         // box_R10S[0][1]: LL Y
-//         // box_R10S[1][0]: UR X
-//         // box_R10S[1][1]: UR Y
+        // Get smallest x-coordinate
+        bbox_sel_R10H[0][0][0] = (tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0]);
 
-//         //UR X
-//         case(bbox_sel_R10H[1][0])
-//             3'b001: box_R10S[1][0] = tri_R10S[0][0];
-//             3'b010: box_R10S[1][0] = tri_R10S[1][0]; 
-//             3'b100: box_R10S[1][0] = tri_R10S[2][0]; 
-//             default: box_R10S[1][0] = tri_R10S[0][0];
-//         endcase 
+        bbox_sel_R10H[0][0][1] = (tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0]);
+
+        bbox_sel_R10H[0][0][2] = (tri_R10S[2][0] < tri_R10S[0][0]) &&  (tri_R10S[2][0] < tri_R10S[1][0]);
+
+
+
+        // Get largest y-coordinate
+        bbox_sel_R10H[1][1][0] = (tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1]);
+
+        bbox_sel_R10H[1][1][1] = (tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1]);
+
+        bbox_sel_R10H[1][1][2] = (tri_R10S[2][1] > tri_R10S[0][1]) &&  (tri_R10S[2][1] > tri_R10S[1][1]);
+
+
+
+
+
+
+        // Get smallet y-coordinate
+
+    bbox_sel_R10H[0][1][0] = (tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1]);
+
+        bbox_sel_R10H[0][1][1] = (tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1]);
+
+        bbox_sel_R10H[0][1][2] = (tri_R10S[2][1] < tri_R10S[0][1]) &&  (tri_R10S[2][1] < tri_R10S[1][1]);
+
+
+
+
+        // Set actual bounding box values
+
+        // NOTE:
+        // box_R10S[0][0]: LL X
+        // box_R10S[0][1]: LL Y
+        // box_R10S[1][0]: UR X
+        // box_R10S[1][1]: UR Y
+
+        //UR X
+        case(bbox_sel_R10H[1][0])
+            3'b001: box_R10S[1][0] = tri_R10S[0][0];
+            3'b010: box_R10S[1][0] = tri_R10S[1][0]; 
+            3'b100: box_R10S[1][0] = tri_R10S[2][0]; 
+            default: box_R10S[1][0] = tri_R10S[0][0];
+        endcase 
  
-//         //LL X
-//         case(bbox_sel_R10H[0][0])
-//             3'b001: box_R10S[0][0] = tri_R10S[0][0];
-//             3'b010: box_R10S[0][0] = tri_R10S[1][0]; 
-//             3'b100: box_R10S[0][0] = tri_R10S[2][0]; 
-//             default: box_R10S[0][0] = tri_R10S[0][0];
-//         endcase 
+        //LL X
+        case(bbox_sel_R10H[0][0])
+            3'b001: box_R10S[0][0] = tri_R10S[0][0];
+            3'b010: box_R10S[0][0] = tri_R10S[1][0]; 
+            3'b100: box_R10S[0][0] = tri_R10S[2][0]; 
+            default: box_R10S[0][0] = tri_R10S[0][0];
+        endcase 
 
-//         //UR Y
-//         case(bbox_sel_R10H[1][1])
-//             3'b001: box_R10S[1][1] = tri_R10S[0][1];
-//             3'b010: box_R10S[1][1] = tri_R10S[1][1]; 
-//             3'b100: box_R10S[1][1] = tri_R10S[2][1]; 
-//             default: box_R10S[1][1] = tri_R10S[0][1];
-//         endcase 
+        //UR Y
+        case(bbox_sel_R10H[1][1])
+            3'b001: box_R10S[1][1] = tri_R10S[0][1];
+            3'b010: box_R10S[1][1] = tri_R10S[1][1]; 
+            3'b100: box_R10S[1][1] = tri_R10S[2][1]; 
+            default: box_R10S[1][1] = tri_R10S[0][1];
+        endcase 
 
-//          //UR X
-//         case(bbox_sel_R10H[0][1])
-//             3'b001: box_R10S[0][1] = tri_R10S[0][1];
-//             3'b010: box_R10S[0][1] = tri_R10S[1][1]; 
-//             3'b100: box_R10S[0][1] = tri_R10S[2][1]; 
-//             default: box_R10S[0][1] = tri_R10S[0][1];
-//         endcase 
+         //UR X
+        case(bbox_sel_R10H[0][1])
+            3'b001: box_R10S[0][1] = tri_R10S[0][1];
+            3'b010: box_R10S[0][1] = tri_R10S[1][1]; 
+            3'b100: box_R10S[0][1] = tri_R10S[2][1]; 
+            default: box_R10S[0][1] = tri_R10S[0][1];
+        endcase 
 
     end
 
