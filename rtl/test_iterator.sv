@@ -745,7 +745,7 @@ else begin // Use modified FSM
 
         //MSAA 1
         next_rt_samp_R14S[0] = sample_R14S[0]  + (subSample_RnnnnU << RADIX-3);
-        next_lt_samp_R14S[0] = sample_R14S[0]  - (subSample_RnnnnU << RADIX-3);
+        //next_lt_samp_R14S[0] = sample_R14S[0]  - (subSample_RnnnnU << RADIX-3);
         next_up_samp_R14S[1] =  sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
 
    
@@ -759,7 +759,7 @@ else begin // Use modified FSM
         
 
         //Check if we are at the edge of line b,c
-     if ( 0 > ((c_prime[0] * b_prime[1]) - (c_prime[1] * b_prime[0])) ) begin
+     if ( 0 > ((b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0])) ) begin
             at_right_edg_R14H = 1'b1;
 
         
