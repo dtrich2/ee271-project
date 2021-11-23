@@ -218,26 +218,26 @@ module bbox
         // Get largest y-coordinate
         
         if  ((tri_R10S[0][1] > tri_R10S[1][1]) &&  (tri_R10S[0][1] > tri_R10S[2][1])) begin
-            box_R10S[1][1] = tri_R10S[0][0];
+            box_R10S[1][1] = tri_R10S[0][1];
         end
         else if ((tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] > tri_R10S[2][1])) begin
-            box_R10S[1][1] = tri_R10S[1][0];
+            box_R10S[1][1] = tri_R10S[1][1];
         end
         else begin
-            box_R10S[1][1] = tri_R10S[2][0];
+            box_R10S[1][1] = tri_R10S[2][1];
         end
         
 
         // Get smallet y-coordinate
         
         if  ((tri_R10S[0][1] < tri_R10S[1][1]) &&  (tri_R10S[0][1] < tri_R10S[2][1])) begin
-            box_R10S[0][1] = tri_R10S[0][0];
+            box_R10S[0][1] = tri_R10S[0][1];
         end
         else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] < tri_R10S[2][1])) begin
-            box_R10S[0][1] = tri_R10S[1][0];
+            box_R10S[0][1] = tri_R10S[1][1];
         end
         else begin
-            box_R10S[0][1] = tri_R10S[2][0];
+            box_R10S[0][1] = tri_R10S[2][1];
         end
         
 
