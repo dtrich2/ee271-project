@@ -338,10 +338,10 @@ module bbox
     // START CODE HERE
     //Assertions to check if all cases are covered and assignments are unique 
     // (already done for you if you use the bbox_sel_R10H select signal as declared)
-//     assert property(@(posedge clk) $onehot(bbox_sel_R10H[0][0]));
-//     assert property(@(posedge clk) $onehot(bbox_sel_R10H[0][1]));
-//     assert property(@(posedge clk) $onehot(bbox_sel_R10H[1][0]));
-//     assert property(@(posedge clk) $onehot(bbox_sel_R10H[1][1]));
+    assert property(@(posedge clk) $onehot(bbox_sel_R10H[0][0]));
+    assert property(@(posedge clk) $onehot(bbox_sel_R10H[0][1]));
+    assert property(@(posedge clk) $onehot(bbox_sel_R10H[1][0]));
+    assert property(@(posedge clk) $onehot(bbox_sel_R10H[1][1]));
 
     //Assertions to check UR is never less than LL
     //  assert property(@(posedge clk)  (!(box_R10S[1][0] <  box_R10S[0][0]));
