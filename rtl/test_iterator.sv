@@ -628,12 +628,19 @@ else begin // Use modified FSM
     logic signed [SIGFIG-1:0]   next_rt_samp_R14S[1:0]; //If jump right, next sample
     logic signed [SIGFIG-1:0]   next_lt_samp_R14S[1:0]; //If jump left, next sample
     logic                       at_right_edg_R14H;      //Current sample at right edge of bbox?
+    logic                       at_left_edg_R14H;      //Current sample at right edge of bbox?
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
     
     logic signed [SIGFIG-1:0]     a[AXIS-1:0];
     logic signed [SIGFIG-1:0]     b[AXIS-1:0];
     logic signed [SIGFIG-1:0]     c[AXIS-1:0];
+    
+    
+    logic signed [SIGFIG-1:0]     a_prime[AXIS-1:0];
+    logic signed [SIGFIG-1:0]     b_prime[AXIS-1:0];
+    logic signed [SIGFIG-1:0]     c_prime[AXIS-1:0];
+
 
     //////
     ////// First calculate the values of the helper signals using CURRENT STATES
@@ -655,39 +662,84 @@ else begin // Use modified FSM
      if ((tri_R13S[0][1] >=  tri_R13S[1][1]) && (tri_R13S[0][1] >=  tri_R13S[2][1])) begin
          
          //Get C
-         c[0] = tri_R13S[0][0]
-         c[1] = tri_R13S[0][1]
+         c[0] = tri_R13S[0][0];
+         c[1] = tri_R13S[0][1];
          //Determine A and B
          if ((tri_R13S[1][0] <  tri_R13S[2][0])) begin
-             a[0] = tri_R13S[1][0]
-             a[1] = tri_R13S[1][1]
+             a[0] = tri_R13S[1][0];
+             a[1] = tri_R13S[1][1];
              
-             b[0] = tri_R13S[2][0]
-             b[1] = tri_R13S[2][1]
+             b[0] = tri_R13S[2][0];
+             b[1] = tri_R13S[2][1];
          end
          else begin
-             a[0] = tri_R13S[2][0]
-             a[1] = tri_R13S[2][1]
+             a[0] = tri_R13S[2][0];
+             a[1] = tri_R13S[2][1];
              
-             b[0] = tri_R13S[1][0]
-             b[1] = tri_R13S[1][1]
+             b[0] = tri_R13S[1][0];
+             b[1] = tri_R13S[1][1];
              
          end
-         
      end 
-     end 
+     
+     
      else if ((tri_R13S[1][1] >=  tri_R13S[0][1]) && (tri_R13S[1][1] >=  tri_R13S[2][1])) begin
-         c[0] = tri_R13S[1][0]
-         c[1] = tri_R13S[1][1]
+         
+         //Get C
+         c[0] = tri_R13S[1][0];
+         c[1] = tri_R13S[1][1];
+         
+         //Determine A and B
+         if ((tri_R13S[0][0] <  tri_R13S[2][0])) begin
+             a[0] = tri_R13S[0][0];
+             a[1] = tri_R13S[0][1];
+             
+             b[0] = tri_R13S[2][0];
+             b[1] = tri_R13S[2][1];
+         end
+         else begin
+             a[0] = tri_R13S[2][0];
+             a[1] = tri_R13S[2][1];
+             
+             b[0] = tri_R13S[0][0];
+             b[1] = tri_R13S[0][1];
+             
+         end    
      end 
      else begin
-         c[0] = tri_R13S[2][0]
-         c[1] = tri_R13S[2][1]
+         //get C
+         c[0] = tri_R13S[2][0];
+         c[1] = tri_R13S[2][1];
+                        
+         //Determine A and B
+         if ((tri_R13S[0][0] <  tri_R13S[1][0])) begin
+             a[0] = tri_R13S[0][0];
+             a[1] = tri_R13S[0][1];
+             
+             b[0] = tri_R13S[1][0];
+             b[1] = tri_R13S[1][1];
+         end
+         else begin
+             a[0] = tri_R13S[1][0];
+             a[1] = tri_R13S[1][1];
+             
+             b[0] = tri_R13S[0][0];
+             b[1] = tri_R13S[0][1];
+             
+         end
      end 
      
-  
-    
      
+     //Set up variables for edge equation
+     a_prime[0] = a[0] - sample_R14S[0];
+     a_prime[1] = a[1] - sample_R14S[1];
+     b_prime[0] = b[0] - sample_R14S[0];
+     b_prime[1] = b[1] - sample_R14S[1];
+     c_prime[0] = c[0] - sample_R14S[0];
+     c_prime[1] = c[1] - sample_R14S[1];
+     
+  
+   
 
          //Set next right sample
 
@@ -706,12 +758,13 @@ else begin // Use modified FSM
          next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
         
 
-        if (sample_R14S[0] >= box_R14S[1][0]) begin
+        //Check if we are at the edge of line b,c
+     if ( 0 > (b_prime[0] * c_prime[1] - b_prime[1] * c_prime[0]) ) begin
             at_right_edg_R14H = 1'b1;
 
         
-        end
-        else begin
+     end
+     else begin
              at_right_edg_R14H = 1'b0;
 
     
