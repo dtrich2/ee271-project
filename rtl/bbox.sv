@@ -418,13 +418,13 @@ for(genvar i = 0; i < 2; i = i + 1) begin
                    // mask = 10'b0000000011;
            // logic [RADIX-1:0] mask = 10'b0000000011;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                     = (box_R10S[i][j][RADIX-1:0] & 10'b1100000000);  
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0100000000);  
                 end
                 4'b0001:begin
                    // mask = 10'b0000000111;
            // logic [RADIX-1:0] mask = 10'b0000000111;
                     rounded_box_R10S[i][j][RADIX-1:0]
-                    = (box_R10S[i][j][RADIX-1:0] & 10'b1110000000);  
+                    = (box_R10S[i][j][RADIX-1:0] & 10'b0010000000);  
                 end
                 default: begin
                    // mask = 10'b0000000000;
