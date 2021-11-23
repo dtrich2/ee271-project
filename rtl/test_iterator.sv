@@ -632,14 +632,16 @@ else begin // Use modified FSM
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
     
-    logic signed [SIGFIG-1:0]     a[AXIS-1:0];
-    logic signed [SIGFIG-1:0]     b[AXIS-1:0];
-    logic signed [SIGFIG-1:0]     c[AXIS-1:0];
+    logic signed [SIGFIG-1:0]     a[AXIS-2:0];
+    logic signed [SIGFIG-1:0]     b[AXIS-2:0];
+    logic signed [SIGFIG-1:0]     c[AXIS-2:0];
     
     
-    logic signed [SIGFIG-1:0]     a_prime[AXIS-1:0];
-    logic signed [SIGFIG-1:0]     b_prime[AXIS-1:0];
-    logic signed [SIGFIG-1:0]     c_prime[AXIS-1:0];
+    logic signed [SIGFIG-1:0]     a_prime[AXIS-2:0];
+    logic signed [SIGFIG-1:0]     b_prime[AXIS-2:0];
+    logic signed [SIGFIG-1:0]     c_prime[AXIS-2:0];
+    
+    logic signed [SIGFIG-1:0]     product;
 
 
     //////
@@ -756,6 +758,9 @@ else begin // Use modified FSM
 
          //Set next up sample
          next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
+     
+         
+     product = (b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0]) ;
         
 
         //Check if we are at the edge of line b,c
