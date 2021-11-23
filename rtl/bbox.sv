@@ -191,10 +191,10 @@ module bbox
         
         // Get largest x-coordinate
         
-        if ((tri_R10S[0][0] > tri_R10S[1][0]) &&  (tri_R10S[0][0] > tri_R10S[2][0])) begin
+        if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0])) begin
             box_R10S[1][0] = tri_R10S[0][0];
         end
-        else if ((tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] > tri_R10S[2][0])) begin
+        else if ((tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0])) begin
             box_R10S[1][0] = tri_R10S[1][0];
         end
         else begin
@@ -204,10 +204,10 @@ module bbox
         
         // Get Smallest x-coordinate
         
-        if ((tri_R10S[0][0] < tri_R10S[1][0]) &&  (tri_R10S[0][0] < tri_R10S[2][0])) begin
+        if ((tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0])) begin
             box_R10S[0][0] = tri_R10S[0][0];
         end
-        else if ((tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] < tri_R10S[2][0])) begin
+        else if ((tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0])) begin
             box_R10S[0][0] = tri_R10S[1][0];
         end
         else begin
@@ -217,10 +217,10 @@ module bbox
 
         // Get largest y-coordinate
         
-        if  ((tri_R10S[0][1] > tri_R10S[1][1]) &&  (tri_R10S[0][1] > tri_R10S[2][1])) begin
+        if  ((tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1])) begin
             box_R10S[1][1] = tri_R10S[0][1];
         end
-        else if ((tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] > tri_R10S[2][1])) begin
+        else if ((tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1])) begin
             box_R10S[1][1] = tri_R10S[1][1];
         end
         else begin
@@ -230,10 +230,10 @@ module bbox
 
         // Get smallet y-coordinate
         
-        if  ((tri_R10S[0][1] < tri_R10S[1][1]) &&  (tri_R10S[0][1] < tri_R10S[2][1])) begin
+        if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[0][1];
         end
-        else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] < tri_R10S[2][1])) begin
+        else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[1][1];
         end
         else begin
