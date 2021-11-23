@@ -683,7 +683,7 @@ else begin // Use modified FSM
      end 
      
      
-     else if ((tri_R13S[1][1] >=  tri_R13S[0][1]) && (tri_R13S[1][1] >=  tri_R13S[2][1])) begin
+     else if ((tri_R13S[1][1] >  tri_R13S[0][1]) && (tri_R13S[1][1] >=  tri_R13S[2][1])) begin
          
          //Get C
          c[0] = tri_R13S[1][0];
@@ -759,7 +759,7 @@ else begin // Use modified FSM
         
 
         //Check if we are at the edge of line b,c
-     if ( 0 > (b_prime[0] * c_prime[1] - b_prime[1] * c_prime[0]) ) begin
+     if ( 0 > ((b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0])) ) begin
             at_right_edg_R14H = 1'b1;
 
         
