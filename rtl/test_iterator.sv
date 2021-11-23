@@ -759,7 +759,7 @@ else begin // Use modified FSM
         
 
         //Check if we are at the edge of line b,c
-     if ( 0 > ((b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0])) ) begin
+     if ( sample_R14S[0] >= box_R14S[1][0] ) begin
             at_right_edg_R14H = 1'b1;
 
         
