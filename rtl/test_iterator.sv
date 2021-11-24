@@ -681,8 +681,16 @@ else begin // Use modified FSM
      
      //update invalid counter:
      case(hit_valid) 
-         1'b0: next_invalid_counter = invalid_counter + 4'b0001;
          1'b1: next_invalid_counter = 4'b0000;
+         1'b0: begin
+             
+             if (at_right_edg_R14H || at_left_edg_R14H) begin
+                 next_invalid_counter = 4'b0000;
+             end
+             else begin
+                 next_invalid_counter = invalid_counter + 4'b0001;
+             end
+         end
          default: next_invalid_counter = 4'b0000;
      endcase
          
