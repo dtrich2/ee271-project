@@ -279,7 +279,7 @@ module rast
         .clk                (clk                ),
         .rst                (rst                ),
         
-        .hit_valid          (hit_R18S           ),
+        .hit_valid          (hit_valid_R18H           ),
 
         .tri_R14S           (tri_R14S           ),
         .color_R14U         (color_R14U         ),
