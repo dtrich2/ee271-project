@@ -105,6 +105,8 @@ module test_iterator
     //Global Signals
     input logic clk, // Clock
     input logic rst, // Reset
+    
+   // input logic hit_valid, //  Signal from sample test that determines if we should stop our current right/left iterating
 
     //Outputs
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
@@ -594,6 +596,16 @@ else begin // Use modified FSM
     // define two more states, box_R14S and state_R14H
     logic signed [SIGFIG-1:0]   box_R14S[1:0][1:0];         // the state for current bounding box
     logic signed [SIGFIG-1:0]   next_box_R14S[1:0][1:0];
+    
+    // definte two states to keep track of how many invalids we see
+    // We must set a buffer because otherwise when we first move up a row we would immediatly fail our test:
+    logic signed [3:0] invalid_counter;
+    logic signed [3:0] next_invalid_counter;
+    
+    //define two states to keep track of the iterating direction
+    logic  iterate_direction; //0 Right, 1 Left
+    logic next_iterate_direction;
+    
 
     state_t                     state_R14H;     //State Designation (Waiting or Testing)
     state_t                     next_state_R14H;        //Next Cycles State
@@ -617,9 +629,13 @@ else begin // Use modified FSM
     always_ff @(posedge clk, posedge rst) begin
         if(rst) begin
             state_R14H <= WAIT_STATE;
+            invalid_counter <= 4'b0;
+            iterate_direction <= 1'b0;
         end
         else begin
             state_R14H <= next_state_R14H;
+            invalid_counter <= next_invalid_counter;
+            iterate_direction <= next_iterate_direction;
         end
     end
 
@@ -632,19 +648,8 @@ else begin // Use modified FSM
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
     
-    logic signed [SIGFIG-1:0]     a[AXIS-2:0];
-    logic signed [SIGFIG-1:0]     b[AXIS-2:0];
-    logic signed [SIGFIG-1:0]     c[AXIS-2:0];
+   
     
-    
-    logic signed [SIGFIG-1:0]     a_prime[AXIS-2:0];
-    logic signed [SIGFIG-1:0]     b_prime[AXIS-2:0];
-    logic signed [SIGFIG-1:0]     c_prime[AXIS-2:0];
-    
-    logic signed [SIGFIG-1:0]     product;
-    
-    logic dummyHit;
-
 
     //////
     ////// First calculate the values of the helper signals using CURRENT STATES
@@ -659,136 +664,55 @@ else begin // Use modified FSM
 //    at_end_box_R14H = 1'b0;
  always_comb begin
         // START CODE HERE
-     
-        //Determine a, b and c
-     
-     // tri_R13S[VERTS-1:0][AXIS-1:0], //triangle to Iterate Over
-     if ((tri_R13S[0][1] >=  tri_R13S[1][1]) && (tri_R13S[0][1] >=  tri_R13S[2][1])) begin
-         
-         //Get C
-         c[0] = tri_R13S[0][0];
-         c[1] = tri_R13S[0][1];
-         //Determine A and B
-         if ((tri_R13S[1][0] <  tri_R13S[2][0])) begin
-             a[0] = tri_R13S[1][0];
-             a[1] = tri_R13S[1][1];
-             
-             b[0] = tri_R13S[2][0];
-             b[1] = tri_R13S[2][1];
-         end
-         else begin
-             a[0] = tri_R13S[2][0];
-             a[1] = tri_R13S[2][1];
-             
-             b[0] = tri_R13S[1][0];
-             b[1] = tri_R13S[1][1];
-             
-         end
-     end 
-     
-     
-     else if ((tri_R13S[1][1] >  tri_R13S[0][1]) && (tri_R13S[1][1] >=  tri_R13S[2][1])) begin
-         
-         //Get C
-         c[0] = tri_R13S[1][0];
-         c[1] = tri_R13S[1][1];
-         
-         //Determine A and B
-         if ((tri_R13S[0][0] <  tri_R13S[2][0])) begin
-             a[0] = tri_R13S[0][0];
-             a[1] = tri_R13S[0][1];
-             
-             b[0] = tri_R13S[2][0];
-             b[1] = tri_R13S[2][1];
-         end
-         else begin
-             a[0] = tri_R13S[2][0];
-             a[1] = tri_R13S[2][1];
-             
-             b[0] = tri_R13S[0][0];
-             b[1] = tri_R13S[0][1];
-             
-         end    
-     end 
-     else begin
-         //get C
-         c[0] = tri_R13S[2][0];
-         c[1] = tri_R13S[2][1];
-                        
-         //Determine A and B
-         if ((tri_R13S[0][0] <  tri_R13S[1][0])) begin
-             a[0] = tri_R13S[0][0];
-             a[1] = tri_R13S[0][1];
-             
-             b[0] = tri_R13S[1][0];
-             b[1] = tri_R13S[1][1];
-         end
-         else begin
-             a[0] = tri_R13S[1][0];
-             a[1] = tri_R13S[1][1];
-             
-             b[0] = tri_R13S[0][0];
-             b[1] = tri_R13S[0][1];
-             
-         end
-     end 
-     
-     
-     //Set up variables for edge equation
-     a_prime[0] = a[0] - sample_R14S[0];
-     a_prime[1] = a[1] - sample_R14S[1];
-     b_prime[0] = b[0] - sample_R14S[0];
-     b_prime[1] = b[1] - sample_R14S[1];
-     c_prime[0] = c[0] - sample_R14S[0];
-     c_prime[1] = c[1] - sample_R14S[1];
-     
-  
-   
+    
 
          //Set next right sample
 
-        //MSAA 1
+        //Set x coordinate of new next sample
         next_rt_samp_R14S[0] = sample_R14S[0]  + (subSample_RnnnnU << RADIX-3);
-        //next_lt_samp_R14S[0] = sample_R14S[0]  - (subSample_RnnnnU << RADIX-3);
-        next_up_samp_R14S[1] =  sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
-
+        next_lt_samp_R14S[0] = sample_R14S[0]  - (subSample_RnnnnU << RADIX-3);
+        next_up_samp_R14S[0] = sample_R14S[0]; //just move up a row keep x coord the same. TODO: investigage if padding is necessary here
+     
+        //set y coordinate of new next sample;
+        next_rt_samp_R14S[1] = sample_R14S[1];
+        next_lt_samp_R14S[1] = sample_R14S[1];
+        next_up_samp_R14S[1] = sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
+     
+     
+     //update invalid counter:
+     case(hit_valid) 
+         1'b0: next_invalid_counter = invalid_counter + 4'b0001;
+         1'b1: next_invalid_counter = 4'b0000;
+     endcase
+         
+     
    
-
-         //endcase
+     //If we are iterating right and we aren't outside our triangle our bounding box)
+     if ( !iterate_direction  && (sample_R14S[0] >= box_R14S[1][0] || (!hit_valid && (invalid_counter > 4'b0100))  ) begin
+         at_right_edg_R14H = 1'b1;
          
-         next_rt_samp_R14S[1] = sample_R14S[1];
+     end
+     else begin
+          at_right_edg_R14H = 1'b0;
 
-         //Set next up sample
-         next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
-     
+      end
          
-     product = (c_prime[0] * b_prime[1]) - (c_prime[1] * b_prime[0]) ;
-        
-
-        //Check if we are at the edge of line b,c
-     // (ie check if product is positve, it it is sample is on the right side of line)
-//         if (product[23] > 23'b0 ) begin
-//                 //at_right_edg_R14H = 1'b1;
-               
-
-//          end
-//          else begin
-//                 //at_right_edg_R14H = 1'b0;
-//                 dummyHit = 1'b0;
-
-//          end
-     
-     if (sample_R14S[0] >= box_R14S[1][0] || product < 23'b0 ) begin
-            at_right_edg_R14H = 1'b1;
-
          
-        end
-        else begin
-             at_right_edg_R14H = 1'b0;
+         
+     //If we are iterating left and we aren't outside our triangle our bounding box)
+         if ( iterate_direction  && (sample_R14S[0] < box_R14S[0][0] || (!hit_valid && (invalid_counter > 4'b0100))  ) begin
+         at_left_edg_R14H = 1'b1;
+         
+     end
+     else begin
+          at_left_edg_R14H = 1'b0;
 
-        end
-
-        if (sample_R14S[1] >= box_R14S[1][1]) begin
+      end
+         
+         
+         
+      // Check top 
+      if (sample_R14S[1] >= box_R14S[1][1]) begin
             at_top_edg_R14H = 1'b1;
 
         end
@@ -797,7 +721,7 @@ else begin // Use modified FSM
  
         end
 
-        if (at_right_edg_R14H && at_top_edg_R14H) begin
+        if ((at_right_edg_R14H || at_left_edg_R14H)  && at_top_edg_R14H) begin
              at_end_box_R14H = 1'b1;
         end
         else begin
@@ -838,11 +762,28 @@ else begin // Use modified FSM
 
                     // Next sample is valid
                     next_validSamp_R14H = 1'b1;
+                    
+                    //Start by iterating to the right:
+                    next_iterate_direction = 1'b0;
+                    
 
-                    //Next sample is lower left vertex
-                    next_sample_R14S[0] = box_R13S[0][0];
-
-                    next_sample_R14S[1] = box_R13S[0][1];
+                    //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
+                    //find lowest vertex (compare y coords)
+                    // Not we also shift over the the LEFT a tad just so we don't miss anything
+                    if ((tri_R13S[0][1] < tri_R13S[1][1]) && (tri_R13S[0][1] < tri_R13S[2][1])) begin      
+                        next_sample_R14S[0] = tri_R13S[0][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[0][1];        
+                    end
+                    
+                    else if ((tri_R13S[1][1] < tri_R13S[0][1]) && (tri_R13S[1][1] < tri_R13S[2][1])) begin
+                        next_sample_R14S[0] = tri_R13S[1][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[1][1];  
+                    end
+                    
+                    else begin
+                        next_sample_R14S[0] = tri_R13S[2][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[2][1];
+                    end
 
 
                     // Set current tri to input tri
@@ -867,11 +808,26 @@ else begin // Use modified FSM
                     // Next sample is invalid
                     next_validSamp_R14H = 1'b0;
 
-                     //Next sample is lower left vertex
-                     next_sample_R14S[0] = box_R13S[0][0];
-
-                     next_sample_R14S[1] = box_R13S[0][1];
-
+                    //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
+                    //find lowest vertex (compare y coords)
+                    // Not we also shift over the the LEFT a tad just so we don't miss anything
+                    if ((tri_R13S[0][1] < tri_R13S[1][1]) && (tri_R13S[0][1] < tri_R13S[2][1])) begin      
+                        next_sample_R14S[0] = tri_R13S[0][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[0][1];        
+                    end
+                    
+                    else if ((tri_R13S[1][1] < tri_R13S[0][1]) && (tri_R13S[1][1] < tri_R13S[2][1])) begin
+                        next_sample_R14S[0] = tri_R13S[1][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[1][1];  
+                    end
+                    
+                    else begin
+                        next_sample_R14S[0] = tri_R13S[2][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R13S[2][1];
+                    end
+                    
+                    //Next iterate direction is to the left
+                    next_iterate_direction = 1'b0;
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
@@ -902,11 +858,23 @@ else begin // Use modified FSM
                     next_validSamp_R14H = 1'b0;
 
 
-                    //Next sample is lower left vertex
-
-                    next_sample_R14S[0] = box_R14S[0][0];
-
-                    next_sample_R14S[1] = box_R14S[0][1];
+                    //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
+                    //find lowest vertex (compare y coords)
+                    // Not we also shift over the the LEFT a tad just so we don't miss anything
+                    if ((tri_R14S[0][1] < tri_R14S[1][1]) && (tri_R14S[0][1] < tri_R14S[2][1])) begin      
+                        next_sample_R14S[0] = tri_R14S[0][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R14S[0][1];        
+                    end
+                    
+                    else if ((tri_R14S[1][1] < tri_R14S[0][1]) && (tri_R14S[1][1] < tri_R14S[2][1])) begin
+                        next_sample_R14S[0] = tri_R14S[1][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R14S[1][1];  
+                    end
+                    
+                    else begin
+                        next_sample_R14S[0] = tri_R14S[2][0]  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[1] = tri_R14S[2][1];
+                    end
 
 
                     //Hold
