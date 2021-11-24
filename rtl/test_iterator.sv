@@ -767,7 +767,7 @@ else begin // Use modified FSM
 
         //Check if we are at the edge of line b,c
      // (ie check if product is positve, it it is sample is on the right side of line)
-        if (product[23] == 1'b0 ) begin
+        if (product[23] > 23'b0 ) begin
                 //at_right_edg_R14H = 1'b1;
                 dummyHit = 1'b1;
 
