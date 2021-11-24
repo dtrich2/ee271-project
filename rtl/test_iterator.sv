@@ -762,7 +762,7 @@ else begin // Use modified FSM
          next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
      
          
-        product = (b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0]) ;
+     product = (a_prime[0] * c_prime[1]) - (a_prime[1] * c_prime[0]) ;
         
 
         //Check if we are at the edge of line b,c
