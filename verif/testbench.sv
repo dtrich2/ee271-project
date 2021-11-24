@@ -347,7 +347,8 @@ module testbench
             $display("Simulation will timout after %0d cycles", timeout);
         end
         else begin
-            timeout=50000000 ;
+              //Temp change for debugging
+            timeout=500055000  ;
             $display("Simulation will timout after %0d cycles", timeout);
         end
 
