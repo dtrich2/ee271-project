@@ -778,7 +778,7 @@ else begin // Use modified FSM
 
 //          end
      
-     if (sample_R14S[0] >= box_R14S[1][0] || product[23] >= 23'b0 ) begin
+     if (sample_R14S[0] >= box_R14S[1][0] || product > 23'b0 ) begin
             at_right_edg_R14H = 1'b1;
 
          
