@@ -255,6 +255,8 @@ module rast
         $fdisplay(bbox_file, "},");
     end
     `endif 
+    
+    //Chris Change: Add new input to test_iterator which is output of sample_test
 
     test_iterator #(
         .SIGFIG     (SIGFIG     ),
@@ -276,6 +278,8 @@ module rast
 
         .clk                (clk                ),
         .rst                (rst                ),
+        
+        .hit_valid          (hit_R18S           ),
 
         .tri_R14S           (tri_R14S           ),
         .color_R14U         (color_R14U         ),
