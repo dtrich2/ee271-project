@@ -689,7 +689,7 @@ else begin // Use modified FSM
      
    
      //If we are iterating right and we aren't outside our triangle our bounding box)
-     if ( !iterate_direction  && (sample_R14S[0] >= box_R14S[1][0] || (!hit_valid && (invalid_counter > 4'b1100) ) )  ) begin
+     if ( !iterate_direction  && ((sample_R14S[0] >= box_R14S[1][0]) || ((!hit_valid && (invalid_counter > 4'b1100)) ) )  ) begin
          at_right_edg_R14H = 1'b1;
          
      end
@@ -701,7 +701,7 @@ else begin // Use modified FSM
          
          
      //If we are iterating left and we aren't outside our triangle our bounding box)
-     if ( iterate_direction  && (sample_R14S[0] < box_R14S[0][0] || (!hit_valid && (invalid_counter > 4'b0100)))  ) begin
+     if ( iterate_direction  && ( (sample_R14S[0] < box_R14S[0][0]) || ((!hit_valid && (invalid_counter > 4'b0100))))  ) begin
          at_left_edg_R14H = 1'b1;
          
      end
@@ -916,7 +916,7 @@ else begin // Use modified FSM
                     // Set next sample
                     
                     //if we are currently iterating to the right)
-                    if (iterate_direction) begin
+                    if (!iterate_direction) begin
                         
                         if (at_right_edg_R14H) begin
                             // If we are at the right edge we get the next up sample
