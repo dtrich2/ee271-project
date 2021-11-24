@@ -720,7 +720,8 @@ else begin // Use modified FSM
              at_top_edg_R14H = 1'b0;
  
         end
-
+        
+         //if we at the top and we finish iterating either to the left or the right, we are done
         if ((at_right_edg_R14H || at_left_edg_R14H)  && at_top_edg_R14H) begin
              at_end_box_R14H = 1'b1;
         end
@@ -807,6 +808,9 @@ else begin // Use modified FSM
 
                     // Next sample is invalid
                     next_validSamp_R14H = 1'b0;
+                    
+                    //Start by iterating to the right:
+                    next_iterate_direction = 1'b0;
 
                     //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
                     //find lowest vertex (compare y coords)
@@ -826,8 +830,6 @@ else begin // Use modified FSM
                         next_sample_R14S[1] = tri_R13S[2][1];
                     end
                     
-                    //Next iterate direction is to the left
-                    next_iterate_direction = 1'b0;
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
@@ -856,6 +858,9 @@ else begin // Use modified FSM
 
                     // Next sample is invalid
                     next_validSamp_R14H = 1'b0;
+                    
+                    //Start by iterating to the right:
+                    next_iterate_direction = 1'b0;
 
 
                     //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
@@ -909,16 +914,47 @@ else begin // Use modified FSM
 
                     // Set next sample
                     
-                    if (at_right_edg_R14H) begin
-                        // If we are at the right edge we get the next up sample
-                        next_sample_R14S = next_up_samp_R14S;
-                    end
-                    else begin
-                        // If we are NOT at the right edge we get the next right sample
-                         next_sample_R14S = next_rt_samp_R14S;
+                    //if we are currently iterating to the right)
+                    if (iterate_direction) begin
+                        
+                        if (at_right_edg_R14H) begin
+                            // If we are at the right edge we get the next up sample
+                            next_sample_R14S = next_up_samp_R14S;
+                            //Start iterating to left
+                            next_iterate_direction = 1'b1;
+
+                        end
+                        else begin
+                            // If we are NOT at the right edge we get the next right sample
+                             next_sample_R14S = next_rt_samp_R14S;
+                            
+                            //keep iterating to the right
+                             next_iterate_direction = 1'b0;
+
+                        end
                         
                     end
+                    
+                    //Otherwise we are iterating to the left
+                    else begin
+                        
+                        if (at_left_edg_R14H) begin
+                            // If we are at the right edge we get the next up sample
+                            next_sample_R14S = next_up_samp_R14S;
+                            //Start iterating to right
+                            next_iterate_direction = 1'b0;
 
+                        end
+                        else begin
+                            // If we are NOT at the left edge we get the next left sample
+                             next_sample_R14S = next_lt_samp_R14S;
+                            
+                            //keep iterating to the left
+                             next_iterate_direction = 1'b1;
+                        end
+                        
+                    end
+                        
                 end
 
             end
