@@ -693,9 +693,11 @@ else begin // Use modified FSM
          
          if ( (sample_R14S[0] >= box_R14S[1][0]) || ((!hit_valid) && (invalid_counter > 4'b1111)) ) begin
               at_right_edg_R14H = 1'b1;
+              at_left_edg_R14H = 1'b0;
          end
          else begin
              at_right_edg_R14H = 1'b0;
+              at_left_edg_R14H = 1'b0;
          end
          
      end
@@ -705,10 +707,12 @@ else begin // Use modified FSM
          
          if ( (sample_R14S[0] < box_R14S[0][0] ) || ((!hit_valid) && (invalid_counter > 4'b1111))  ) begin
             at_left_edg_R14H = 1'b1;
+            at_right_edg_R14H = 1'b0;
          
          end
          else begin
               at_left_edg_R14H = 1'b0;
+              at_right_edg_R14H = 1'b0;
           end
      end
          
