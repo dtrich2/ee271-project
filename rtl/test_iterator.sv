@@ -642,6 +642,8 @@ else begin // Use modified FSM
     logic signed [SIGFIG-1:0]     c_prime[AXIS-2:0];
     
     logic signed [SIGFIG-1:0]     product;
+    
+    logic dummyHit;
 
 
     //////
@@ -760,20 +762,30 @@ else begin // Use modified FSM
          next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
      
          
-     product = (b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0]) ;
+        product = (b_prime[0] * c_prime[1]) - (b_prime[1] * c_prime[0]) ;
         
 
         //Check if we are at the edge of line b,c
      // (ie check if product is positve, it it is sample is on the right side of line)
-     if (product[23] == 1'b1 ) begin
+        if (product[23] == 1'b0 ) begin
+                //at_right_edg_R14H = 1'b1;
+                dummyHit = 1'b1;
+
+         end
+         else begin
+                //at_right_edg_R14H = 1'b0;
+                dummyHit = 1'b0;
+
+         end
+     
+          if (sample_R14S[0] >= box_R14S[1][0]) begin
             at_right_edg_R14H = 1'b1;
 
-        
-     end
-     else begin
+         
+        end
+        else begin
              at_right_edg_R14H = 1'b0;
 
-    
         end
 
         if (sample_R14S[1] >= box_R14S[1][1]) begin
