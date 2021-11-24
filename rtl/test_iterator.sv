@@ -683,12 +683,13 @@ else begin // Use modified FSM
      case(hit_valid) 
          1'b0: next_invalid_counter = invalid_counter + 4'b0001;
          1'b1: next_invalid_counter = 4'b0000;
+         default: next_invalid_counter = 4'b0000;
      endcase
          
      
    
      //If we are iterating right and we aren't outside our triangle our bounding box)
-     if ( !iterate_direction  && (sample_R14S[0] >= box_R14S[1][0] || (!hit_valid && (invalid_counter > 4'b0100))  ) begin
+     if ( !iterate_direction  && (sample_R14S[0] >= box_R14S[1][0] || (!hit_valid && (invalid_counter > 4'b0100) ) )  ) begin
          at_right_edg_R14H = 1'b1;
          
      end
@@ -700,7 +701,7 @@ else begin // Use modified FSM
          
          
      //If we are iterating left and we aren't outside our triangle our bounding box)
-         if ( iterate_direction  && (sample_R14S[0] < box_R14S[0][0] || (!hit_valid && (invalid_counter > 4'b0100))  ) begin
+     if ( iterate_direction  && (sample_R14S[0] < box_R14S[0][0] || (!hit_valid && (invalid_counter > 4'b0100)))  ) begin
          at_left_edg_R14H = 1'b1;
          
      end
