@@ -724,7 +724,7 @@ else begin // Use modified FSM
      //If we are iterating left and we aren't outside our triangle our bounding box)
      else begin
          
-         if ( (sample_R14S[0] < box_R14S[0][0] )) begin // || ((!hit_valid) && (invalid_counter > 4'b1111))  ) begin
+         if ( (sample_R14S[0] <= box_R14S[0][0] )) begin // || ((!hit_valid) && (invalid_counter > 4'b1111))  ) begin
             at_left_edg_R14H = 1'b1;
             at_right_edg_R14H = 1'b0;
          
