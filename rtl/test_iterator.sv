@@ -674,10 +674,10 @@ else begin // Use modified FSM
      
         //if we are moving right
         if (!iterate_direction) begin
-            next_up_samp_R14S[0] = box_R14S[1][0]];
+            next_up_samp_R14S[0] = box_R14S[1][0];
         end
         else begin
-            next_up_samp_R14S[0] = box_R14S[0][0]];
+            next_up_samp_R14S[0] = box_R14S[0][0];
         end
      
         //next_up_samp_R14S[0] = sample_R14S[0]; //just move up a row keep x coord the same. TODO: investigage if padding is necessary here
