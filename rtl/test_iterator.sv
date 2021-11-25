@@ -671,7 +671,16 @@ else begin // Use modified FSM
         //Set x coordinate of new next sample
         next_rt_samp_R14S[0] = sample_R14S[0]  + (subSample_RnnnnU << RADIX-3);
         next_lt_samp_R14S[0] = sample_R14S[0]  - (subSample_RnnnnU << RADIX-3);
-        next_up_samp_R14S[0] = sample_R14S[0]; //just move up a row keep x coord the same. TODO: investigage if padding is necessary here
+     
+        //if we are moving right
+        if (!iterate_direction) begin
+            next_up_samp_R14S[0] = box_R14S[1][0]];
+        end
+        else begin
+            next_up_samp_R14S[0] = box_R14S[0][0]];
+        end
+     
+        //next_up_samp_R14S[0] = sample_R14S[0]; //just move up a row keep x coord the same. TODO: investigage if padding is necessary here
      
         //set y coordinate of new next sample;
         next_rt_samp_R14S[1] = sample_R14S[1];
