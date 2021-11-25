@@ -679,13 +679,7 @@ else begin // Use modified FSM
         next_up_samp_R14S[1] = sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
      
      
-     //update invalid counter:
-     if (at_right_edg_R14H || at_left_edg_R14H || hit_valid) begin
-          next_invalid_counter = 4'b0;
-     end
-     else begin
-         next_invalid_counter = invalid_counter + 4'b0001;
-     end
+
      
      
 //      case(hit_valid) 
@@ -752,6 +746,9 @@ else begin // Use modified FSM
         else begin
              at_end_box_R14H = 1'b0;
         end
+     
+     
+
 
 
 
@@ -769,6 +766,14 @@ else begin // Use modified FSM
     // Combinational logic for state transitions
     always_comb begin
         // START CODE HERE
+        
+         //update invalid counter:
+         if (at_right_edg_R14H || at_left_edg_R14H || hit_valid) begin
+              next_invalid_counter = 4'b0;
+         end
+         else begin
+             next_invalid_counter = invalid_counter + 4'b0001;
+         end
 
         case(state_R14H) 
 
