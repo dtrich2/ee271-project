@@ -812,17 +812,17 @@ else begin // Use modified FSM
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
                     if ((tri_R13S[0][1] < tri_R13S[1][1]) && (tri_R13S[0][1] < tri_R13S[2][1])) begin      
-                        next_sample_R14S[0] = tri_R13S[0][0];//  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[0][0];//  - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);        
                     end
                     
                     else if ((tri_R13S[1][1] < tri_R13S[0][1]) && (tri_R13S[1][1] < tri_R13S[2][1])) begin
-                        next_sample_R14S[0] =  tri_R13S[1][0];// - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[1][0];// - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);  
                     end
                     
                     else begin
-                        next_sample_R14S[0] = tri_R13S[2][0];//  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[2][0];//  - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);
                     end
 
@@ -859,17 +859,17 @@ else begin // Use modified FSM
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
                     if ((tri_R13S[0][1] < tri_R13S[1][1]) && (tri_R13S[0][1] < tri_R13S[2][1])) begin      
-                        next_sample_R14S[0] = tri_R13S[0][0];// - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[0][0];// - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);        
                     end
                     
                     else if ((tri_R13S[1][1] < tri_R13S[0][1]) && (tri_R13S[1][1] < tri_R13S[2][1])) begin
-                        next_sample_R14S[0] = tri_R13S[1][0];//  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[1][0];//  - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);  
                     end
                     
                     else begin
-                        next_sample_R14S[0] = tri_R13S[2][0];// - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R13S[2][0];// - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R13S[0][1];// + (subSample_RnnnnU << RADIX-3);
                     end
                     
@@ -912,17 +912,17 @@ else begin // Use modified FSM
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
                     if ((tri_R14S[0][1] < tri_R14S[1][1]) && (tri_R14S[0][1] < tri_R14S[2][1])) begin      
-                        next_sample_R14S[0] = tri_R14S[0][0]; // - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R14S[0][0]; // - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R14S[0][1];// + (subSample_RnnnnU << RADIX-3);        
                     end
                     
                     else if ((tri_R14S[1][1] < tri_R14S[0][1]) && (tri_R14S[1][1] < tri_R14S[2][1])) begin
-                        next_sample_R14S[0] = tri_R14S[1][0];//  - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R14S[1][0];//  - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R14S[0][1];// + (subSample_RnnnnU << RADIX-3);  
                     end
                     
                     else begin
-                        next_sample_R14S[0] = tri_R14S[2][0];// - (subSample_RnnnnU << RADIX-3);
+                        next_sample_R14S[0] = box_R14S[2][0];// - (subSample_RnnnnU << RADIX-3);
                         next_sample_R14S[1] = box_R14S[0][1];// + (subSample_RnnnnU << RADIX-3);
                     end
 
