@@ -183,7 +183,8 @@ module rast
         .tri_R13S           (tri_R13S           ),
         .color_R13U         (color_R13U         ),
         .box_R13S           (box_R13S           ),
-        .validTri_R13H      (validTri_R13H      )
+        .validTri_R13H      (validTri_R13H      ),
+        .out_start_coord_R10H (out_start_coord_R10H)
     );
 
     // Generating vectors for bbox
@@ -280,6 +281,7 @@ module rast
         .rst                (rst                ),
         
         .hit_valid          (hit_valid_R18H           ),
+        .start_coord        (out_start_coord_R10H),
 
         .tri_R14S           (tri_R14S           ),
         .color_R14U         (color_R14U         ),
