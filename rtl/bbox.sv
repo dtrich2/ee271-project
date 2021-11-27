@@ -137,7 +137,11 @@ module bbox
     output logic signed [SIGFIG-1:0]    tri_R13S[VERTS-1:0][AXIS-1:0], // 4 Sets X,Y Fixed Point Values
     output logic unsigned [SIGFIG-1:0]  color_R13U[COLORS-1:0] , // Color of Tri
     output logic signed [SIGFIG-1:0]    box_R13S[1:0][1:0], // 2 Sets X,Y Fixed Point Values
-    output logic                            validTri_R13H                  // Valid Data for Operation
+    output logic                            validTri_R13H,                  // Valid Data for Operation
+    
+    output logic signed [SIGFIG-1:0]    out_start_coord_R10H[VERTS-1:0]
+   
+    
 );
 
     //Signals In Clocking Order
@@ -156,6 +160,10 @@ module bbox
     logic signed [SIGFIG-1:0]   out_box_R10S[1:0][1:0];      // bounds for output
     // Step 3 Result: valid if validTri_R10H && BBox within screen
     logic                           outvalid_R10H;               // output is valid
+    
+    logic signed [SIGFIG-1:0]    start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
+    logic signed [SIGFIG-1:0]    rounded_start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
+    //logic signed [SIGFIG-1:0]    out_start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
 
     //End R10 Signals
 
@@ -232,12 +240,18 @@ module bbox
         
         if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[0][1];
+            start_coord_R10H[0] = tri_R10S[0][0]
+            start_coord_R10H[1] = tri_R10S[0][1]
         end
         else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[1][1];
+            start_coord_R10H[0] = tri_R10S[1][0]
+            start_coord_R10H[1] = tri_R10S[1][1]
         end
         else begin
             box_R10S[0][1] = tri_R10S[2][1];
+            start_coord_R10H[0] = tri_R10S[2][0]
+            start_coord_R10H[1] = tri_R10S[2][1]
         end
         
 
@@ -375,7 +389,16 @@ module bbox
     //       to a mask would allow you to do this operation
     //       as a bitwise and operation.
 
-//Round LowerLeft and UpperRight for X and Y
+
+always_comb begin
+    rounded_start_coord_R10H[SIGFIG-1:RADIX] = start_coord_R10H[SIGFIG-1:RADIX];
+    
+    rounded_start_coord_R10H[RADIX-1:0]
+            = (start_coord_R10H[RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+    
+end 
+ //Round LowerLeft and UpperRight for X and Y  
+        
 generate
 for(genvar i = 0; i < 2; i = i + 1) begin
     for(genvar j = 0; j < 2; j = j + 1) begin
@@ -399,7 +422,7 @@ for(genvar i = 0; i < 2; i = i + 1) begin
 
         
         rounded_box_R10S[i][j][RADIX-1:0]
-            = (box_R10S[i][j][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2]   ,7'b0000000000});
+            = (box_R10S[i][j][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
             
             //TODO: Need to check how to actually make this mask
             //I followed the logic of rasterizer.c
@@ -474,6 +497,42 @@ endgenerate
         // box_R10S[0][1]: LL Y
         // box_R10S[1][0]: UR X
         // box_R10S[1][1]: UR Y
+        
+        //for start coord
+        if (rounded_start_coord_R10H[0] <  0) begin
+            out_start_coord_R10H[0] = 0;
+        end
+        else begin
+            out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
+        end
+        
+        if (rounded_start_coord_R10H[0] >= screen_RnnnnS[0]) begin
+            out_start_coord_R10H[0] = screen_RnnnnS[0];
+        end
+        else begin
+            out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
+        end
+        
+        if (rounded_start_coord_R10H[1] <  0) begin
+            out_start_coord_R10H[1] = 0;
+        end
+        else begin
+            out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
+        end
+        
+        if (rounded_start_coord_R10H[1] >= screen_RnnnnS[1]) begin
+            out_start_coord_R10H[1] = screen_RnnnnS[1];
+        end
+        else begin
+            out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
+        end
+        
+        
+        
+        
+        
+        
+        
 
 
         //TODO: Check if shift has been applied to screen (it has)
