@@ -606,6 +606,11 @@ else begin // Use modified FSM
     logic  iterate_direction; //0 Right, 1 Left
     logic next_iterate_direction;
     
+    
+    //define two states to keep track of if we are in the first row
+    logic  first_row; //1 true
+    logic next_first_row; //0 false
+    
 
     state_t                     state_R14H;     //State Designation (Waiting or Testing)
     state_t                     next_state_R14H;        //Next Cycles State
@@ -631,11 +636,13 @@ else begin // Use modified FSM
             state_R14H <= WAIT_STATE;
             invalid_counter <= 4'b0;
             iterate_direction <= 1'b0;
+            first_row <= 1'b1;
         end
         else begin
             state_R14H <= next_state_R14H;
             invalid_counter <= next_invalid_counter;
             iterate_direction <= next_iterate_direction;
+            first_row <= next_first_row;
         end
     end
 
@@ -647,6 +654,7 @@ else begin // Use modified FSM
     logic                       at_left_edg_R14H;      //Current sample at right edge of bbox?
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
+
     
    
     
@@ -832,11 +840,11 @@ else begin // Use modified FSM
 
                     // Set current to input
                     next_color_R14U = color_R13U;
+                    
+                    // Set next first row to true
+                    next_first_row = 1'b1;
 
         
-
-
-
                 end
                 else begin
                     next_state_R14H = WAIT_STATE;
@@ -879,6 +887,11 @@ else begin // Use modified FSM
 
                      // Set current to input
                     next_color_R14U = color_R13U;
+                    
+                    
+                    // Set next first row to true
+                    next_first_row = 1'b1;
+
                     
                 end
 
@@ -933,6 +946,10 @@ else begin // Use modified FSM
                      // Set current to input
                     next_color_R14U = color_R14U;
                     
+                     // Set next first row to true
+                    next_first_row = 1'b1;
+
+                    
 
                 end
                 else begin
@@ -967,6 +984,10 @@ else begin // Use modified FSM
                             next_sample_R14S = next_up_samp_R14S;
                             //Start iterating to left
                             next_iterate_direction = 1'b1;
+                            
+                             // Set next first row to true
+                            next_first_row = 1'b0;
+
 
                         end
                         else begin
@@ -975,6 +996,8 @@ else begin // Use modified FSM
                             
                             //keep iterating to the right
                              next_iterate_direction = 1'b0;
+                            
+                             next_first_row = first_row;
 
                         end
                         
@@ -988,6 +1011,8 @@ else begin // Use modified FSM
                             next_sample_R14S = next_up_samp_R14S;
                             //Start iterating to right
                             next_iterate_direction = 1'b0;
+                            
+                            next_first_row = 1'b0;
 
                         end
                         else begin
@@ -996,6 +1021,8 @@ else begin // Use modified FSM
                             
                             //keep iterating to the left
                              next_iterate_direction = 1'b1;
+                            
+                             next_first_row = first_row;
                         end
                         
                     end
