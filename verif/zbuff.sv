@@ -139,16 +139,16 @@ module zbuff
 
         unique case ( subSample_RnnnnU )
             (4'b1000 ): x_ss_ind[i][SS_L2-1:0] =   zero[SS_L2-1:0];
-            (4'b0100 ): x_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1] };
-            (4'b0010 ): x_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1:RADIX-2] };
-            (4'b0001 ): x_ss_ind[SS_L2-1:0][i] = {                   hit_R18S[0][i][RADIX-1:RADIX-3] };
+            (4'b0100 ): x_ss_ind[i][SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1] };
+            (4'b0010 ): x_ss_ind[i][SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1:RADIX-2] };
+            (4'b0001 ): x_ss_ind[i][SS_L2-1:0] = {                   hit_R18S[0][i][RADIX-1:RADIX-3] };
         endcase // case ( subSample_RnnnnU )
 
         unique case ( subSample_RnnnnU )
-            (4'b1000 ): y_ss_ind[SS_L2-1:0][i] =   zero[SS_L2-1:0] ;
-            (4'b0100 ): y_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1] }  ;
-            (4'b0010 ): y_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1:RADIX-2] }  ;
-            (4'b0001 ): y_ss_ind[SS_L2-1:0][i] = {                   hit_R18S[1][i][RADIX-1:RADIX-3] }  ;
+          (4'b1000 ): y_ss_ind[i][SS_L2-1:0] =   zero[SS_L2-1:0] ;
+          (4'b0100 ): y_ss_ind[i][SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1] }  ;
+          (4'b0010 ): y_ss_ind[i][SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1:RADIX-2] }  ;
+          (4'b0001 ): y_ss_ind[i][SS_L2-1:0] = {                   hit_R18S[1][i][RADIX-1:RADIX-3] }  ;
         endcase // case ( subSample_RnnnnU )
 
         unique case ( subSample_RnnnnU )
