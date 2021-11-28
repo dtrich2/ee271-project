@@ -35,7 +35,8 @@ module testbench
     parameter PIPES_BOX = 3, // Number of Pipe Stages in bbox module
     parameter PIPES_ITER = 1, // Number of Pipe Stages in iter module
     parameter PIPES_HASH = 2, // Number of pipe stages in hash module
-    parameter PIPES_SAMP = 4 // Number of Pipe Stages in sample module
+    parameter PIPES_SAMP = 4, // Number of Pipe Stages in sample module
+    parameter SAMPS = 4
 )
 (
     // Output Signals (to DUT inputs)
@@ -55,9 +56,9 @@ module testbench
     input logic                         halt_RnnnnL,
 
     // Input Signals (from DUT outputs)
-    input logic signed   [SIGFIG-1:0]   hit_R18S[AXIS-1:0][3:0],       // Hit Location
+    input logic signed   [SIGFIG-1:0]   hit_R18S[AXIS-1:0][SAMPS-1:0],       // Hit Location
     input logic unsigned [SIGFIG-1:0]   color_R18U[COLORS-1:0],  // Color of triangle
-    input logic                         hit_valid_R18H[3:0]            // Is this a hit?
+    input logic                         hit_valid_R18H[SAMPS-1:0]            // Is this a hit?
 );
 
     localparam DETAILED_LOGGING = 0; // Turn this to 1 for detailed logging
@@ -113,7 +114,9 @@ module testbench
         .VERTS      (VERTS          ),
         .AXIS       (AXIS           ),
         .COLORS     (COLORS         ),
-        .FILENAME   ("f_image.ppm"  )
+	.FILENAME   ("f_image.ppm"  ),
+	.SAMPS      (SAMPS)
+	    
     )
     zbuff
     (
@@ -209,12 +212,12 @@ module testbench
         .screen_RnnnnS      (screen_RnnnnS                  ), // Screen Size
         .subSample_RnnnnU   (subSample_RnnnnU               ), // Flag for subsample
 
-	.s_x_RnnS           (top_rast.rast.hash_jtree.sample_R14S[0][3:0]       ),
-    .s_y_RnnS           (top_rast.rast.hash_jtree.sample_R14S[1][3:0]        ),
-    .jitter_x_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[0][3:0]      ),
-        .jitter_y_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[1][3:0]      ),
-        .s_j_x_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[0][3:0] ),
-        .s_j_y_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[1][3:0] )
+    .s_x_RnnS           (top_rast.rast.hash_jtree.sample_R14S[0][SAMPS-1:0]       ),
+    .s_y_RnnS           (top_rast.rast.hash_jtree.sample_R14S[1][SAMPS-1:0]        ),
+    .jitter_x_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[0][SAMPS-1:0]      ),
+    .jitter_y_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[1][SAMPS-1:0]      ),
+    .s_j_x_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[0][SAMPS-1:0] ),
+    .s_j_y_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[1][SAMPS-1:0] )
     );
 
 
