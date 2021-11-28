@@ -261,9 +261,10 @@ module smpl_cnt_sb
         .out    (color_RnnU )
     );
 
-    dff2 #(
+    dff3 #(
         .WIDTH          (SIGFIG     ),
-        .ARRAY_SIZE     (2          ),
+        .ARRAY_SIZE1     (2          ),
+        .ARRAY_SIZE2     (4          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          )
     )
@@ -276,8 +277,9 @@ module smpl_cnt_sb
         .out    (sample_RnnS)
     );
 
-    dff #(
+    dff2 #(
         .WIDTH          (1          ),
+        .ARRAY_SIZE     (4          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
