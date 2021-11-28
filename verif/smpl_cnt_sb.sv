@@ -74,12 +74,12 @@ module smpl_cnt_sb
     input logic        [SIGFIG-1:0]     screen_RnnnnS[1:0],      // Screen Size
     input logic        [3:0]            subSample_RnnnnU,    // Flag for subsample
 
-    input logic signed [SIGFIG-1:0]     s_x_RnnS,
-    input logic signed [SIGFIG-1:0]     s_y_RnnS,
-    input logic signed [7:0]            jitter_x_RnnS,
-    input logic signed [7:0]            jitter_y_RnnS,
-    input logic signed [SIGFIG-1:0]     s_j_x_RnnS,
-    input logic signed [SIGFIG-1:0]     s_j_y_RnnS
+  input logic signed [SIGFIG-1:0]     s_x_RnnS[3:0],
+  input logic signed [SIGFIG-1:0]     s_y_RnnS[3:0],
+    input logic signed [7:0]            jitter_x_RnnS[3:0],
+    input logic signed [7:0]            jitter_y_RnnS[3:0],
+    input logic signed [SIGFIG-1:0]     s_j_x_RnnS[3:0],
+    input logic signed [SIGFIG-1:0]     s_j_y_RnnS[3:0]
  );
 
 
@@ -134,10 +134,10 @@ module smpl_cnt_sb
               int'(sample_RnnS[0][i]), //s_x
               int'(sample_RnnS[1][i]), //s_y,
                         int'(ss_w_lg2),       //ss_w_lg2
-                        int'(jitter_x_RnnS),    //jitter_x,
-                        int'(jitter_y_RnnS),    //jitter_y,
-                        int'(s_j_x_RnnS),       //s_j_x,
-                        int'(s_j_y_RnnS)        //s_j_y
+                        int'(jitter_x_RnnS[i]),    //jitter_x,
+                        int'(jitter_y_RnnS[i]),    //jitter_y,
+                        int'(s_j_x_RnnS[i]),       //s_j_x,
+                        int'(s_j_y_RnnS[i])        //s_j_y
                     )) begin
                 $finish();
             end
