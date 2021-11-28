@@ -163,9 +163,10 @@ module test_iterator
         .out    (color_R14U     )
     );
 
-    dff2 #(
+    dff3 #(
         .WIDTH(SIGFIG),
-        .ARRAY_SIZE(2),
+        .ARRAY_SIZE1(2),
+        .ARRAY_SIZE2(4),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0)
     )
@@ -178,8 +179,9 @@ module test_iterator
         .out    (sample_R14S        )
     );
 
-    dff #(
+    dff2 #(
         .WIDTH(2),
+        .ARRAY_SIZE(4),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
     )
