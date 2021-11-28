@@ -288,7 +288,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
        
      
        for (int i=0; i<SAMPS ; i++) begin 
-           next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + subSample_RnnnnU_MSAA;
+           next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + (subSample_RnnnnU << RADIX-3);
            next_rt_samp_R14S[1][i] = sample_R14S[1][i];
                                                  
                                                  
