@@ -145,7 +145,8 @@ module sampletest
 
     //Assertions to help debug
     //Check if correct inequalities have been used
-    assert property( @(posedge clk) (dist_lg_R16S[1] == 0) |-> !hit_valid_R16H[3]);
+    //TODO Fix
+    assert property( @(posedge clk) (dist_lg_R16S[1] == 0) |-> !hit_valid_R16H[SAMPS-1]);
 
     //Calculate Depth as depth of first vertex
     // Note that a barrycentric interpolation would
