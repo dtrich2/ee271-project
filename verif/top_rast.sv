@@ -115,7 +115,8 @@ module top_rast;
         .PIPES_BOX  (PIPES_BOX  ),
         .PIPES_ITER (PIPES_ITER ),
         .PIPES_HASH (PIPES_HASH ),
-        .PIPES_SAMP (PIPES_SAMP )
+        .PIPES_SAMP (PIPES_SAMP ),
+        .SAMPS      (SAMPS)
     )
     testbench
     (
@@ -134,8 +135,7 @@ module top_rast;
         // Input Signals (from DUT outputs)
         .hit_R18S           (hit_R18S           ),
         .color_R18U         (color_R18U         ),
-        .hit_valid_R18H     (hit_valid_R18H     ),
-        .SAMPS      (SAMPS)
+        .hit_valid_R18H     (hit_valid_R18H     )
     );
 
 endmodule //
