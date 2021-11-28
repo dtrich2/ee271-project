@@ -391,7 +391,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                         
                         next_sample_R14S[0][j] = box_R13S[0][0];
                         //WARNING: MULTIPLICATION
-                        next_sample_R14S[1][j] = box_R13S[0][1] + j*subSample_RnnnnU_MSAA;
+                        next_sample_R14S[1][j] = box_R13S[0][1];
                      
                     end            
 
@@ -429,7 +429,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                         
                         next_sample_R14S[0][j] = box_R14S[0][0];
                         //WARNING: MULTIPLICATION
-                        next_sample_R14S[1][j] = box_R14S[0][1] + j*subSample_RnnnnU_MSAA;
+                        next_sample_R14S[1][j] = box_R14S[0][1];
                      
                     end   
 
