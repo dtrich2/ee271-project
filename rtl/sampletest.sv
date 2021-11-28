@@ -151,7 +151,8 @@ module sampletest
     // be more accurate
     always_comb begin
         for (int i=0; i <4; i++) begin
-            hit_R16S[1:0][i] = sample_R16S[1:0][i]; //Make sure you use unjittered sample
+            hit_R16S[0][i] = sample_R16S[0][i]; //Make sure you use unjittered sample
+            hit_R16S[1][i] = sample_R16S[1][i]; //Make sure you use unjittered sample
             hit_R16S[2][i] = tri_R16S[0][2]; // z value equals the z value of the first vertex
         end
        
