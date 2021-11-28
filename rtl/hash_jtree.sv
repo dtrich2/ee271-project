@@ -58,14 +58,15 @@ module hash_jtree
     parameter VERTS = 3,
     parameter AXIS = 3,
     parameter COLORS = 3,
-    parameter PIPE_DEPTH = 3
+    parameter PIPE_DEPTH = 3,
+    parameter SAMPS = 4
 )
 (
     //Input Signals
     input logic signed    [SIGFIG-1:0]  tri_R14S[VERTS-1:0][AXIS-1:0],  //triangle to Sample Test
     input logic unsigned  [SIGFIG-1:0]  color_R14U[COLORS-1:0],         //Color of Tri
-    input logic signed    [SIGFIG-1:0]  sample_R14S[1:0][3:0],                //Sample Location to Be Tested
-    input logic                         validSamp_R14H[3:0],                  //Sample and triangle are Valid
+    input logic signed    [SIGFIG-1:0]  sample_R14S[1:0][SAMPS-1:0],                //Sample Location to Be Tested
+    input logic                         validSamp_R14H[SAMPS-1:0],                  //Sample and triangle are Valid
 
     //Global Signals
     input logic clk, // Clock
@@ -77,8 +78,8 @@ module hash_jtree
     //Outputs
     output logic signed   [SIGFIG-1:0]  tri_R16S[VERTS-1:0][AXIS-1:0], // triangle to Iterate Over
     output logic unsigned [SIGFIG-1:0]  color_R16U[COLORS-1:0],        // Color of Tri
-    output logic signed   [SIGFIG-1:0]  sample_R16S[1:0][3:0],              // Sample Location
-    output logic                        validSamp_R16H[3:0]                 // A valid sample location
+    output logic signed   [SIGFIG-1:0]  sample_R16S[1:0][SAMPS-1:0],              // Sample Location
+    output logic                        validSamp_R16H[SAMPS-1:0]                 // A valid sample location
 );
 
     localparam HASH_IN_WIDTH = (SIGFIG - 4) * 2;
@@ -87,13 +88,13 @@ module hash_jtree
     // output for retiming registers
     logic signed [SIGFIG-1:0]   tri_R16S_retime[VERTS-1:0][AXIS-1:0]; // triangle to Iterate Over
     logic unsigned [SIGFIG-1:0] color_R16U_retime[COLORS-1:0];      // Color of Tri
-    logic signed [SIGFIG-1:0]   sample_R16S_retime[1:0][3:0];    // Sample Location
-    logic                       validSamp_R16H_retime[3:0];      // A valid sample location
+    logic signed [SIGFIG-1:0]   sample_R16S_retime[1:0][SAMPS-1:0];    // Sample Location
+    logic                       validSamp_R16H_retime[SAMPS-1:0];      // A valid sample location
     // output for retiming registers
 
     logic [HASH_OUT_WIDTH-1:0]  hash_mask_R14H ;
-    logic [HASH_OUT_WIDTH-1:0]  jitt_val_R14H[1:0][3:0] ;
-    logic [SIGFIG-1:0]          sample_jitted_R14S[1:0][3:0] ;
+    logic [HASH_OUT_WIDTH-1:0]  jitt_val_R14H[1:0][SAMPS-1:0] ;
+    logic [SIGFIG-1:0]          sample_jitted_R14S[1:0][SAMPS-1:0] ;
 
     always_comb begin
         assert( $onehot(subSample_RnnnnU) ) ;
@@ -105,6 +106,10 @@ module hash_jtree
         endcase // case ( 1'b1 )
     end
     
+    
+    for (int i =0; i < SAMPS; i++) begin
+        
+    end
 
         
    tree_hash #(
@@ -297,7 +302,7 @@ module hash_jtree
     dff3 #(
         .WIDTH(SIGFIG),
         .ARRAY_SIZE1(2),
-        .ARRAY_SIZE2(4),
+        .ARRAY_SIZE2(SAMPS),
         .PIPE_DEPTH(PIPE_DEPTH - 1 - 1),
         .RETIME_STATUS(1)
     )
@@ -312,7 +317,7 @@ module hash_jtree
 
     dff2 #(
         .WIDTH(1),
-        .ARRAY_SIZE(4),
+        .ARRAY_SIZE(SAMPS),
         .PIPE_DEPTH(PIPE_DEPTH - 1),
         .RETIME_STATUS(1) // Retime
     )
@@ -361,7 +366,7 @@ module hash_jtree
     dff3 #(
         .WIDTH(SIGFIG),
         .ARRAY_SIZE1(2),
-        .ARRAY_SIZE2(4),
+        .ARRAY_SIZE2(SAMPS),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0)
     )
@@ -376,7 +381,7 @@ module hash_jtree
 
     dff2 #(
         .WIDTH(1),
-        .ARRAY_SIZE(4),
+        .ARRAY_SIZE(SAMPS),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
     )
