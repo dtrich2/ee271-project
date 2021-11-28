@@ -105,7 +105,7 @@ module hash_jtree
         endcase // case ( 1'b1 )
     end
     
-    for (int i=0; i < 4; i++) begin
+
         
    tree_hash #(
         .IN_WIDTH(HASH_IN_WIDTH),
@@ -113,11 +113,36 @@ module hash_jtree
     )
     xjit_hash
     (
-        .in_RnnH    ({sample_R14S[1][i][SIGFIG-1:4],
-                      sample_R14S[0][i][SIGFIG-1:4]}   ),
+        .in_RnnH    ({sample_R14S[1][0][SIGFIG-1:4],
+                      sample_R14S[0][0][SIGFIG-1:4]}   ),
         .mask_RnnH  (hash_mask_R14H                 ),
-        .out_RnnH   (jitt_val_R14H[0][i]               )
+        .out_RnnH   (jitt_val_R14H[0][0]               )
     );
+    
+    xjit_hash
+    (
+        .in_RnnH    ({sample_R14S[1][1][SIGFIG-1:4],
+                      sample_R14S[0][1][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                 ),
+        .out_RnnH   (jitt_val_R14H[0][1]               )
+    );
+    
+    xjit_hash
+    (
+        .in_RnnH    ({sample_R14S[1][2][SIGFIG-1:4],
+                      sample_R14S[0][2][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                 ),
+        .out_RnnH   (jitt_val_R14H[0][2]               )
+    );
+    
+    xjit_hash
+    (
+        .in_RnnH    ({sample_R14S[1][3][SIGFIG-1:4],
+                      sample_R14S[0][3][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                 ),
+        .out_RnnH   (jitt_val_R14H[0][3]               )
+    );
+
 
     tree_hash #(
         .IN_WIDTH(HASH_IN_WIDTH),
@@ -125,25 +150,90 @@ module hash_jtree
     )
     yjit_hash
     (
-        .in_RnnH    ({sample_R14S[0][i][SIGFIG-1:4],
-                      sample_R14S[1][i][SIGFIG-1:4]}   ),
+        .in_RnnH    ({sample_R14S[0][0][SIGFIG-1:4],
+                      sample_R14S[1][0][SIGFIG-1:4]}   ),
         .mask_RnnH  (hash_mask_R14H                     ),
-        .out_RnnH   (jitt_val_R14H[1][i]                     )
+        .out_RnnH   (jitt_val_R14H[1][0]                     )
+    );
+    
+        yjit_hash
+    (
+        .in_RnnH    ({sample_R14S[0][1][SIGFIG-1:4],
+                      sample_R14S[1][1][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                     ),
+        .out_RnnH   (jitt_val_R14H[1][1]                     )
     );
 
-    //Jitter the sample coordinates
-    assign sample_jitted_R14S[0][i] =   { sample_R14S[0][i][SIGFIG-1:0] }
-                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
-                                        jitt_val_R14H[0][i][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
-                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+    yjit_hash
+    (
+        .in_RnnH    ({sample_R14S[0][2][SIGFIG-1:4],
+                      sample_R14S[1][2][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                     ),
+        .out_RnnH   (jitt_val_R14H[1][2]                     )
+    );
+
+    
+    yjit_hash
+    (
+        .in_RnnH    ({sample_R14S[0][3][SIGFIG-1:4],
+                      sample_R14S[1][3][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                     ),
+        .out_RnnH   (jitt_val_R14H[1][3]                     )
+    );
+
 
     //Jitter the sample coordinates
-    assign sample_jitted_R14S[1][i] =   { sample_R14S[1][i][SIGFIG-1:0] }
+    assign sample_jitted_R14S[0][0] =   { sample_R14S[0][0][SIGFIG-1:0] }
                                     | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
-                                        jitt_val_R14H[1][i][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                       jitt_val_R14H[0][0][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+     //Jitter the sample coordinates
+    assign sample_jitted_R14S[0][1] =   { sample_R14S[0][1][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[0][1][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+    
+     //Jitter the sample coordinates
+    assign sample_jitted_R14S[0][2] =   { sample_R14S[0][2][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[0][2][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+     //Jitter the sample coordinates
+    assign sample_jitted_R14S[0][3] =   { sample_R14S[0][3][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[0][3][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+
+    //Jitter the sample coordinates
+    assign sample_jitted_R14S[1][0] =   { sample_R14S[1][0][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[1][0][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+       //Jitter the sample coordinates
+    assign sample_jitted_R14S[1][1] =   { sample_R14S[1][1][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[1][1][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+       //Jitter the sample coordinates
+    assign sample_jitted_R14S[1][2] =   { sample_R14S[1][2][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[1][2][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
+                                        {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
+    
+       //Jitter the sample coordinates
+    assign sample_jitted_R14S[1][3] =   { sample_R14S[1][3][SIGFIG-1:0] }
+                                    | { {(SIGFIG - RADIX){1'b0}},                 //23:10 = 14 bits
+                                       jitt_val_R14H[1][3][HASH_OUT_WIDTH-1:0], //7:0 = 8 bits
                                         {(RADIX - HASH_OUT_WIDTH){1'b0}} };     //1:0 = 2 bits  ==> 24 bits total
         
-    end
+   
 
    
 
