@@ -108,7 +108,7 @@ module test_iterator
     input logic clk, // Clock
     input logic rst, // Reset
     
-    input logic hit_valid[3:0], //  Signal from sample test that determines if we should stop our current right/left iterating
+    input logic hit_valid[SAMPS-1:0], //  Signal from sample test that determines if we should stop our current right/left iterating
     
     input logic signed [SIGFIG-1:0]    start_coord[VERTS-1:0],
 
