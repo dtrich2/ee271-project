@@ -48,22 +48,22 @@ module smpl_sb
 (
     input logic signed   [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                         validSamp_R16H,
-    input logic signed   [SIGFIG-1:0]   sample_R16S[1:0],
+  input logic                         validSamp_R16H[3:0],
+  input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][3:0],
 
     input logic                         clk,                // Clock
     input logic                         rst,                // Reset
 
-    input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0],
+  input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][3:0],
     input logic signed [SIGFIG-1:0]     color_R18U[COLORS-1:0],
-    input                               hit_valid_R18H
+  input                               hit_valid_R18H[3:0]
 );
 
     //Pipe Signals for Later Evaluation
     logic signed   [SIGFIG-1:0] tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic unsigned [SIGFIG-1:0] color_RnnU[COLORS-1:0];
-    logic                       validSamp_RnnH;
-    logic signed   [SIGFIG-1:0] sample_RnnS[1:0];             //
+    logic                       validSamp_RnnH[3:0];
+    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][3:0];             //
     //Pipe Signals for Later Evaluation
 
     //Helper Signals
@@ -80,7 +80,8 @@ module smpl_sb
     //Check if Sample in triangle test is correct
     always @(posedge clk) begin
         #100;
-        if(validSamp_RnnH
+      for (int i=0; i < 4; i++) begin
+        if(validSamp_RnnH[i]
             &&
             one !=  check_sample_test( int'(tri_RnnS[0][0]), //triangle
                     int'(tri_RnnS[0][1]), //triangle
@@ -90,7 +91,7 @@ module smpl_sb
                     int'(tri_RnnS[2][1]), //triangle
                     int'(sample_RnnS[0]) , //SAMPLE
                     int'(sample_RnnS[1]) , //SAMPLE
-                    int'(hit_valid_R18H)   //IS HIT
+                    int'(hit_valid_R18H[i])   //IS HIT
                       )) begin
 
             $fwrite( file , "@%0t: Sample Test ERROR!!!!\n\t\t" , $time );
@@ -107,10 +108,11 @@ module smpl_sb
 
             $fwrite( file , "sample.x:%f\t",  (1.0 * sample_RnnS[0]) / (1 << RADIX));
             $fwrite( file , "sample.y:%f\t",  (1.0 * sample_RnnS[1]) / (1 << RADIX));
-            $fwrite( file , "hit:%b\n" , hit_valid_R18H );
+            $fwrite( file , "hit:%b\n" , hit_valid_R18H[i] );
 
             assert( 0 ) else $error( "time=%10t ERROR: Sample Test Check Failed", $time );
         end
+      end 
     end
 
 /* Pipe Required Signals */
