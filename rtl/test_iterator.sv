@@ -114,7 +114,7 @@ module test_iterator
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
     output logic unsigned [SIGFIG-1:0]  color_R14U[COLORS-1:0] , //Color of triangle
     output logic signed [SIGFIG-1:0]    sample_R14S[1:0][3:0], //Sample Location to Be Tested
-    output logic                            validSamp_R14H //Sample and triangle are Valid
+    output logic                            validSamp_R14H[3:0] //Sample and triangle are Valid
 );
 
     // This module implement a Moore machine to iterarte sample points in bbox
@@ -283,7 +283,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
         end
 
         //only need to check one
-        if (sample_R14S[1][0] >= box_R14S[1][1]) begin
+       if (sample_R14S[1][3] >= box_R14S[1][1]) begin
             at_top_edg_R14H = 1'b1;
 
         end
@@ -331,7 +331,13 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_box_R14S = box_R13S;
 
                     // Next sample is valid
-                    next_validSamp_R14H = 1'b1;
+                    next_validSamp_R14H[0] = 1'b1;
+                    next_validSamp_R14H[1] = 1'b1;
+                    next_validSamp_R14H[2] = 1'b1;
+                    next_validSamp_R14H[3] = 1'b1;
+                    
+                  
+                    
 
                     //Next sample is lower left vertex
                     next_sample_R14S[0][0] = box_R13S[0][0];
@@ -363,7 +369,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_box_R14S = box_R13S;
 
                     // Next sample is invalid
-                    next_validSamp_R14H = 1'b0;
+                    next_validSamp_R14H[0] = 1'b0;
+                    next_validSamp_R14H[1] = 1'b0;
+                    next_validSamp_R14H[2] = 1'b0;
+                    next_validSamp_R14H[3] = 1'b0;
 
                     //Next sample is lower left vertex
                     next_sample_R14S[0][0] = box_R13S[0][0];
@@ -405,7 +414,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_box_R14S = box_R14S;
 
                     // Next sample is invalid
-                    next_validSamp_R14H = 1'b0;
+                    next_validSamp_R14H[0] = 1'b0;
+                    next_validSamp_R14H[1] = 1'b0;
+                    next_validSamp_R14H[2] = 1'b0;
+                    next_validSamp_R14H[3] = 1'b0;
 
 
              //Next sample is lower left vertex
@@ -442,8 +454,19 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     // Preserve current bounding box
                     next_box_R14S = box_R14S;
 
-                    // Next sample is valid
-                    next_validSamp_R14H = 1'b1;
+                    // Next sample might be valid. See if current sample is on edge. if it is, not valid
+                    //Note that some samples could be valid while others are not!!
+                    for (int z =0; z < 4; z++) begin
+                        if (sample_R14S[0][z] >= box_R14S[1][0] || sample_R14S[1][z] >= box_R14S[1][1])
+                            next_validSamp_R14H[z] = 1'b0;
+                            
+                        end
+                        else begin
+                            next_validSamp_R14H[z] = 1'b1;
+                        end
+                        
+                    end
+                    
 
                     // Hold
                     next_tri_R14S = tri_R14S;
