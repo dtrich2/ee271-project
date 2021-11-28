@@ -391,10 +391,15 @@ module bbox
 
 
 always_comb begin
-    rounded_start_coord_R10H[SIGFIG-1:RADIX] = start_coord_R10H[SIGFIG-1:RADIX];
+    rounded_start_coord_R10H[0][SIGFIG-1:RADIX] = start_coord_R10H[0][SIGFIG-1:RADIX];
+    rounded_start_coord_R10H[1][SIGFIG-1:RADIX] = start_coord_R10H[1][SIGFIG-1:RADIX];
     
-    rounded_start_coord_R10H[RADIX-1:0]
-            = (start_coord_R10H[RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+    rounded_start_coord_R10H[0][RADIX-1:0]
+    = (start_coord_R10H[0][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+    
+    rounded_start_coord_R10H[1][RADIX-1:0]
+    = (start_coord_R10H[1][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+    
     
 end 
  //Round LowerLeft and UpperRight for X and Y  
