@@ -310,8 +310,9 @@ module hash_jtree
         .out    (sample_R16S_retime )
     );
 
-    dff_retime #(
-        .WIDTH(3),
+    dff2 #(
+        .WIDTH(1),
+        .ARRAY_SIZE(4),
         .PIPE_DEPTH(PIPE_DEPTH - 1),
         .RETIME_STATUS(1) // Retime
     )
