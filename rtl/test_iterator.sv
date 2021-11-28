@@ -180,7 +180,7 @@ module test_iterator
     );
 
     dff2 #(
-        .WIDTH(2),
+        .WIDTH(1),
         .ARRAY_SIZE(4),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
@@ -190,8 +190,25 @@ module test_iterator
         .clk    (clk                                    ),
         .reset  (rst                                    ),
         .en     (1'b1                                   ),
-        .in     ({next_validSamp_R14H, next_halt_RnnnnL}),
-        .out    ({validSamp_R14H, halt_RnnnnL}          )
+        .in     (next_validSamp_R14H),
+        .out    (validSamp_R14H          )
+    );
+    
+    
+    
+    
+    dff #(
+        .WIDTH(1),
+        .PIPE_DEPTH(1),
+        .RETIME_STATUS(0) // No retime
+    )
+    d305
+    (
+        .clk    (clk                                    ),
+        .reset  (rst                                    ),
+        .en     (1'b1                                   ),
+        .in     (next_halt_RnnnnL),
+        .out    ( halt_RnnnnL         )
     );
     // Instantiate registers for storing these states
 
@@ -550,10 +567,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     //Check that Proposed Sample is in BBox
     // START CODE HERE
 
-    assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0], validSamp_R14H));
-    assert property(rb_lt(rst, sample_R14S[0], box_R14S[1][0],  validSamp_R14H));
-    assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1], validSamp_R14H));
-    assert property(rb_lt(rst, sample_R14S[1], box_R14S[1][1],  validSamp_R14H));
+        assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0][0], validSamp_R14H[0]));
+    assert property(rb_lt(rst, sample_R14S[0][0], box_R14S[1][0],  validSamp_R14H[0]));
+    assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1][0], validSamp_R14H[0]));
+    assert property(rb_lt(rst, sample_R14S[1][0], box_R14S[1][1],  validSamp_R14H[0]));
   // END CODE HERE
     //Check that Proposed Sample is in BBox
 
