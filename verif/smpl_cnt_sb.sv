@@ -105,6 +105,9 @@ module smpl_cnt_sb
     logic keep;
     logic reset_to_zero;
     logic reset_to_one;
+    logic reset_to_two;
+    logic reset_to_three;
+    logic reset_to_four;
     //Bench Logic
 
     initial begin
