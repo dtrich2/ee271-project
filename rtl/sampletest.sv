@@ -159,9 +159,10 @@ module sampletest
     end
 
     /* Flop R16 to R18_retime with retiming registers*/
-    dff2 #(
+    dff3 #(
         .WIDTH          (SIGFIG         ),
-        .ARRAY_SIZE     (AXIS           ),
+        .ARRAY_SIZE1     (AXIS           ),
+        .ARRAY_SIZE2     (4           ),
         .PIPE_DEPTH     (PIPE_DEPTH - 1 ),
         .RETIME_STATUS  (1              )
     )
@@ -189,8 +190,9 @@ module sampletest
         .out    (color_R18U_retime  )
     );
 
-    dff_retime #(
+    dff2#(
         .WIDTH          (1              ),
+        .ARRAY_SIZE     (4           ),
         .PIPE_DEPTH     (PIPE_DEPTH - 1 ),
         .RETIME_STATUS  (1              ) // RETIME
     )
@@ -205,9 +207,10 @@ module sampletest
     /* Flop R16 to R18_retime with retiming registers*/
 
     /* Flop R18_retime to R18 with fixed registers */
-    dff2 #(
+    dff3 #(
         .WIDTH          (SIGFIG ),
-        .ARRAY_SIZE     (AXIS   ),
+        .ARRAY_SIZE1     (AXIS   ),
+        .ARRAY_SIZE2     (4   ),
         .PIPE_DEPTH     (1      ),
         .RETIME_STATUS  (0      )
     )
@@ -235,8 +238,9 @@ module sampletest
         .out    (color_R18U         )
     );
 
-    dff #(
+    dff2 #(
         .WIDTH          (1  ),
+        .ARRAY_SIZE     (4   ),
         .PIPE_DEPTH     (1  ),
         .RETIME_STATUS  (0  ) // No retime
     )
