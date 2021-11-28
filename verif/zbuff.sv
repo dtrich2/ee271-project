@@ -81,7 +81,8 @@ module zbuff
     parameter FB = 2048, // Greatest Pixel Width or Pixel Height for simulation
     parameter SS_L2 = 2, // Number of bits needed for maximum subsampling index
     parameter SS = 4, // Greatest number of x ind needed for subsampling 4-> 16x MSAA
-    parameter COLORP = 12 // Bits of Precision in Color
+    parameter COLORP = 12, // Bits of Precision in Color
+    parameter SAMPS = 4
 )
 (
     input logic clk,
@@ -91,15 +92,15 @@ module zbuff
     input logic        [3:0]            subSample_RnnnnU,                // Input: SubSample_Interval
     input int                           ss_w_lg2_RnnnnS,
 
-  input logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0][3:0],
+  input logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0][SAMPS-1:0],
   input logic unsigned [SIGFIG-1:0] color_R18U[COLORS-1:0],
-  input logic                           hit_valid_R18H[3:0]
+  input logic                           hit_valid_R18H[SAMPS-1:0]
 );
 
-    logic unsigned [FB_L2-1:0]  x_ind[3:0];
-    logic unsigned [FB_L2-1:0]  y_ind[3:0];
-    logic unsigned [SS_L2-1:0]  x_ss_ind[3:0];
-    logic unsigned [SS_L2-1:0]  y_ss_ind[3:0];
+    logic unsigned [FB_L2-1:0]  x_ind[SAMPS-1:0];
+    logic unsigned [FB_L2-1:0]  y_ind[SAMPS-1:0];
+    logic unsigned [SS_L2-1:0]  x_ss_ind[SAMPS-1:0];
+    logic unsigned [SS_L2-1:0]  y_ss_ind[SAMPS-1:0];
     logic unsigned [SIGFIG-1:0] depth;
     logic unsigned [SIGFIG-1:0] color[COLORS-1:0];
 
@@ -115,15 +116,24 @@ module zbuff
     assign zero = big_zero[SIGFIG-1:0];
 
     assign  depth = unsigned'(hit_R18S[2][0]);
-    assign  x_ind[0] = hit_R18S[0][0][(RADIX+FB_L2-1):RADIX];
-    assign  x_ind[1] = hit_R18S[0][1][(RADIX+FB_L2-1):RADIX];
-    assign  x_ind[2] = hit_R18S[0][2][(RADIX+FB_L2-1):RADIX];
-    assign  x_ind[3] = hit_R18S[0][3][(RADIX+FB_L2-1):RADIX];
   
-    assign  y_ind[0] = hit_R18S[1][0][(RADIX+FB_L2-1):RADIX];
-    assign  y_ind[1] = hit_R18S[1][1][(RADIX+FB_L2-1):RADIX];
-    assign  y_ind[2] = hit_R18S[1][2][(RADIX+FB_L2-1):RADIX];
-    assign  y_ind[3] = hit_R18S[1][3][(RADIX+FB_L2-1):RADIX];
+  always_comb begin
+    for (int j =0; j < SAMPS; j++) begin
+      x_ind[j] = hit_R18S[0][j][(RADIX+FB_L2-1):RADIX];
+      y_ind[j] = hit_R18S[1][j][(RADIX+FB_L2-1):RADIX];
+    end
+  end
+  
+  
+//     assign  x_ind[0] = hit_R18S[0][0][(RADIX+FB_L2-1):RADIX];
+//     assign  x_ind[1] = hit_R18S[0][1][(RADIX+FB_L2-1):RADIX];
+//     assign  x_ind[2] = hit_R18S[0][2][(RADIX+FB_L2-1):RADIX];
+//     assign  x_ind[3] = hit_R18S[0][3][(RADIX+FB_L2-1):RADIX];
+  
+//     assign  y_ind[0] = hit_R18S[1][0][(RADIX+FB_L2-1):RADIX];
+//     assign  y_ind[1] = hit_R18S[1][1][(RADIX+FB_L2-1):RADIX];
+//     assign  y_ind[2] = hit_R18S[1][2][(RADIX+FB_L2-1):RADIX];
+//     assign  y_ind[3] = hit_R18S[1][3][(RADIX+FB_L2-1):RADIX];
 
     //Brittle Only works for COLORS=3
     assign color[0] = color_R18U[0];
@@ -135,7 +145,7 @@ module zbuff
 
     always_comb begin
       
-      for (int i=0; i < 4; i++) begin
+      for (int i=0; i < SAMPS; i++) begin
 
         unique case ( subSample_RnnnnU )
             (4'b1000 ): x_ss_ind[i][SS_L2-1:0] =   zero[SS_L2-1:0];
@@ -171,7 +181,7 @@ module zbuff
 
     always @(posedge clk) begin
         #25;
-      for (int i=0; i < 4; i++) begin
+      for (int i=0; i < SAMPS; i++) begin
         if( hit_valid_R18H[i] && ~rst ) begin
             check_zbuff_process_fragment(  x_ind[i] ,   //Hit Loc. X
                 y_ind[i] ,   //Hit Loc. Y
