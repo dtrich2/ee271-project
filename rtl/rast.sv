@@ -40,7 +40,8 @@ module rast
     parameter PIPES_BOX = rast_params::PIPES_BOX, // Number of Pipe Stages in bbox module
     parameter PIPES_ITER = rast_params::PIPES_ITER, // Number of Pipe Stages in iter module
     parameter PIPES_HASH = rast_params::PIPES_HASH, // Number of pipe stages in hash module
-    parameter PIPES_SAMP = rast_params::PIPES_SAMP // Number of Pipe Stages in sample module
+    parameter PIPES_SAMP = rast_params::PIPES_SAMP, // Number of Pipe Stages in sample module
+    parameter SAMPS = rast_params::SAMPS //Numner of samples to run simultaneously
 )
 (
     // Input Signals
@@ -60,9 +61,9 @@ module rast
     output logic halt_RnnnnL,
 
     // Output Signals
-    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0][3:0], // Hit Location
+    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0][SAMPS-1:0], // Hit Location
     output logic unsigned [SIGFIG-1:0]  color_R18U[COLORS-1:0], // Color of Tri
-    output logic                            hit_valid_R18H[3:0]            // Is this a hit?
+    output logic                            hit_valid_R18H[SAMPS-1:0]            // Is this a hit?
 );
     `ifdef GENERATE_JSON
     integer bbox_file;
@@ -140,13 +141,13 @@ module rast
 
     logic signed [SIGFIG-1:0]   tri_R14S[VERTS-1:0][AXIS-1:0]; //triangle to Sample Test
     logic unsigned [SIGFIG-1:0] color_R14U[COLORS-1:0] ;         // Color of Tri
-    logic signed [SIGFIG-1:0]   sample_R14S[1:0][3:0];               //Sample Location to Be Tested
-    logic                           validSamp_R14H[3:0];                 //Sample and triangle are Valid
+    logic signed [SIGFIG-1:0]   sample_R14S[1:0][SAMPS-1:0];               //Sample Location to Be Tested
+    logic                           validSamp_R14H[SAMPS-1:0];                 //Sample and triangle are Valid
 
     logic signed [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0]; //triangle to Sample Test
     logic unsigned [SIGFIG-1:0] color_R16U[COLORS-1:0] ;         //Color of Tri
-    logic signed [SIGFIG-1:0]   sample_R16S[1:0][3:0];               //Sample Location to Be Tested
-    logic                           validSamp_R16H[3:0];                 //Sample and triangle are Valid
+    logic signed [SIGFIG-1:0]   sample_R16S[1:0][SAMPS-1:0];               //Sample Location to Be Tested
+    logic                           validSamp_R16H[SAMPS-1:0];                 //Sample and triangle are Valid
 
     logic [SIGFIG-1:0]  zero;                     //fudge signal to hold zero as a reset value
     logic [127:0]           big_zero;                 //fudge signal to hold zero as a reset value
@@ -269,7 +270,9 @@ module rast
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-        .PIPE_DEPTH (PIPES_ITER )
+        .PIPE_DEPTH (PIPES_ITER ),
+        .SAMPS      (SAMPS)
+        
     )
     test_iterator
     (
@@ -362,7 +365,8 @@ module rast
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-        .PIPE_DEPTH (PIPES_HASH )
+        .PIPE_DEPTH (PIPES_HASH ),
+        .SAMPS      (SAMPS)
     )
     hash_jtree
     (
@@ -448,7 +452,8 @@ module rast
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-        .PIPE_DEPTH (PIPES_SAMP )
+        .PIPE_DEPTH (PIPES_SAMP ),
+        .SAMPS      (SAMPS)
     )
     sampletest
     (
