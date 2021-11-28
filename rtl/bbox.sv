@@ -137,7 +137,7 @@ module bbox
     output logic signed [SIGFIG-1:0]    tri_R13S[VERTS-1:0][AXIS-1:0], // 4 Sets X,Y Fixed Point Values
     output logic unsigned [SIGFIG-1:0]  color_R13U[COLORS-1:0] , // Color of Tri
     output logic signed [SIGFIG-1:0]    box_R13S[1:0][1:0], // 2 Sets X,Y Fixed Point Values
-    output logic                            validTri_R13H,                  // Valid Data for Operation
+    output logic                            validTri_R13H                  // Valid Data for Operation
     
     //output logic signed [SIGFIG-1:0]    out_start_coord_R10H[VERTS-1:0]
    
