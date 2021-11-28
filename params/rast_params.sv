@@ -9,6 +9,6 @@ package rast_params;
     localparam PIPES_ITER = 1; // Number of Pipe Stages in iter module
     localparam PIPES_HASH = 2; // Number of pipe stages in hash module
     localparam PIPES_SAMP = 2; // Number of Pipe Stages in sample module
-    localparam SAMPS = 8; //Number of samples to run simultaneously
+    localparam SAMPS = 4; //Number of samples to run simultaneously
     
 endpackage
