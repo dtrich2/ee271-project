@@ -26,26 +26,27 @@ module perf_monitor
     parameter VERTS = 3, // Maximum Vertices in triangle
     parameter AXIS = 3, // Number of axis foreach vertex 3 is (x,y,z).
     parameter COLORS = 3, // Number of color channels
-    parameter PIPE_DEPTH = 3 // Number of Pipe Stages in bbox module
+    parameter PIPE_DEPTH = 3, // Number of Pipe Stages in bbox module
+    parameter SAMPS = 4
 )
 (
     input logic signed   [SIGFIG-1:0]     tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]     color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                           validSamp_R16H[3:0],
-    input logic signed   [SIGFIG-1:0]     sample_R16S[1:0][3:0],
+    input logic                           validSamp_R16H[SAMPS-1:0],
+    input logic signed   [SIGFIG-1:0]     sample_R16S[1:0][SAMPS-1:0],
 
     input logic clk,                // Clock
     input logic rst,                // Reset
 
-    input logic signed [SIGFIG-1:0]   hit_R18S[AXIS-1:0][3:0],
+    input logic signed [SIGFIG-1:0]   hit_R18S[AXIS-1:0][SAMPS-1:0],
     input logic signed [SIGFIG-1:0]   color_R18U[COLORS-1:0],
-    input                             hit_valid_R18H[3:0]
+    input                             hit_valid_R18H[SAMPS-1:0]
 );
 
     //Pipe Signals for Later Evaluation
     logic signed   [SIGFIG-1:0]  tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic signed   [SIGFIG-1:0]  tri_Rn1S[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
-    logic                        validSamp_RnnH[3:0];
+    logic                        validSamp_RnnH[SAMPS-1:0];
     //Pipe Signals for Later Evaluation
 
     dff3 #(
@@ -82,7 +83,7 @@ module perf_monitor
 
     dff2 #(
         .WIDTH          (1          ),
-        .ARRAY_SIZE     (4          ),
+        .ARRAY_SIZE     (SAMPS      ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
@@ -116,7 +117,7 @@ module perf_monitor
         while(1) begin
             @(posedge clk);
          
-         for (int i=0; i< 4; i++) begin
+         for (int i=0; i< SAMPS; i++) begin
 
           sample_count = validSamp_RnnH[i] ? (sample_count + 1) : sample_count;
 
