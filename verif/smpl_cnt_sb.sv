@@ -204,11 +204,11 @@ module smpl_cnt_sb
 
         priority case( 1'b1 )
             (reset_to_four): hit_count_next = 4;
-            (reset_to_three): hit_count_next = 3;
-            (reset_to_two): hit_count_next = 2;
-            (reset_to_one): hit_count_next = 1;
+            (reset_to_three): hit_count_next = 0;
+            (reset_to_two): hit_count_next = 0;
+            (reset_to_one): hit_count_next = 0;
             (reset_to_zero): hit_count_next = 0;
-            (incr): hit_count_next = hit_count + hit_valid_R18H[0] + hit_valid_R18H[1] + hit_valid_R18H[2] + hit_valid_R18H[3] ;
+            (incr): hit_count_next = hit_count + 4;
             (keep): hit_count_next = hit_count ;
             default: hit_count_next = 0;
         endcase // case ( 1'b1 )
