@@ -297,7 +297,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
            //increment by 4
            //TODO: Do a shift multiplication
            //WARNING MULTIPLICATION
-           next_up_samp_R14S[1][i] = sample_R14S[1][i] + 4*subSample_RnnnnU_MSAA;                                       
+           next_up_samp_R14S[1][i] = sample_R14S[1][i] + SAMPS*subSample_RnnnnU_MSAA;                                       
            
        end
 
@@ -311,7 +311,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
         end
 
         //only need to check one
-       if (sample_R14S[1][3] >= box_R14S[1][1]) begin
+       if (sample_R14S[1][SAMPS-1] >= box_R14S[1][1]) begin
             at_top_edg_R14H = 1'b1;
 
         end
