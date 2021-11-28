@@ -294,9 +294,10 @@ module hash_jtree
         .out    (color_R16U_retime  )
     );
 
-    dff2 #(
+    dff3 #(
         .WIDTH(SIGFIG),
         .ARRAY_SIZE(2),
+        .ARRAY_SIZE(4),
         .PIPE_DEPTH(PIPE_DEPTH - 1),
         .RETIME_STATUS(1)
     )
