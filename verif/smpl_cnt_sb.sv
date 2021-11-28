@@ -128,8 +128,8 @@ module smpl_cnt_sb
       for (int i=0; i<4; i++) begin
         if(reset_to_zero && validSamp_RnnH[i]) begin
             if(one != check_hash(
-                        int'(sample_RnnS[0]), //s_x
-                        int'(sample_RnnS[1]), //s_y,
+              int'(sample_RnnS[0][i]), //s_x
+              int'(sample_RnnS[1][i]), //s_y,
                         int'(ss_w_lg2),       //ss_w_lg2
                         int'(jitter_x_RnnS),    //jitter_x,
                         int'(jitter_y_RnnS),    //jitter_y,
@@ -146,7 +146,7 @@ module smpl_cnt_sb
     //Check that the Number of Hits is Correct
     always @( posedge clk ) begin
         #10;
-        if( reset_to_zero && validSamp_RnnH ) begin
+      if( reset_to_zero && validSamp_RnnH[0] ) begin
             //if(one != check_hit_count(
             //        int'(tri_RnnS[0][0]),   //triangle
             //        int'(tri_RnnS[0][1]),   //triangle
@@ -187,14 +187,23 @@ module smpl_cnt_sb
     always_comb begin
 
         reset_to_zero = (tri_Rn1S != tri_RnnS) ; //New triangle
-        reset_to_one = reset_to_zero && hit_valid_R18H ; //New triangle with hit
-        incr = hit_valid_R18H ;
-        keep = ~hit_valid_R18H ;
+        reset_to_one = reset_to_zero && hit_valid_R18H[0] ; //New triangle with hit
+        reset_to_two = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] ;
+        reset_to_three = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2] ;
+        reset_to_four = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2]  && hit_valid_R18H[3] ;
+        
+      
+      
+        incr = (hit_valid_R18H[0] || hit_valid_R18H[1] || hit_valid_R18H[2] || hit_valid_R18H[3]);
+        keep = ~(hit_valid_R18H[0] || hit_valid_R18H[1] || hit_valid_R18H[2] || hit_valid_R18H[3]) ;
 
         priority case( 1'b1 )
+            (reset_to_four): hit_count_next = 4;
+            (reset_to_three): hit_count_next = 3;
+            (reset_to_two): hit_count_next = 2;
             (reset_to_one): hit_count_next = 1;
             (reset_to_zero): hit_count_next = 0;
-            (incr): hit_count_next = hit_count + 1 ;
+            (incr): hit_count_next = hit_count + hit_valid_R18H[0] + hit_valid_R18H[1] + hit_valid_R18H[2] + hit_valid_R18H[3] ;
             (keep): hit_count_next = hit_count ;
             default: hit_count_next = 0;
         endcase // case ( 1'b1 )
