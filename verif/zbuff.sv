@@ -114,7 +114,7 @@ module zbuff
     assign big_zero = 128'd0;
     assign zero = big_zero[SIGFIG-1:0];
 
-    assign  depth = unsigned'(hit_R18S[2]);
+    assign  depth = unsigned'(hit_R18S[2][0]);
     assign  x_ind[0] = hit_R18S[0][0][(RADIX+FB_L2-1):RADIX];
     assign  x_ind[1] = hit_R18S[0][1][(RADIX+FB_L2-1):RADIX];
     assign  x_ind[2] = hit_R18S[0][2][(RADIX+FB_L2-1):RADIX];
