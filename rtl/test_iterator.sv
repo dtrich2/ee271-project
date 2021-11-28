@@ -391,7 +391,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                         
                         next_sample_R14S[0][j] = box_R13S[0][0];
                         //WARNING: MULTIPLICATION
-                        next_sample_R14S[1][j] = box_R13S[0][1];
+                        next_sample_R14S[1][j] = box_R13S[0][1] + j*subSample_RnnnnU_MSAA;;
                      
                     end            
 
@@ -429,7 +429,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                         
                         next_sample_R14S[0][j] = box_R14S[0][0];
                         //WARNING: MULTIPLICATION
-                        next_sample_R14S[1][j] = box_R14S[0][1];
+                        next_sample_R14S[1][j] = box_R14S[0][1] + j*subSample_RnnnnU_MSAA;;
                      
                     end   
 
@@ -482,7 +482,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     end
                     else begin
                         // If we are NOT at the right edge we get the next right sample
-                         next_sample_R14S = next_rt_samp_R14S;
+                         next_sample_R14S = next_rt_samp_R14S ;
                         
                     end
 
