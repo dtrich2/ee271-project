@@ -477,7 +477,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     //Note that some samples could be valid while others are not!!
                     for (int z =0; z < 4; z++) begin
                         if (sample_R14S[0][z] > box_R14S[1][0] || sample_R14S[1][z] > box_R14S[1][1]) begin
-                            next_validSamp_R14H[z] = 1'b0;
+                            next_validSamp_R14H[z] = 1'b1;
                             
                         end
                         else begin
