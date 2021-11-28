@@ -108,9 +108,9 @@ module test_iterator
     input logic clk, // Clock
     input logic rst, // Reset
     
-    input logic hit_valid[SAMPS-1:0], //  Signal from sample test that determines if we should stop our current right/left iterating
+//     input logic hit_valid[SAMPS-1:0], //  Signal from sample test that determines if we should stop our current right/left iterating
     
-    input logic signed [SIGFIG-1:0]    start_coord[VERTS-1:0],
+//     input logic signed [SIGFIG-1:0]    start_coord[VERTS-1:0],
 
     //Outputs
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
