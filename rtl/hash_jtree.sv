@@ -374,8 +374,9 @@ module hash_jtree
         .out    (sample_R16S        )
     );
 
-    dff #(
-        .WIDTH(4),
+    dff2 #(
+        .WIDTH(1),
+        .ARRAY_SIZE(4),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
     )
