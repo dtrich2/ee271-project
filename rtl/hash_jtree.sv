@@ -311,7 +311,7 @@ module hash_jtree
     );
 
     dff_retime #(
-        .WIDTH(4),
+        .WIDTH(3),
         .PIPE_DEPTH(PIPE_DEPTH - 1),
         .RETIME_STATUS(1) // Retime
     )
