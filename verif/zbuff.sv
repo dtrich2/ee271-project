@@ -91,15 +91,15 @@ module zbuff
     input logic        [3:0]            subSample_RnnnnU,                // Input: SubSample_Interval
     input int                           ss_w_lg2_RnnnnS,
 
-    input logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0],
-    input logic unsigned [SIGFIG-1:0] color_R18U[COLORS-1:0],
-    input logic                           hit_valid_R18H
+  input logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0][3:0],
+  input logic unsigned [SIGFIG-1:0] color_R18U[COLORS-1:0],
+  input logic                           hit_valid_R18H[3:0]
 );
 
-    logic unsigned [FB_L2-1:0]  x_ind;
-    logic unsigned [FB_L2-1:0]  y_ind;
-    logic unsigned [SS_L2-1:0]  x_ss_ind;
-    logic unsigned [SS_L2-1:0]  y_ss_ind;
+    logic unsigned [FB_L2-1:0]  x_ind[3:0];
+    logic unsigned [FB_L2-1:0]  y_ind[3:0];
+    logic unsigned [SS_L2-1:0]  x_ss_ind[3:0];
+    logic unsigned [SS_L2-1:0]  y_ss_ind[3:0];
     logic unsigned [SIGFIG-1:0] depth;
     logic unsigned [SIGFIG-1:0] color[COLORS-1:0];
 
@@ -115,8 +115,15 @@ module zbuff
     assign zero = big_zero[SIGFIG-1:0];
 
     assign  depth = unsigned'(hit_R18S[2]);
-    assign  x_ind = hit_R18S[0][(RADIX+FB_L2-1):RADIX];
-    assign  y_ind = hit_R18S[1][(RADIX+FB_L2-1):RADIX];
+    assign  x_ind[0] = hit_R18S[0][0][(RADIX+FB_L2-1):RADIX];
+    assign  x_ind[1] = hit_R18S[0][1][(RADIX+FB_L2-1):RADIX];
+    assign  x_ind[2] = hit_R18S[0][2][(RADIX+FB_L2-1):RADIX];
+    assign  x_ind[3] = hit_R18S[0][3][(RADIX+FB_L2-1):RADIX];
+  
+    assign  y_ind[0] = hit_R18S[1][0][(RADIX+FB_L2-1):RADIX];
+    assign  y_ind[1] = hit_R18S[1][1][(RADIX+FB_L2-1):RADIX];
+    assign  y_ind[2] = hit_R18S[1][2][(RADIX+FB_L2-1):RADIX];
+    assign  y_ind[3] = hit_R18S[1][3][(RADIX+FB_L2-1):RADIX];
 
     //Brittle Only works for COLORS=3
     assign color[0] = color_R18U[0];
@@ -127,19 +134,21 @@ module zbuff
     assign y_max = screen_RnnnnS[1][SIGFIG-1:RADIX];
 
     always_comb begin
+      
+      for (int i=0; i < 4; i++) begin
 
         unique case ( subSample_RnnnnU )
-            (4'b1000 ): x_ss_ind[SS_L2-1:0] =   zero[SS_L2-1:0];
-            (4'b0100 ): x_ss_ind[SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[0][RADIX-1] };
-            (4'b0010 ): x_ss_ind[SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[0][RADIX-1:RADIX-2] };
-            (4'b0001 ): x_ss_ind[SS_L2-1:0] = {                   hit_R18S[0][RADIX-1:RADIX-3] };
+            (4'b1000 ): x_ss_ind[SS_L2-1:0][i] =   zero[SS_L2-1:0];
+            (4'b0100 ): x_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1] };
+            (4'b0010 ): x_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[0][i][RADIX-1:RADIX-2] };
+            (4'b0001 ): x_ss_ind[SS_L2-1:0][i] = {                   hit_R18S[0][i][RADIX-1:RADIX-3] };
         endcase // case ( subSample_RnnnnU )
 
         unique case ( subSample_RnnnnU )
-            (4'b1000 ): y_ss_ind[SS_L2-1:0] =   zero[SS_L2-1:0] ;
-            (4'b0100 ): y_ss_ind[SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[1][RADIX-1] }  ;
-            (4'b0010 ): y_ss_ind[SS_L2-1:0] = { zero[SS_L2-1:1] , hit_R18S[1][RADIX-1:RADIX-2] }  ;
-            (4'b0001 ): y_ss_ind[SS_L2-1:0] = {                   hit_R18S[1][RADIX-1:RADIX-3] }  ;
+            (4'b1000 ): y_ss_ind[SS_L2-1:0][i] =   zero[SS_L2-1:0] ;
+            (4'b0100 ): y_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1] }  ;
+            (4'b0010 ): y_ss_ind[SS_L2-1:0][i] = { zero[SS_L2-1:1] , hit_R18S[1][i][RADIX-1:RADIX-2] }  ;
+            (4'b0001 ): y_ss_ind[SS_L2-1:0][i] = {                   hit_R18S[1][i][RADIX-1:RADIX-3] }  ;
         endcase // case ( subSample_RnnnnU )
 
         unique case ( subSample_RnnnnU )
@@ -155,22 +164,26 @@ module zbuff
             (4'b0010 ): ss_rate = 16 ;
             (4'b0001 ): ss_rate = 64 ;
         endcase // case ( subSample_RnnnnU )
+        
+      end
 
     end
 
     always @(posedge clk) begin
         #25;
-        if( hit_valid_R18H && ~rst ) begin
-            check_zbuff_process_fragment(  x_ind ,   //Hit Loc. X
-                y_ind ,   //Hit Loc. Y
-                x_ss_ind ,  //SS Hit loc X
-                y_ss_ind ,  //SS Hit Loc Y
+      for (int i=0; i < 4; i++) begin
+        if( hit_valid_R18H[i] && ~rst ) begin
+            check_zbuff_process_fragment(  x_ind[i] ,   //Hit Loc. X
+                y_ind[i] ,   //Hit Loc. Y
+                x_ss_ind[i] ,  //SS Hit loc X
+                y_ss_ind[i] ,  //SS Hit Loc Y
                 depth , //actually a uint
                 color[0] , //actually a ushort
                 color[1] , //actually a ushort
                 color[2]  //actually a ushort
             ) ;
         end
+      end
     end
 
     task init_buffers;
