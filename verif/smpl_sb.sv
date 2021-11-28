@@ -89,8 +89,8 @@ module smpl_sb
                     int'(tri_RnnS[1][1]), //triangle
                     int'(tri_RnnS[2][0]), //triangle
                     int'(tri_RnnS[2][1]), //triangle
-                    int'(sample_RnnS[0]) , //SAMPLE
-                    int'(sample_RnnS[1]) , //SAMPLE
+                    int'(sample_RnnS[0][i]) , //SAMPLE
+                    int'(sample_RnnS[1][i]) , //SAMPLE
                     int'(hit_valid_R18H[i])   //IS HIT
                       )) begin
 
@@ -106,8 +106,8 @@ module smpl_sb
 
             $fwrite( file , "\n\t\t" );
 
-            $fwrite( file , "sample.x:%f\t",  (1.0 * sample_RnnS[0]) / (1 << RADIX));
-            $fwrite( file , "sample.y:%f\t",  (1.0 * sample_RnnS[1]) / (1 << RADIX));
+            $fwrite( file , "sample.x:%f\t",  (1.0 * sample_RnnS[0][i]) / (1 << RADIX));
+            $fwrite( file , "sample.y:%f\t",  (1.0 * sample_RnnS[1][i]) / (1 << RADIX));
             $fwrite( file , "hit:%b\n" , hit_valid_R18H[i] );
 
             assert( 0 ) else $error( "time=%10t ERROR: Sample Test Check Failed", $time );
@@ -147,9 +147,10 @@ module smpl_sb
         .out    (color_RnnU )
     );
 
-    dff2 #(
+    dff3 #(
         .WIDTH          (SIGFIG     ),
-        .ARRAY_SIZE     (2          ),
+        .ARRAY_SIZE1     (2          ),
+        .ARRAY_SIZE2     (4          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          )
     )
@@ -162,8 +163,9 @@ module smpl_sb
         .out    (sample_RnnS)
     );
 
-    dff #(
+    dff2 #(
         .WIDTH          (1          ),
+        .ARRAY_SIZE     (4          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
