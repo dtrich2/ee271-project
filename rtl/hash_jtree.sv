@@ -298,8 +298,8 @@ module hash_jtree
         .WIDTH(SIGFIG),
         .ARRAY_SIZE1(2),
         .ARRAY_SIZE2(4),
-        .PIPE_DEPTH(1),
-        .RETIME_STATUS(0)
+        .PIPE_DEPTH(PIPE_DEPTH - 1 - 1),
+        .RETIME_STATUS(1)
     )
     d_hash_r3
     (
