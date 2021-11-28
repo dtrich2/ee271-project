@@ -110,12 +110,12 @@ module hash_jtree
  
 genvar i;
 generate
-    for (i=1; i<=SAMPS; i=i+1) begin : xjit_hash // <-- example block name
+    for (i=1; i<=SAMPS; i=i+1) begin // <-- example block name
     tree_hash #(
         .IN_WIDTH(HASH_IN_WIDTH),
         .OUT_WIDTH(HASH_OUT_WIDTH)
     )
-    xjit_hash_1
+    xjit_hash
     (
         .in_RnnH    ({sample_R14S[1][i][SIGFIG-1:4],
                       sample_R14S[0][i][SIGFIG-1:4]}   ),
@@ -123,7 +123,7 @@ generate
         .out_RnnH   (jitt_val_R14H[0][i]               )
     );
         
-end 
+    end 
 endgenerate
     
     
