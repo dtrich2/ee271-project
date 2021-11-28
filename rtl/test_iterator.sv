@@ -128,7 +128,7 @@ module test_iterator
     logic signed [SIGFIG-1:0]       next_tri_R14S[VERTS-1:0][AXIS-1:0];
     logic unsigned  [SIGFIG-1:0]    next_color_R14U[COLORS-1:0] ;
     logic signed [SIGFIG-1:0]       next_sample_R14S[1:0][3:0];
-    logic                               next_validSamp_R14H;
+    logic                               next_validSamp_R14H[3:0];
     logic                               next_halt_RnnnnL;
 
     // Instantiate registers for storing these states
