@@ -90,7 +90,8 @@ module test_iterator
     parameter COLORS = 3, // Number of color channels
     parameter PIPE_DEPTH = 1, // How many pipe stages are in this block
     parameter MOD_FSM = 0, // Use Modified FSM to eliminate a wait state
-    parameter SAMPS = 4 // Number of samples to run simultaneously
+    parameter SAMPS = 4, // Number of samples to run simultaneously
+    parameter SAMP_SHIFT = 2
 )
 (
     //Input Signals
@@ -265,6 +266,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     logic                       at_right_edg_R14H;      //Current sample at right edge of bbox?
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
+    logic [3:0]                 subSample_RnnnnU_MSAA;  //subSample with modifided to MSAA requirements
 
     //////
     ////// First calculate the values of the helper signals using CURRENT STATES
@@ -281,16 +283,17 @@ if(MOD_FSM == 0) begin // Using baseline FSM
         // START CODE HERE
 
          //Set next right samples
+       subSample_RnnnnU_MSAA = subSample_RnnnnU << RADIX-3;
      
        for (int i=0; i<SAMPS ; i++) begin 
-           next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + (subSample_RnnnnU << RADIX-3);
+           next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + subSample_RnnnnU_MSAA;
            next_rt_samp_R14S[1][i] = sample_R14S[1][i];
                                                  
                                                  
            next_up_samp_R14S[0][i] =  box_R14S[0][0]; //Back to min x coord
            //increment by 4
            //TODO: Do a shift multiplication
-           next_up_samp_R14S[1][i] = sample_R14S[1][i] + ((subSample_RnnnnU << RADIX-3) << 3) ;                                       
+           next_up_samp_R14S[1][i] = sample_R14S[1][i] + (subSample_RnnnnU_MSAA << SAMP_SHIFT) ;                                       
            
        end
 
