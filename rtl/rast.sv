@@ -151,9 +151,13 @@ module rast
     logic [SIGFIG-1:0]  zero;                     //fudge signal to hold zero as a reset value
     logic [127:0]           big_zero;                 //fudge signal to hold zero as a reset value
     //Intermediate Signals
+    
+    logic signed [SIGFIG-1:0]    out_start_coord_R10H[VERTS-1:0];
 
     assign big_zero = 128'd0;
     assign zero = big_zero[SIGFIG-1:0];
+    
+    
 
     //TODO: Missing triangle color
 
