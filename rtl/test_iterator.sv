@@ -167,7 +167,7 @@ module test_iterator
     dff3 #(
         .WIDTH(SIGFIG),
         .ARRAY_SIZE1(2),
-        .ARRAY_SIZE2(4),
+        .ARRAY_SIZE2(SAMPS),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0)
     )
@@ -182,7 +182,7 @@ module test_iterator
 
     dff2 #(
         .WIDTH(1),
-        .ARRAY_SIZE(4),
+        .ARRAY_SIZE(SAMPS),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
     )
@@ -260,8 +260,8 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     end
 
     // define some helper signals
-    logic signed [SIGFIG-1:0]   next_up_samp_R14S[1:0][3:0]; //If jump up, next sample
-    logic signed [SIGFIG-1:0]   next_rt_samp_R14S[1:0][3:0]; //If jump right, next sample
+    logic signed [SIGFIG-1:0]   next_up_samp_R14S[1:0][SAMPS-1:0]; //If jump up, next sample
+    logic signed [SIGFIG-1:0]   next_rt_samp_R14S[1:0][SAMPS-1:0]; //If jump right, next sample
     logic                       at_right_edg_R14H;      //Current sample at right edge of bbox?
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
@@ -282,13 +282,14 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
          //Set next right samples
      
-       for (int i=0; i<4 ; i++) begin 
+       for (int i=0; i<SAMPS ; i++) begin 
            next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + (subSample_RnnnnU << RADIX-3);
            next_rt_samp_R14S[1][i] = sample_R14S[1][i];
                                                  
                                                  
            next_up_samp_R14S[0][i] =  box_R14S[0][0]; //Back to min x coord
            //increment by 4
+           //TODO: Do a shift multiplication
            next_up_samp_R14S[1][i] = sample_R14S[1][i] + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);                                       
            
        end
@@ -476,7 +477,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
                     // Next sample might be valid. See if current sample is on edge. if it is, not valid
                     //Note that some samples could be valid while others are not!!
-                    for (int z =0; z < 4; z++) begin
+                    for (int z =0; z < SAMPS; z++) begin
                         if (sample_R14S[0][z] > box_R14S[1][0] || sample_R14S[1][z] > box_R14S[1][1]) begin
                             next_validSamp_R14H[z] = 1'b1;
                             
