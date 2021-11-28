@@ -296,8 +296,8 @@ module hash_jtree
 
     dff3 #(
         .WIDTH(SIGFIG),
-        .ARRAY_SIZE(2),
         .ARRAY_SIZE(4),
+        .ARRAY_SIZE(2),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0)
     )
