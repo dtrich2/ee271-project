@@ -192,23 +192,20 @@ module smpl_cnt_sb
 
         //TODO! Radical change
         reset_to_zero = (tri_Rn1S != tri_RnnS) ; //New triangle
-        reset_to_one = reset_to_zero && hit_valid_R18H[0] ; //New triangle with hit
-        reset_to_two = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] ;
-        reset_to_three = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2] ;
-        reset_to_four = reset_to_zero && hit_valid_R18H[3];
+        reset_to_one = reset_to_zero && hit_valid_R18H[SAMPS-1] ; //New triangle with hit
+//         reset_to_two = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] ;
+//         reset_to_three = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2] ;
+//         reset_to_four = reset_to_zero && hit_valid_R18H[3];
        
       //hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2]  && hit_valid_R18H[3] ;
         
       
       
-        incr = (hit_valid_R18H[0] || hit_valid_R18H[1] || hit_valid_R18H[2] || hit_valid_R18H[3]);
-        keep = ~(hit_valid_R18H[0] || hit_valid_R18H[1] || hit_valid_R18H[2] || hit_valid_R18H[3]) ;
+      incr = (hit_valid_R18H[SAMPS-1]);
+      keep = ~(hit_valid_R18H[SAMPS-1]) ;
 
         priority case( 1'b1 )
-            (reset_to_four): hit_count_next = 4;
-            (reset_to_three): hit_count_next = 0;
-            (reset_to_two): hit_count_next = 0;
-            (reset_to_one): hit_count_next = 0;
+            (reset_to_one): hit_count_next = SAMPS;
             (reset_to_zero): hit_count_next = 0;
             (incr): hit_count_next = hit_count + 4;
             (keep): hit_count_next = hit_count ;
