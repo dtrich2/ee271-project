@@ -125,7 +125,8 @@ module smpl_cnt_sb
     // START CODE HERE
     always @( posedge clk ) begin
         #10;
-        if(reset_to_zero && validSamp_RnnH) begin
+      for (int i=0; i<4; i++) begin
+        if(reset_to_zero && validSamp_RnnH[i]) begin
             if(one != check_hash(
                         int'(sample_RnnS[0]), //s_x
                         int'(sample_RnnS[1]), //s_y,
@@ -138,6 +139,7 @@ module smpl_cnt_sb
                 $finish();
             end
         end
+      end 
     end
     // END CODE HERE
 
