@@ -61,15 +61,15 @@ module smpl_cnt_sb
 (
     input logic signed   [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                         validSamp_R16H,
-    input logic signed   [SIGFIG-1:0]   sample_R16S[1:0],
+    input logic                         validSamp_R16H[3:0],
+    input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][3:0],
 
     input logic                             clk,                // Clock
     input logic                             rst,                // Reset
 
-    input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0],
+    input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][3:0],
     input logic signed [SIGFIG-1:0]     color_R18U[COLORS-1:0],
-    input logic                         hit_valid_R18H,
+    input logic                         hit_valid_R18H[3:0],
 
     input logic        [SIGFIG-1:0]     screen_RnnnnS[1:0],      // Screen Size
     input logic        [3:0]            subSample_RnnnnU,    // Flag for subsample
@@ -87,8 +87,8 @@ module smpl_cnt_sb
     logic signed   [SIGFIG-1:0] tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic signed   [SIGFIG-1:0] tri_Rn1S[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic unsigned [SIGFIG-1:0] color_RnnU[COLORS-1:0];
-    logic                       validSamp_RnnH;
-    logic signed   [SIGFIG-1:0] sample_RnnS[1:0];             //
+    logic                       validSamp_RnnH[3:0];
+    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][3:0];             //
     //Pipe Signals for Later Evaluation
 
     //Helper Signals
