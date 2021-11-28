@@ -262,7 +262,7 @@ module rast
     end
     `endif 
     
-    //Chris Change: Add new input to test_iterator which is output of sample_test
+    //Chris Change: SAMP
 
     test_iterator #(
         .SIGFIG     (SIGFIG     ),
@@ -287,9 +287,6 @@ module rast
         .clk                (clk                ),
         .rst                (rst                ),
         
-        .hit_valid          (hit_valid_R18H           ),
-        .start_coord        (out_start_coord_R10H),
-
         .tri_R14S           (tri_R14S           ),
         .color_R14U         (color_R14U         ),
         .sample_R14S        (sample_R14S        ),
