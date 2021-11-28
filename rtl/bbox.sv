@@ -139,7 +139,7 @@ module bbox
     output logic signed [SIGFIG-1:0]    box_R13S[1:0][1:0], // 2 Sets X,Y Fixed Point Values
     output logic                            validTri_R13H,                  // Valid Data for Operation
     
-    output logic signed [SIGFIG-1:0]    out_start_coord_R10H[VERTS-1:0]
+    //output logic signed [SIGFIG-1:0]    out_start_coord_R10H[VERTS-1:0]
    
     
 );
@@ -161,8 +161,8 @@ module bbox
     // Step 3 Result: valid if validTri_R10H && BBox within screen
     logic                           outvalid_R10H;               // output is valid
     
-    logic signed [SIGFIG-1:0]    start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
-    logic signed [SIGFIG-1:0]    rounded_start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
+    //logic signed [SIGFIG-1:0]    start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
+    //logic signed [SIGFIG-1:0]    rounded_start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
     //logic signed [SIGFIG-1:0]    out_start_coord_R10H[AXIS-1:0]; //starting coord is vertex with smallest y coord
 
     //End R10 Signals
@@ -240,105 +240,20 @@ module bbox
         
         if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[0][1];
-            start_coord_R10H[0] = tri_R10S[0][0];
-            start_coord_R10H[1] = tri_R10S[0][1];
+//             start_coord_R10H[0] = tri_R10S[0][0];
+//             start_coord_R10H[1] = tri_R10S[0][1];
         end
         else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[1][1];
-            start_coord_R10H[0] = tri_R10S[1][0];
-            start_coord_R10H[1] = tri_R10S[1][1];
+//             start_coord_R10H[0] = tri_R10S[1][0];
+//             start_coord_R10H[1] = tri_R10S[1][1];
         end
         else begin
             box_R10S[0][1] = tri_R10S[2][1];
-            start_coord_R10H[0] = tri_R10S[2][0];
-            start_coord_R10H[1] = tri_R10S[2][1];
+//             start_coord_R10H[0] = tri_R10S[2][0];
+//             start_coord_R10H[1] = tri_R10S[2][1];
         end
         
-
-
-//         // Get largest x-coordinate
-//     bbox_sel_R10H[1][0][0] = (tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0]);
-
-//     bbox_sel_R10H[1][0][1] = (tri_R10S[1][0] > tri_R10S[0][0]) &&  (tri_R10S[1][0] >= tri_R10S[2][0]);
-
-//     bbox_sel_R10H[1][0][2] = (tri_R10S[2][0] > tri_R10S[0][0]) &&  (tri_R10S[2][0] > tri_R10S[1][0]);
-
-
-
-
-
-//         // Get smallest x-coordinate
-//         bbox_sel_R10H[0][0][0] = (tri_R10S[0][0] <= tri_R10S[1][0]) &&  (tri_R10S[0][0] <= tri_R10S[2][0]);
-
-//         bbox_sel_R10H[0][0][1] = (tri_R10S[1][0] < tri_R10S[0][0]) &&  (tri_R10S[1][0] <= tri_R10S[2][0]);
-
-//         bbox_sel_R10H[0][0][2] = (tri_R10S[2][0] < tri_R10S[0][0]) &&  (tri_R10S[2][0] < tri_R10S[1][0]);
-
-
-
-//         // Get largest y-coordinate
-//         bbox_sel_R10H[1][1][0] = (tri_R10S[0][1] >= tri_R10S[1][1]) &&  (tri_R10S[0][1] >= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[1][1][1] = (tri_R10S[1][1] > tri_R10S[0][1]) &&  (tri_R10S[1][1] >= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[1][1][2] = (tri_R10S[2][1] > tri_R10S[0][1]) &&  (tri_R10S[2][1] > tri_R10S[1][1]);
-
-
-
-
-
-
-//         // Get smallet y-coordinate
-
-//     bbox_sel_R10H[0][1][0] = (tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[0][1][1] = (tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1]);
-
-//         bbox_sel_R10H[0][1][2] = (tri_R10S[2][1] < tri_R10S[0][1]) &&  (tri_R10S[2][1] < tri_R10S[1][1]);
-
-
-
-
-//         // Set actual bounding box values
-
-//         // NOTE:
-//         // box_R10S[0][0]: LL X
-//         // box_R10S[0][1]: LL Y
-//         // box_R10S[1][0]: UR X
-//         // box_R10S[1][1]: UR Y
-
-//         //UR X
-//         case(bbox_sel_R10H[1][0])
-//             3'b001: box_R10S[1][0] = tri_R10S[0][0];
-//             3'b010: box_R10S[1][0] = tri_R10S[1][0]; 
-//             3'b100: box_R10S[1][0] = tri_R10S[2][0]; 
-//             default: box_R10S[1][0] = tri_R10S[0][0];
-//         endcase 
- 
-//         //LL X
-//         case(bbox_sel_R10H[0][0])
-//             3'b001: box_R10S[0][0] = tri_R10S[0][0];
-//             3'b010: box_R10S[0][0] = tri_R10S[1][0]; 
-//             3'b100: box_R10S[0][0] = tri_R10S[2][0]; 
-//             default: box_R10S[0][0] = tri_R10S[0][0];
-//         endcase 
-
-//         //UR Y
-//         case(bbox_sel_R10H[1][1])
-//             3'b001: box_R10S[1][1] = tri_R10S[0][1];
-//             3'b010: box_R10S[1][1] = tri_R10S[1][1]; 
-//             3'b100: box_R10S[1][1] = tri_R10S[2][1]; 
-//             default: box_R10S[1][1] = tri_R10S[0][1];
-//         endcase 
-
-//          //UR X
-//         case(bbox_sel_R10H[0][1])
-//             3'b001: box_R10S[0][1] = tri_R10S[0][1];
-//             3'b010: box_R10S[0][1] = tri_R10S[1][1]; 
-//             3'b100: box_R10S[0][1] = tri_R10S[2][1]; 
-//             default: box_R10S[0][1] = tri_R10S[0][1];
-//         endcase 
-
     end
 
 
@@ -390,18 +305,18 @@ module bbox
     //       as a bitwise and operation.
 
 
-always_comb begin
-    rounded_start_coord_R10H[0][SIGFIG-1:RADIX] = start_coord_R10H[0][SIGFIG-1:RADIX];
-    rounded_start_coord_R10H[1][SIGFIG-1:RADIX] = start_coord_R10H[1][SIGFIG-1:RADIX];
+// always_comb begin
+//     rounded_start_coord_R10H[0][SIGFIG-1:RADIX] = start_coord_R10H[0][SIGFIG-1:RADIX];
+//     rounded_start_coord_R10H[1][SIGFIG-1:RADIX] = start_coord_R10H[1][SIGFIG-1:RADIX];
     
-    rounded_start_coord_R10H[0][RADIX-1:0]
-    = (start_coord_R10H[0][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+//     rounded_start_coord_R10H[0][RADIX-1:0]
+//     = (start_coord_R10H[0][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
     
-    rounded_start_coord_R10H[1][RADIX-1:0]
-    = (start_coord_R10H[1][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
+//     rounded_start_coord_R10H[1][RADIX-1:0]
+//     = (start_coord_R10H[1][RADIX-1:0] & {subSample_RnnnnU[0] | subSample_RnnnnU[1] | subSample_RnnnnU[2], subSample_RnnnnU[1] | subSample_RnnnnU[2],  subSample_RnnnnU[2], 7'b0000000000});
     
     
-end 
+// end 
  //Round LowerLeft and UpperRight for X and Y  
         
 generate
@@ -504,41 +419,35 @@ endgenerate
         // box_R10S[1][1]: UR Y
         
         //for start coord
-        if (rounded_start_coord_R10H[0] <  0) begin
-            out_start_coord_R10H[0] = 0;
-        end
-        else begin
-            out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
-        end
+//         if (rounded_start_coord_R10H[0] <  0) begin
+//             out_start_coord_R10H[0] = 0;
+//         end
+//         else begin
+//             out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
+//         end
         
-        if (rounded_start_coord_R10H[0] >= screen_RnnnnS[0]) begin
-            out_start_coord_R10H[0] = screen_RnnnnS[0];
-        end
-        else begin
-            out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
-        end
+//         if (rounded_start_coord_R10H[0] >= screen_RnnnnS[0]) begin
+//             out_start_coord_R10H[0] = screen_RnnnnS[0];
+//         end
+//         else begin
+//             out_start_coord_R10H[0] = rounded_start_coord_R10H[0] ;
+//         end
         
-        if (rounded_start_coord_R10H[1] <  0) begin
-            out_start_coord_R10H[1] = 0;
-        end
-        else begin
-            out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
-        end
+//         if (rounded_start_coord_R10H[1] <  0) begin
+//             out_start_coord_R10H[1] = 0;
+//         end
+//         else begin
+//             out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
+//         end
         
-        if (rounded_start_coord_R10H[1] >= screen_RnnnnS[1]) begin
-            out_start_coord_R10H[1] = screen_RnnnnS[1];
-        end
-        else begin
-            out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
-        end
-        
-        
+//         if (rounded_start_coord_R10H[1] >= screen_RnnnnS[1]) begin
+//             out_start_coord_R10H[1] = screen_RnnnnS[1];
+//         end
+//         else begin
+//             out_start_coord_R10H[1] = rounded_start_coord_R10H[1] ;
+//         end
         
         
-        
-        
-        
-
 
         //TODO: Check if shift has been applied to screen (it has)
 
