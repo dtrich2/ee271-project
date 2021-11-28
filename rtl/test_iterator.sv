@@ -296,7 +296,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
            next_up_samp_R14S[0][i] =  box_R14S[0][0]; //Back to min x coord
            //increment by 4
            //TODO: Do a shift multiplication
-           next_up_samp_R14S[1][i] = sample_R14S[1][i] + ((subSample_RnnnnU << RADIX-3) << SAMP_SHIFT) ;                                       
+           next_up_samp_R14S[1][i] = sample_R14S[1][i] + (subSample_RnnnnU_MSAA << SAMP_SHIFT) ;                                       
            
        end
 
@@ -358,26 +358,33 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_box_R14S = box_R13S;
 
                     // Next sample is valid
-                    next_validSamp_R14H[0] = 1'b1;
-                    next_validSamp_R14H[1] = 1'b1;
-                    next_validSamp_R14H[2] = 1'b1;
-                    next_validSamp_R14H[3] = 1'b1;
+//                     next_validSamp_R14H[0] = 1'b1;
+//                     next_validSamp_R14H[1] = 1'b1;
+//                     next_validSamp_R14H[2] = 1'b1;
+//                     next_validSamp_R14H[3] = 1'b1;
                     
                   
                     
 
                     //Next sample is lower left vertex
-                    next_sample_R14S[0][0] = box_R13S[0][0];
-                    next_sample_R14S[1][0] = box_R13S[0][1];
-                    
-                    next_sample_R14S[0][1] = box_R13S[0][0];
-                    next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
+                    for (int j =0; j < SAMPS; j++) begin
+                        next_validSamp_R14H[j] = 1'b1;
+                        
+                        next_sample_R14S[0][j] = box_R13S[0][0];
+                        //WARNING: MULTIPLICATION
+                        next_sample_R14S[1][j] = box_R13S[0][1] + j*subSample_RnnnnU_MSAA;
                      
-                    next_sample_R14S[0][2] = box_R13S[0][0];
-                    next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
+                    end
+                    
+                    
+//                     next_sample_R14S[0][1] = box_R13S[0][0];
+//                     next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
+                     
+//                     next_sample_R14S[0][2] = box_R13S[0][0];
+//                     next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
                                       
-                    next_sample_R14S[0][3] = box_R13S[0][0];
-                    next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
+//                     next_sample_R14S[0][3] = box_R13S[0][0];
+//                     next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
                     
 
                     // Set current tri to input tri
