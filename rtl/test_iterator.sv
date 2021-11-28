@@ -115,8 +115,8 @@ module test_iterator
     //Outputs
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
     output logic unsigned [SIGFIG-1:0]  color_R14U[COLORS-1:0] , //Color of triangle
-    output logic signed [SIGFIG-1:0]    sample_R14S[1:0][3:0], //Sample Location to Be Tested
-    output logic                            validSamp_R14H[3:0] //Sample and triangle are Valid
+    output logic signed [SIGFIG-1:0]    sample_R14S[1:0][SAMPS-1:0], //Sample Location to Be Tested
+    output logic                            validSamp_R14H[SAMPS-1:0] //Sample and triangle are Valid
 );
 
     // This module implement a Moore machine to iterarte sample points in bbox
@@ -129,8 +129,8 @@ module test_iterator
     // then instantiate registers for storing these states
     logic signed [SIGFIG-1:0]       next_tri_R14S[VERTS-1:0][AXIS-1:0];
     logic unsigned  [SIGFIG-1:0]    next_color_R14U[COLORS-1:0] ;
-    logic signed [SIGFIG-1:0]       next_sample_R14S[1:0][3:0];
-    logic                               next_validSamp_R14H[3:0];
+    logic signed [SIGFIG-1:0]       next_sample_R14S[1:0][SAMPS-1:0];
+    logic                               next_validSamp_R14H[SAMPS-1:0];
     logic                               next_halt_RnnnnL;
 
     // Instantiate registers for storing these states
