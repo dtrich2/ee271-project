@@ -65,20 +65,21 @@ module sampletest
     parameter VERTS         = 3, // Maximum Vertices in triangle
     parameter AXIS          = 3, // Number of axis foreach vertex 3 is (x,y,z).
     parameter COLORS        = 3, // Number of color channels
-    parameter PIPE_DEPTH    = 2 // How many pipe stages are in this block
+    parameter PIPE_DEPTH    = 2, // How many pipe stages are in this block
+    parameter SAMPS         = 4
 )
 (
     input logic signed [SIGFIG-1:0]     tri_R16S[VERTS-1:0][AXIS-1:0], // triangle to Iterate Over
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0] , // Color of triangle
-    input logic signed [SIGFIG-1:0]     sample_R16S[1:0][3:0], // Sample Location
-    input logic                         validSamp_R16H[3:0], // A valid sample location
+    input logic signed [SIGFIG-1:0]     sample_R16S[1:0][SAMPS-1:0], // Sample Location
+    input logic                         validSamp_R16H[SAMPS-1:0], // A valid sample location
 
     input logic clk, // Clock
     input logic rst, // Reset
 
-    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0][3:0], // Hit Location
+    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0][SAMPS-1:0], // Hit Location
     output logic unsigned [SIGFIG-1:0]  color_R18U[COLORS-1:0] , // Color of triangle
-    output logic                        hit_valid_R18H[3:0]                   // Is hit good
+    output logic                        hit_valid_R18H[SAMPS-1:0]                   // Is hit good
 );
 
     localparam EDGES = (VERTS == 3) ? 3 : 5;
@@ -86,17 +87,17 @@ module sampletest
     localparam MROUND = (2 * SHORTSF) - RADIX;
 
     // output for retiming registers
-    logic signed [SIGFIG-1:0]       hit_R18S_retime[AXIS-1:0][3:0];   // Hit Location
+    logic signed [SIGFIG-1:0]       hit_R18S_retime[AXIS-1:0][SAMPS-1:0];   // Hit Location
     logic unsigned [SIGFIG-1:0]     color_R18U_retime[COLORS-1:0];   // Color of triangle
-    logic                           hit_valid_R18H_retime[3:0];   // Is hit good
+    logic                           hit_valid_R18H_retime[SAMPS-1:0];   // Is hit good
     // output for retiming registers
 
     // Signals in Access Order
     logic signed [SIGFIG-1:0]       tri_shift_R16S[VERTS-1:0][1:0]; // triangle after coordinate shift
     logic signed [SIGFIG-1:0]       edge_R16S[EDGES-1:0][1:0][1:0]; // Edges
     logic signed [(2*SHORTSF)-1:0]  dist_lg_R16S[EDGES-1:0]; // Result of x_1 * y_2 - x_2 * y_1
-    logic                           hit_valid_R16H[3:0] ; // Output (YOUR JOB!)
-    logic signed [SIGFIG-1:0]       hit_R16S[AXIS-1:0][3:0]; // Sample position
+    logic                           hit_valid_R16H[SAMPS-1:0] ; // Output (YOUR JOB!)
+    logic signed [SIGFIG-1:0]       hit_R16S[AXIS-1:0][SAMPS-1:0]; // Sample position
     // Signals in Access Order
 
     // Your job is to produce the value for hit_valid_R16H signal, which indicates whether a sample lies inside the triangle.
@@ -108,7 +109,7 @@ module sampletest
     logic b;
 
   always_comb begin
-      for (int samp=0; samp<4; samp++) begin
+      for (int samp=0; samp<SAMPS; samp++) begin
             for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
                 for (int j=0; j<2 ; j++) begin    //over x and y
                     tri_shift_R16S[i][j]=tri_R16S[i][j]-sample_R16S[j][samp];  //shift by sample
@@ -150,7 +151,7 @@ module sampletest
     // Note that a barrycentric interpolation would
     // be more accurate
     always_comb begin
-        for (int i=0; i <4; i++) begin
+        for (int i=0; i <SAMPS; i++) begin
             hit_R16S[0][i] = sample_R16S[0][i]; //Make sure you use unjittered sample
             hit_R16S[1][i] = sample_R16S[1][i]; //Make sure you use unjittered sample
             hit_R16S[2][i] = tri_R16S[0][2]; // z value equals the z value of the first vertex
@@ -162,7 +163,7 @@ module sampletest
     dff3 #(
         .WIDTH          (SIGFIG         ),
         .ARRAY_SIZE1     (AXIS           ),
-        .ARRAY_SIZE2     (4           ),
+        .ARRAY_SIZE2     (SAMPS           ),
         .PIPE_DEPTH     (PIPE_DEPTH - 1 ),
         .RETIME_STATUS  (1              )
     )
@@ -192,7 +193,7 @@ module sampletest
 
     dff2#(
         .WIDTH          (1              ),
-        .ARRAY_SIZE     (4           ),
+        .ARRAY_SIZE     (SAMPS           ),
         .PIPE_DEPTH     (PIPE_DEPTH - 1 ),
         .RETIME_STATUS  (1              ) // RETIME
     )
@@ -210,7 +211,7 @@ module sampletest
     dff3 #(
         .WIDTH          (SIGFIG ),
         .ARRAY_SIZE1     (AXIS   ),
-        .ARRAY_SIZE2     (4   ),
+        .ARRAY_SIZE2     (SAMPS   ),
         .PIPE_DEPTH     (1      ),
         .RETIME_STATUS  (0      )
     )
@@ -240,7 +241,7 @@ module sampletest
 
     dff2 #(
         .WIDTH          (1  ),
-        .ARRAY_SIZE     (4   ),
+        .ARRAY_SIZE     (SAMPS   ),
         .PIPE_DEPTH     (1  ),
         .RETIME_STATUS  (0  ) // No retime
     )
