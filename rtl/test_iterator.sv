@@ -89,7 +89,8 @@ module test_iterator
     parameter AXIS = 3, // Number of axis foreach vertex 3 is (x,y,z).
     parameter COLORS = 3, // Number of color channels
     parameter PIPE_DEPTH = 1, // How many pipe stages are in this block
-    parameter MOD_FSM = 0 // Use Modified FSM to eliminate a wait state
+    parameter MOD_FSM = 0, // Use Modified FSM to eliminate a wait state
+    parameter SAMPS = 4 // Number of samples to run simultaneously
 )
 (
     //Input Signals
