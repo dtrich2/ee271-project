@@ -195,7 +195,9 @@ module smpl_cnt_sb
         reset_to_one = reset_to_zero && hit_valid_R18H[0] ; //New triangle with hit
         reset_to_two = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] ;
         reset_to_three = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2] ;
-        reset_to_four = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2]  && hit_valid_R18H[3] ;
+        reset_to_four = reset_to_zero &&  !(~hit_valid_R18H);
+       
+      //hit_valid_R18H[0] && hit_valid_R18H[1] && hit_valid_R18H[2]  && hit_valid_R18H[3] ;
         
       
       
