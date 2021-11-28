@@ -823,7 +823,7 @@ else begin // Use modified FSM
                     
 
                     next_sample_R14S[0] =  start_coord[0];//tri_R13S[0][0]  - (subSample_RnnnnU << RADIX-3);
-                    next_sample_R14S[1] = start_coord[1];// + (subSample_RnnnnU << RADIX-3);        
+                    next_sample_R14S[1] = box_R13S[1];// + (subSample_RnnnnU << RADIX-3);        
                     //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
@@ -870,7 +870,7 @@ else begin // Use modified FSM
 
                     
                     next_sample_R14S[0] =  start_coord[0];//tri_R13S[0][0]  - (subSample_RnnnnU << RADIX-3);
-                    next_sample_R14S[1] = start_coord[1];// + (subSample_RnnnnU << RADIX-3);        
+                    next_sample_R14S[1] = box_R13S[1];// + (subSample_RnnnnU << RADIX-3);        
                     //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
@@ -928,7 +928,7 @@ else begin // Use modified FSM
 
 
                     next_sample_R14S[0] = start_coord[0];//tri_R13S[0][0]  - (subSample_RnnnnU << RADIX-3);
-                    next_sample_R14S[1] = start_coord[1];// + (subSample_RnnnnU << RADIX-3);              
+                    next_sample_R14S[1] = box_R14S[1];// + (subSample_RnnnnU << RADIX-3);              
                     //Next sample is lower left vertex  //UPDATE: Start at lowest vertex of triangle
                     //find lowest vertex (compare y coords)
                     // Not we also shift over the the LEFT a tad just so we don't miss anything
