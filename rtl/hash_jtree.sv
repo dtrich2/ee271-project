@@ -111,7 +111,7 @@ module hash_jtree
         .IN_WIDTH(HASH_IN_WIDTH),
         .OUT_WIDTH(HASH_OUT_WIDTH)
     )
-    xjit_hash
+    xjit_hash_1
     (
         .in_RnnH    ({sample_R14S[1][0][SIGFIG-1:4],
                       sample_R14S[0][0][SIGFIG-1:4]}   ),
@@ -119,7 +119,11 @@ module hash_jtree
         .out_RnnH   (jitt_val_R14H[0][0]               )
     );
     
-    xjit_hash
+   tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    xjit_hash_2
     (
         .in_RnnH    ({sample_R14S[1][1][SIGFIG-1:4],
                       sample_R14S[0][1][SIGFIG-1:4]}   ),
@@ -127,7 +131,12 @@ module hash_jtree
         .out_RnnH   (jitt_val_R14H[0][1]               )
     );
     
-    xjit_hash
+    
+    tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    xjit_hash_3
     (
         .in_RnnH    ({sample_R14S[1][2][SIGFIG-1:4],
                       sample_R14S[0][2][SIGFIG-1:4]}   ),
@@ -135,7 +144,12 @@ module hash_jtree
         .out_RnnH   (jitt_val_R14H[0][2]               )
     );
     
-    xjit_hash
+    
+   tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    xjit_hash_4
     (
         .in_RnnH    ({sample_R14S[1][3][SIGFIG-1:4],
                       sample_R14S[0][3][SIGFIG-1:4]}   ),
@@ -148,7 +162,7 @@ module hash_jtree
         .IN_WIDTH(HASH_IN_WIDTH),
         .OUT_WIDTH(HASH_OUT_WIDTH)
     )
-    yjit_hash
+    yjit_hash_1
     (
         .in_RnnH    ({sample_R14S[0][0][SIGFIG-1:4],
                       sample_R14S[1][0][SIGFIG-1:4]}   ),
@@ -156,7 +170,12 @@ module hash_jtree
         .out_RnnH   (jitt_val_R14H[1][0]                     )
     );
     
-        yjit_hash
+    
+    tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    yjit_hash_2
     (
         .in_RnnH    ({sample_R14S[0][1][SIGFIG-1:4],
                       sample_R14S[1][1][SIGFIG-1:4]}   ),
@@ -164,8 +183,11 @@ module hash_jtree
         .out_RnnH   (jitt_val_R14H[1][1]                     )
     );
 
-    
-    yjit_hash
+    tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    yjit_hash_3
     (
         .in_RnnH    ({sample_R14S[0][2][SIGFIG-1:4],
                       sample_R14S[1][2][SIGFIG-1:4]}   ),
@@ -174,7 +196,11 @@ module hash_jtree
     );
 
     
-    yjit_hash
+   tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    yjit_hash_4
     (
         .in_RnnH    ({sample_R14S[0][3][SIGFIG-1:4],
                       sample_R14S[1][3][SIGFIG-1:4]}   ),
