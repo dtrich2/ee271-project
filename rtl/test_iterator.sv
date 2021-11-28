@@ -283,7 +283,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
         // START CODE HERE
 
          //Set next right samples
-       subSample_RnnnnU_MSAA = (subSample_RnnnnU << RADIX-3_;
+       subSample_RnnnnU_MSAA = (subSample_RnnnnU << RADIX-3);
      
        for (int i=0; i<SAMPS ; i++) begin 
            next_rt_samp_R14S[0][i] = sample_R14S[0][i]  + subSample_RnnnnU_MSAA;
