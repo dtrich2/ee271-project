@@ -90,8 +90,7 @@ module test_iterator
     parameter COLORS = 3, // Number of color channels
     parameter PIPE_DEPTH = 1, // How many pipe stages are in this block
     parameter MOD_FSM = 0, // Use Modified FSM to eliminate a wait state
-    parameter SAMPS = 4, // Number of samples to run simultaneously
-    parameter SAMP_SHIFT = 2
+    parameter SAMPS = 4 // Number of samples to run simultaneously
 )
 (
     //Input Signals
