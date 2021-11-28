@@ -209,12 +209,12 @@ module testbench
         .screen_RnnnnS      (screen_RnnnnS                  ), // Screen Size
         .subSample_RnnnnU   (subSample_RnnnnU               ), // Flag for subsample
 
-        .s_x_RnnS           (top_rast.rast.hash_jtree.sample_R14S[0]        ),
-        .s_y_RnnS           (top_rast.rast.hash_jtree.sample_R14S[1]        ),
-        .jitter_x_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[0]      ),
-        .jitter_y_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[1]      ),
-        .s_j_x_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[0] ),
-        .s_j_y_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[1] )
+	.s_x_RnnS           (top_rast.rast.hash_jtree.sample_R14S[3:0][0]        ),
+        .s_y_RnnS           (top_rast.rast.hash_jtree.sample_R14S[3:0][1]        ),
+	.jitter_x_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[3:0][0]      ),
+        .jitter_y_RnnS      (top_rast.rast.hash_jtree.jitt_val_R14H[3:0][1]      ),
+        .s_j_x_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[3:0][0] ),
+        .s_j_y_RnnS         (top_rast.rast.hash_jtree.sample_jitted_R14S[3:0][1] )
     );
 
 
