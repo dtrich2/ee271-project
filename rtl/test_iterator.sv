@@ -290,7 +290,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
            next_up_samp_R14S[0][i] =  box_R14S[0][0]; //Back to min x coord
            //increment by 4
            //TODO: Do a shift multiplication
-           next_up_samp_R14S[1][i] = sample_R14S[1][i] + ((subSample_RnnnnU << RADIX-3) << 2) ;                                       
+           next_up_samp_R14S[1][i] = sample_R14S[1][i] + ((subSample_RnnnnU << RADIX-3) << 3) ;                                       
            
        end
 
