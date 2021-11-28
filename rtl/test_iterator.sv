@@ -357,15 +357,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     //Set current bbox to input bounding box:
                     next_box_R14S = box_R13S;
 
-                    // Next sample is valid
-//                     next_validSamp_R14H[0] = 1'b1;
-//                     next_validSamp_R14H[1] = 1'b1;
-//                     next_validSamp_R14H[2] = 1'b1;
-//                     next_validSamp_R14H[3] = 1'b1;
-                    
-                  
-                    
-
+                    // Next sample is valid    
                     //Next sample is lower left vertex
                     for (int j =0; j < SAMPS; j++) begin
                         next_validSamp_R14H[j] = 1'b1;
@@ -374,18 +366,7 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                         //WARNING: MULTIPLICATION
                         next_sample_R14S[1][j] = box_R13S[0][1] + j*subSample_RnnnnU_MSAA;
                      
-                    end
-                    
-                    
-//                     next_sample_R14S[0][1] = box_R13S[0][0];
-//                     next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
-                     
-//                     next_sample_R14S[0][2] = box_R13S[0][0];
-//                     next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
-                                      
-//                     next_sample_R14S[0][3] = box_R13S[0][0];
-//                     next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
-                    
+                    end                
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
@@ -403,24 +384,15 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_box_R14S = box_R13S;
 
                     // Next sample is invalid
-                    next_validSamp_R14H[0] = 1'b0;
-                    next_validSamp_R14H[1] = 1'b0;
-                    next_validSamp_R14H[2] = 1'b0;
-                    next_validSamp_R14H[3] = 1'b0;
-
-                    //Next sample is lower left vertex
-                    next_sample_R14S[0][0] = box_R13S[0][0];
-                    next_sample_R14S[1][0] = box_R13S[0][1];
-                    
-                    next_sample_R14S[0][1] = box_R13S[0][0];
-                    next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
+                    // Next sample is lower left vertex
+                    for (int j =0; j < SAMPS; j++) begin
+                        next_validSamp_R14H[j] = 1'b0;
+                        
+                        next_sample_R14S[0][j] = box_R13S[0][0];
+                        //WARNING: MULTIPLICATION
+                        next_sample_R14S[1][j] = box_R13S[0][1] + j*subSample_RnnnnU_MSAA;
                      
-                    next_sample_R14S[0][2] = box_R13S[0][0];
-                    next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
-                                      
-                    next_sample_R14S[0][3] = box_R13S[0][0];
-                    next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
-
+                    end            
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
@@ -447,26 +419,18 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                      // Preserve bounding box (will be reset in next state)
                     next_box_R14S = box_R14S;
 
-                    // Next sample is invalid
-                    next_validSamp_R14H[0] = 1'b0;
-                    next_validSamp_R14H[1] = 1'b0;
-                    next_validSamp_R14H[2] = 1'b0;
-                    next_validSamp_R14H[3] = 1'b0;
 
-
-             //Next sample is lower left vertex
-                    next_sample_R14S[0][0] = box_R14S[0][0];
-                    next_sample_R14S[1][0] = box_R14S[0][1];
                     
-                    next_sample_R14S[0][1] = box_R14S[0][0];
-                    next_sample_R14S[1][1] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3);
+                    // Next sample is invalid
+                    // Next sample is lower left vertex
+                    for (int j =0; j < SAMPS; j++) begin
+                        next_validSamp_R14H[j] = 1'b0;
+                        
+                        next_sample_R14S[0][j] = box_R14S[0][0];
+                        //WARNING: MULTIPLICATION
+                        next_sample_R14S[1][j] = box_R14S[0][1] + j*subSample_RnnnnU_MSAA;
                      
-                    next_sample_R14S[0][2] = box_R14S[0][0];
-                    next_sample_R14S[1][2] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
-                                      
-                    next_sample_R14S[0][3] = box_R14S[0][0];
-                    next_sample_R14S[1][3] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
-
+                    end   
 
                     //Hold
                     next_tri_R14S = tri_R14S;
