@@ -56,30 +56,31 @@ module smpl_cnt_sb
     parameter AXIS = 3, // Number of axis foreach vertex 3 is (x,y,z).
     parameter COLORS = 3, // Number of color channels
     parameter PIPE_DEPTH = 3, // Number of Pipe Stages in bbox module
-    parameter FILENAME = "sb_log/smpl_cnt_sb.log" // Log file name
+    parameter FILENAME = "sb_log/smpl_cnt_sb.log", // Log file name
+    parameter SAMPS = 4
 )
 (
     input logic signed   [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                         validSamp_R16H[3:0],
-    input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][3:0],
+    input logic                         validSamp_R16H[SAMPS-1:0],
+    input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][SAMPS-1:0],
 
     input logic                             clk,                // Clock
     input logic                             rst,                // Reset
 
-    input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][3:0],
+    input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][SAMPS-1:0],
     input logic signed [SIGFIG-1:0]     color_R18U[COLORS-1:0],
-    input logic                         hit_valid_R18H[3:0],
+    input logic                         hit_valid_R18H[SAMPS-1:0],
 
     input logic        [SIGFIG-1:0]     screen_RnnnnS[1:0],      // Screen Size
     input logic        [3:0]            subSample_RnnnnU,    // Flag for subsample
 
-  input logic signed [SIGFIG-1:0]     s_x_RnnS[3:0],
-  input logic signed [SIGFIG-1:0]     s_y_RnnS[3:0],
-    input logic signed [7:0]            jitter_x_RnnS[3:0],
-    input logic signed [7:0]            jitter_y_RnnS[3:0],
-    input logic signed [SIGFIG-1:0]     s_j_x_RnnS[3:0],
-    input logic signed [SIGFIG-1:0]     s_j_y_RnnS[3:0]
+  input logic signed [SIGFIG-1:0]     s_x_RnnS[SAMPS-1:0],
+  input logic signed [SIGFIG-1:0]     s_y_RnnS[SAMPS-1:0],
+    input logic signed [7:0]            jitter_x_RnnS[SAMPS-1:0],
+    input logic signed [7:0]            jitter_y_RnnS[SAMPS-1:0],
+    input logic signed [SIGFIG-1:0]     s_j_x_RnnS[SAMPS-1:0],
+    input logic signed [SIGFIG-1:0]     s_j_y_RnnS[SAMPS-1:0]
  );
 
 
@@ -87,8 +88,8 @@ module smpl_cnt_sb
     logic signed   [SIGFIG-1:0] tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic signed   [SIGFIG-1:0] tri_Rn1S[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic unsigned [SIGFIG-1:0] color_RnnU[COLORS-1:0];
-    logic                       validSamp_RnnH[3:0];
-    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][3:0];             //
+    logic                       validSamp_RnnH[SAMPS-1:0];
+    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][SAMPS-1:0];             //
     //Pipe Signals for Later Evaluation
 
     //Helper Signals
@@ -128,7 +129,7 @@ module smpl_cnt_sb
     // START CODE HERE
     always @( posedge clk ) begin
         #10;
-      for (int i=0; i<4; i++) begin
+      for (int i=0; i<SAMPS; i++) begin
         if(reset_to_zero && validSamp_RnnH[i]) begin
             if(one != check_hash(
               int'(sample_RnnS[0][i]), //s_x
@@ -189,6 +190,7 @@ module smpl_cnt_sb
 
     always_comb begin
 
+        //TODO! Radical change
         reset_to_zero = (tri_Rn1S != tri_RnnS) ; //New triangle
         reset_to_one = reset_to_zero && hit_valid_R18H[0] ; //New triangle with hit
         reset_to_two = reset_to_zero && hit_valid_R18H[0] && hit_valid_R18H[1] ;
@@ -264,7 +266,7 @@ module smpl_cnt_sb
     dff3 #(
         .WIDTH          (SIGFIG     ),
         .ARRAY_SIZE1     (2          ),
-        .ARRAY_SIZE2     (4          ),
+        .ARRAY_SIZE2     (SAMPS          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          )
     )
@@ -279,7 +281,7 @@ module smpl_cnt_sb
 
     dff2 #(
         .WIDTH          (1          ),
-        .ARRAY_SIZE     (4          ),
+        .ARRAY_SIZE     (SAMPS          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
