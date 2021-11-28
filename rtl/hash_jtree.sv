@@ -123,6 +123,21 @@ generate
         .out_RnnH   (jitt_val_R14H[0][i]               )
     );
         
+        
+    tree_hash #(
+        .IN_WIDTH(HASH_IN_WIDTH),
+        .OUT_WIDTH(HASH_OUT_WIDTH)
+    )
+    yjit_hash
+    (
+        .in_RnnH    ({sample_R14S[0][i][SIGFIG-1:4],
+                      sample_R14S[1][i][SIGFIG-1:4]}   ),
+        .mask_RnnH  (hash_mask_R14H                     ),
+        .out_RnnH   (jitt_val_R14H[1][i]                     )
+    );
+        
+        
+        
     end 
 endgenerate
     
@@ -180,55 +195,55 @@ endgenerate
 //     );
 
 
-    tree_hash #(
-        .IN_WIDTH(HASH_IN_WIDTH),
-        .OUT_WIDTH(HASH_OUT_WIDTH)
-    )
-    yjit_hash_1
-    (
-        .in_RnnH    ({sample_R14S[0][0][SIGFIG-1:4],
-                      sample_R14S[1][0][SIGFIG-1:4]}   ),
-        .mask_RnnH  (hash_mask_R14H                     ),
-        .out_RnnH   (jitt_val_R14H[1][0]                     )
-    );
+//     tree_hash #(
+//         .IN_WIDTH(HASH_IN_WIDTH),
+//         .OUT_WIDTH(HASH_OUT_WIDTH)
+//     )
+//     yjit_hash_1
+//     (
+//         .in_RnnH    ({sample_R14S[0][0][SIGFIG-1:4],
+//                       sample_R14S[1][0][SIGFIG-1:4]}   ),
+//         .mask_RnnH  (hash_mask_R14H                     ),
+//         .out_RnnH   (jitt_val_R14H[1][0]                     )
+//     );
     
     
-    tree_hash #(
-        .IN_WIDTH(HASH_IN_WIDTH),
-        .OUT_WIDTH(HASH_OUT_WIDTH)
-    )
-    yjit_hash_2
-    (
-        .in_RnnH    ({sample_R14S[0][1][SIGFIG-1:4],
-                      sample_R14S[1][1][SIGFIG-1:4]}   ),
-        .mask_RnnH  (hash_mask_R14H                     ),
-        .out_RnnH   (jitt_val_R14H[1][1]                     )
-    );
+//     tree_hash #(
+//         .IN_WIDTH(HASH_IN_WIDTH),
+//         .OUT_WIDTH(HASH_OUT_WIDTH)
+//     )
+//     yjit_hash_2
+//     (
+//         .in_RnnH    ({sample_R14S[0][1][SIGFIG-1:4],
+//                       sample_R14S[1][1][SIGFIG-1:4]}   ),
+//         .mask_RnnH  (hash_mask_R14H                     ),
+//         .out_RnnH   (jitt_val_R14H[1][1]                     )
+//     );
 
-    tree_hash #(
-        .IN_WIDTH(HASH_IN_WIDTH),
-        .OUT_WIDTH(HASH_OUT_WIDTH)
-    )
-    yjit_hash_3
-    (
-        .in_RnnH    ({sample_R14S[0][2][SIGFIG-1:4],
-                      sample_R14S[1][2][SIGFIG-1:4]}   ),
-        .mask_RnnH  (hash_mask_R14H                     ),
-        .out_RnnH   (jitt_val_R14H[1][2]                     )
-    );
+//     tree_hash #(
+//         .IN_WIDTH(HASH_IN_WIDTH),
+//         .OUT_WIDTH(HASH_OUT_WIDTH)
+//     )
+//     yjit_hash_3
+//     (
+//         .in_RnnH    ({sample_R14S[0][2][SIGFIG-1:4],
+//                       sample_R14S[1][2][SIGFIG-1:4]}   ),
+//         .mask_RnnH  (hash_mask_R14H                     ),
+//         .out_RnnH   (jitt_val_R14H[1][2]                     )
+//     );
 
     
-   tree_hash #(
-        .IN_WIDTH(HASH_IN_WIDTH),
-        .OUT_WIDTH(HASH_OUT_WIDTH)
-    )
-    yjit_hash_4
-    (
-        .in_RnnH    ({sample_R14S[0][3][SIGFIG-1:4],
-                      sample_R14S[1][3][SIGFIG-1:4]}   ),
-        .mask_RnnH  (hash_mask_R14H                     ),
-        .out_RnnH   (jitt_val_R14H[1][3]                     )
-    );
+//    tree_hash #(
+//         .IN_WIDTH(HASH_IN_WIDTH),
+//         .OUT_WIDTH(HASH_OUT_WIDTH)
+//     )
+//     yjit_hash_4
+//     (
+//         .in_RnnH    ({sample_R14S[0][3][SIGFIG-1:4],
+//                       sample_R14S[1][3][SIGFIG-1:4]}   ),
+//         .mask_RnnH  (hash_mask_R14H                     ),
+//         .out_RnnH   (jitt_val_R14H[1][3]                     )
+//     );
 
 
     //Jitter the sample coordinates
