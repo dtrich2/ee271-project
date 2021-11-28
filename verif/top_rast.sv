@@ -37,6 +37,7 @@ module top_rast;
     localparam PIPES_ITER = rast_params::PIPES_ITER; // Number of Pipe Stages in iter module
     localparam PIPES_HASH = rast_params::PIPES_HASH; // Number of pipe stages in hash module
     localparam PIPES_SAMP = rast_params::PIPES_SAMP; // Number of Pipe Stages in sample module
+    localparam SAMPS = rast_params::SAMPS;
 
    /*****************************************
     * wires to connect design and environment
@@ -60,9 +61,9 @@ module top_rast;
 
     //DUT OUTPUTS
     logic                       halt_RnnnnL;
-    logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0][3:0]; //Sample hit Location
+    logic signed   [SIGFIG-1:0] hit_R18S[AXIS-1:0][SAMPS-1:0]; //Sample hit Location
     logic unsigned [SIGFIG-1:0] color_R18U[COLORS-1:0]; //Sample hit Location
-    logic                       hit_valid_R18H[3:0] ;  //Did Sample Hit?
+    logic                       hit_valid_R18H[SAMPS-1:0] ;  //Did Sample Hit?
     //DUT OUTPUTS
 
     // instantiate the DUT
@@ -75,7 +76,8 @@ module top_rast;
         .PIPES_BOX  (PIPES_BOX  ),
         .PIPES_ITER (PIPES_ITER ),
         .PIPES_HASH (PIPES_HASH ),
-        .PIPES_SAMP (PIPES_SAMP )
+        .PIPES_SAMP (PIPES_SAMP ),
+        .SAMPS      (SAMPS)
     )
     rast
     (
