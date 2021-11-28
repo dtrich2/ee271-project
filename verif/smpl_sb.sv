@@ -43,27 +43,28 @@ module smpl_sb
     parameter AXIS = 3, // Number of axis foreach vertex 3 is (x,y,z).
     parameter COLORS = 3, // Number of color channels
     parameter PIPE_DEPTH = 3, // Number of Pipe Stages in bbox module
-    parameter FILENAME = "sb_log/smpl_sb.log" // Log file name
+    parameter FILENAME = "sb_log/smpl_sb.log", // Log file name
+    parameter SAMPS = 4
 )
 (
     input logic signed   [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-  input logic                         validSamp_R16H[3:0],
-  input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][3:0],
+  input logic                         validSamp_R16H[SAMPS-1:0],
+  input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][SAMPS-1:0],
 
     input logic                         clk,                // Clock
     input logic                         rst,                // Reset
 
-  input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][3:0],
+  input logic signed [SIGFIG-1:0]     hit_R18S[AXIS-1:0][SAMPS-1:0],
     input logic signed [SIGFIG-1:0]     color_R18U[COLORS-1:0],
-  input                               hit_valid_R18H[3:0]
+  input                               hit_valid_R18H[SAMPS-1:0]
 );
 
     //Pipe Signals for Later Evaluation
     logic signed   [SIGFIG-1:0] tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic unsigned [SIGFIG-1:0] color_RnnU[COLORS-1:0];
-    logic                       validSamp_RnnH[3:0];
-    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][3:0];             //
+    logic                       validSamp_RnnH[SAMPS-1:0];
+    logic signed   [SIGFIG-1:0] sample_RnnS[1:0][SAMPS-1:0];             //
     //Pipe Signals for Later Evaluation
 
     //Helper Signals
@@ -80,7 +81,7 @@ module smpl_sb
     //Check if Sample in triangle test is correct
     always @(posedge clk) begin
         #100;
-      for (int i=0; i < 4; i++) begin
+      for (int i=0; i < SAMPS; i++) begin
         if(validSamp_RnnH[i]
             &&
             one !=  check_sample_test( int'(tri_RnnS[0][0]), //triangle
@@ -149,8 +150,8 @@ module smpl_sb
 
     dff3 #(
         .WIDTH          (SIGFIG     ),
-        .ARRAY_SIZE1     (2          ),
-        .ARRAY_SIZE2     (4          ),
+        .ARRAY_SIZE1     (2         ),
+        .ARRAY_SIZE2     (SAMPS     ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          )
     )
@@ -165,7 +166,7 @@ module smpl_sb
 
     dff2 #(
         .WIDTH          (1          ),
-        .ARRAY_SIZE     (4          ),
+        .ARRAY_SIZE     (SAMPS      ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
