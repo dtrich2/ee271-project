@@ -170,7 +170,8 @@ module testbench
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-        .PIPE_DEPTH (PIPES_SAMP )
+	.PIPE_DEPTH (PIPES_SAMP ),
+	.SAMPS      (SAMPS)
     )
     smpl_sb 
     (
@@ -193,7 +194,8 @@ module testbench
         .VERTS      (VERTS          ),
         .AXIS       (AXIS           ),
         .COLORS     (COLORS         ),
-        .PIPE_DEPTH (PIPES_SAMP + 1 )
+	.PIPE_DEPTH (PIPES_SAMP + 1 ),
+	.SAMPS      (SAMPS)
     )
     smpl_cnt_sb
     (
@@ -233,7 +235,8 @@ module testbench
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-        .PIPE_DEPTH (PIPES_SAMP )
+	.PIPE_DEPTH (PIPES_SAMP ),
+	.SAMPS      (SAMPS)
     )
     perf_mon
     (
