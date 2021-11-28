@@ -113,7 +113,7 @@ module test_iterator
     //Outputs
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
     output logic unsigned [SIGFIG-1:0]  color_R14U[COLORS-1:0] , //Color of triangle
-    output logic signed [SIGFIG-1:0]    sample_R14S[1:0], //Sample Location to Be Tested
+    output logic signed [SIGFIG-1:0]    sample_R14S[1:0][3:0], //Sample Location to Be Tested
     output logic                            validSamp_R14H //Sample and triangle are Valid
 );
 
@@ -127,7 +127,7 @@ module test_iterator
     // then instantiate registers for storing these states
     logic signed [SIGFIG-1:0]       next_tri_R14S[VERTS-1:0][AXIS-1:0];
     logic unsigned  [SIGFIG-1:0]    next_color_R14U[COLORS-1:0] ;
-    logic signed [SIGFIG-1:0]       next_sample_R14S[1:0];
+    logic signed [SIGFIG-1:0]       next_sample_R14S[1:0][3:0];
     logic                               next_validSamp_R14H;
     logic                               next_halt_RnnnnL;
 
@@ -240,8 +240,8 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     end
 
     // define some helper signals
-    logic signed [SIGFIG-1:0]   next_up_samp_R14S[1:0]; //If jump up, next sample
-    logic signed [SIGFIG-1:0]   next_rt_samp_R14S[1:0]; //If jump right, next sample
+    logic signed [SIGFIG-1:0]   next_up_samp_R14S[1:0][3:0]; //If jump up, next sample
+    logic signed [SIGFIG-1:0]   next_rt_samp_R14S[1:0][3:0]; //If jump right, next sample
     logic                       at_right_edg_R14H;      //Current sample at right edge of bbox?
     logic                       at_top_edg_R14H;        //Current sample at top edge of bbox?
     logic                       at_end_box_R14H;        //Current sample at end of bbox?
@@ -260,97 +260,35 @@ if(MOD_FSM == 0) begin // Using baseline FSM
  always_comb begin
         // START CODE HERE
 
-         //Set next right sample
+         //Set next right samples
+     
+       for (int i=0; i<4 ; i++) begin 
+           next_rt_samp_R14S[0][i] = sample_R14S[0[i]  + (subSample_RnnnnU << RADIX-3);
+           next_rt_samp_R14S[1][i] = sample_R14S[1][i];
+                                                 
+                                                 
+           next_up_samp_R14S[0][i] =  box_R14S[0][0]; //Back to min x coord
+           //increment by 4
+           next_up_samp_R14S[1][i] = sample_R14S[1][i] + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);                                       
+           
+       end
 
-         //case(subSample_RnnnnU)
-
-            //MSAA 1
-            next_rt_samp_R14S[0] = sample_R14S[0]  + (subSample_RnnnnU << RADIX-3);
-            next_up_samp_R14S[1] =  sample_R14S[1] + (subSample_RnnnnU << RADIX-3);
-
-             
-
-
-
-
-            // 4'b1000: begin
-            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
-            //     next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
-
-            // end
-
-            // //MSAA 2
-            // 4'b0100: begin
-            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 10'b1000000000;
-            //     next_up_samp_R14S[1] =  sample_R14S[1] + 10'b1000000000;
-            // end
-
-            // //MSAA 3
-            // 4'b0010: begin
-            //     next_rt_samp_R14S[0] = sample_R14S[0]  +  9'b100000000;
-            //     next_up_samp_R14S[1] =  sample_R14S[1] +  9'b100000000;
-            // end
-
-
-            // //MSAA 4
-            // 4'b0001: begin
-            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 8'b10000000;
-            //     next_up_samp_R14S[1] =  sample_R14S[1] + 8'b10000000;
-            // end
-
-
-            //             //MSAA 4
-            // default: begin
-            //     next_rt_samp_R14S[0] = sample_R14S[0]  + 11'b10000000000;
-            //     next_up_samp_R14S[1] =  sample_R14S[1] + 11'b10000000000;
-            // end
-
-
-
-            
-
-         //endcase
-         
-         next_rt_samp_R14S[1] = sample_R14S[1];
-
-         //Set next up sample
-         next_up_samp_R14S[0] =  box_R14S[0][0]; //Back to min x coord
-        
-
-        if (sample_R14S[0] >= box_R14S[1][0]) begin
+        //only need to check one sample
+        if (sample_R14S[0][0] >= box_R14S[1][0]) begin
             at_right_edg_R14H = 1'b1;
 
-            //Reset X, Update Y
-            // next_rt_samp_R14S[0] =  box_R13S[0][0];
-            // next_rt_samp_R14S[1] =  box_R13S[0][1];
-
-            // next_up_samp_R14S[0] =  box_R13S[0][0];
-            // next_up_samp_R14S[1] =  sample_R14S[1] + subSample_RnnnnU;
         end
         else begin
              at_right_edg_R14H = 1'b0;
-
-             //Update X, leave Y alone
-            //  next_rt_samp_R14S[0] = sample_R14S[0] + subSample_RnnnnU;
-            //  next_rt_samp_R14S[1] = sample_R14S[1];
-
-            //  next_up_samp_R14S[0] =  sample_R14S[0];
-            //  next_up_samp_R14S[1] =  sample_R14S[1];
         end
 
-        if (sample_R14S[1] >= box_R14S[1][1]) begin
+        //only need to check one
+        if (sample_R14S[1][0] >= box_R14S[1][1]) begin
             at_top_edg_R14H = 1'b1;
 
         end
         else begin
              at_top_edg_R14H = 1'b0;
-             //Reset X, Reset Y
-            // next_rt_samp_R14S[0] =  box_R13S[0][0];
-            // next_rt_samp_R14S[1] =  box_R13S[0][1];
-
-
-            // next_up_samp_R14S[0] =  box_R13S[0][0];
-            // next_up_samp_R14S[1] =  box_R13S[0][1];
         end
 
         if (at_right_edg_R14H && at_top_edg_R14H) begin
@@ -396,20 +334,24 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_validSamp_R14H = 1'b1;
 
                     //Next sample is lower left vertex
-                    next_sample_R14S[0] = box_R13S[0][0];
-
-                    next_sample_R14S[1] = box_R13S[0][1];
-
+                    next_sample_R14S[0][0] = box_R13S[0][0];
+                    next_sample_R14S[1][0] = box_R13S[0][1];
+                    
+                    next_sample_R14S[0][1] = box_R13S[0][0];
+                    next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
+                     
+                    next_sample_R14S[0][2] = box_R13S[0][0];
+                    next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
+                                      
+                    next_sample_R14S[0][3] = box_R13S[0][0];
+                    next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
+                    
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
 
                     // Set current to input
                     next_color_R14U = color_R13U;
-
-        
-
-
 
                 end
                 else begin
@@ -423,10 +365,18 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     // Next sample is invalid
                     next_validSamp_R14H = 1'b0;
 
-                     //Next sample is lower left vertex
-                     next_sample_R14S[0] = box_R13S[0][0];
-
-                     next_sample_R14S[1] = box_R13S[0][1];
+                    //Next sample is lower left vertex
+                    next_sample_R14S[0][0] = box_R13S[0][0];
+                    next_sample_R14S[1][0] = box_R13S[0][1];
+                    
+                    next_sample_R14S[0][1] = box_R13S[0][0];
+                    next_sample_R14S[1][1] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3);
+                     
+                    next_sample_R14S[0][2] = box_R13S[0][0];
+                    next_sample_R14S[1][2] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
+                                      
+                    next_sample_R14S[0][3] = box_R13S[0][0];
+                    next_sample_R14S[1][3] = box_R13S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
 
 
                     // Set current tri to input tri
@@ -458,11 +408,18 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     next_validSamp_R14H = 1'b0;
 
 
-                    //Next sample is lower left vertex
-
-                    next_sample_R14S[0] = box_R14S[0][0];
-
-                    next_sample_R14S[1] = box_R14S[0][1];
+             //Next sample is lower left vertex
+                    next_sample_R14S[0][0] = box_R14S[0][0];
+                    next_sample_R14S[1][0] = box_R14S[0][1];
+                    
+                    next_sample_R14S[0][1] = box_R14S[0][0];
+                    next_sample_R14S[1][1] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3);
+                     
+                    next_sample_R14S[0][2] = box_R14S[0][0];
+                    next_sample_R14S[1][2] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3);
+                                      
+                    next_sample_R14S[0][3] = box_R14S[0][0];
+                    next_sample_R14S[1][3] = box_R14S[0][1] + (subSample_RnnnnU << RADIX-3)  + (subSample_RnnnnU << RADIX-3) + (subSample_RnnnnU << RADIX-3);
 
 
                     //Hold
