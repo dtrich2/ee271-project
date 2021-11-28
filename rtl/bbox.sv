@@ -240,18 +240,18 @@ module bbox
         
         if  ((tri_R10S[0][1] <= tri_R10S[1][1]) &&  (tri_R10S[0][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[0][1];
-            start_coord_R10H[0] = tri_R10S[0][0]
-            start_coord_R10H[1] = tri_R10S[0][1]
+            start_coord_R10H[0] = tri_R10S[0][0];
+            start_coord_R10H[1] = tri_R10S[0][1];
         end
         else if ((tri_R10S[1][1] < tri_R10S[0][1]) &&  (tri_R10S[1][1] <= tri_R10S[2][1])) begin
             box_R10S[0][1] = tri_R10S[1][1];
-            start_coord_R10H[0] = tri_R10S[1][0]
-            start_coord_R10H[1] = tri_R10S[1][1]
+            start_coord_R10H[0] = tri_R10S[1][0];
+            start_coord_R10H[1] = tri_R10S[1][1];
         end
         else begin
             box_R10S[0][1] = tri_R10S[2][1];
-            start_coord_R10H[0] = tri_R10S[2][0]
-            start_coord_R10H[1] = tri_R10S[2][1]
+            start_coord_R10H[0] = tri_R10S[2][0];
+            start_coord_R10H[1] = tri_R10S[2][1];
         end
         
 
