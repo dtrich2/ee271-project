@@ -60,9 +60,9 @@ module rast
     output logic halt_RnnnnL,
 
     // Output Signals
-    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0], // Hit Location
+    output logic signed [SIGFIG-1:0]    hit_R18S[AXIS-1:0][3:0], // Hit Location
     output logic unsigned [SIGFIG-1:0]  color_R18U[COLORS-1:0], // Color of Tri
-    output logic                            hit_valid_R18H            // Is this a hit?
+    output logic                            hit_valid_R18H[3:0]            // Is this a hit?
 );
     `ifdef GENERATE_JSON
     integer bbox_file;
@@ -140,13 +140,13 @@ module rast
 
     logic signed [SIGFIG-1:0]   tri_R14S[VERTS-1:0][AXIS-1:0]; //triangle to Sample Test
     logic unsigned [SIGFIG-1:0] color_R14U[COLORS-1:0] ;         // Color of Tri
-    logic signed [SIGFIG-1:0]   sample_R14S[1:0];               //Sample Location to Be Tested
-    logic                           validSamp_R14H;                 //Sample and triangle are Valid
+    logic signed [SIGFIG-1:0]   sample_R14S[1:0][3:0];               //Sample Location to Be Tested
+    logic                           validSamp_R14H[3:0];                 //Sample and triangle are Valid
 
     logic signed [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0]; //triangle to Sample Test
     logic unsigned [SIGFIG-1:0] color_R16U[COLORS-1:0] ;         //Color of Tri
-    logic signed [SIGFIG-1:0]   sample_R16S[1:0];               //Sample Location to Be Tested
-    logic                           validSamp_R16H;                 //Sample and triangle are Valid
+    logic signed [SIGFIG-1:0]   sample_R16S[1:0][3:0];               //Sample Location to Be Tested
+    logic                           validSamp_R16H[3:0];                 //Sample and triangle are Valid
 
     logic [SIGFIG-1:0]  zero;                     //fudge signal to hold zero as a reset value
     logic [127:0]           big_zero;                 //fudge signal to hold zero as a reset value
