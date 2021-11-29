@@ -196,7 +196,7 @@ module bbox
     // Try declaring an always_comb block to assign values to box_R10S
 
     always_comb begin
-        
+
         // Get largest x-coordinate
         
         if ((tri_R10S[0][0] >= tri_R10S[1][0]) &&  (tri_R10S[0][0] >= tri_R10S[2][0])) begin
@@ -365,6 +365,9 @@ endgenerate
         //////// ASSIGN "out_box_R10S" and "outvalid_R10H"
         // START CODE HERE
 
+        //backface culling
+
+
         // Clamping:
 
           // NOTE:
@@ -407,13 +410,19 @@ endgenerate
 
         //END Clamping
 
+
         //Begin Valid Check
 
         if ((rounded_box_R10S[1][0] <  0) || (rounded_box_R10S[1][1] <  0) || (rounded_box_R10S[0][0] >=  screen_RnnnnS[0]) || (rounded_box_R10S[0][1] >=  screen_RnnnnS[1])) begin
             outvalid_R10H = 1'b0;
         end
+        //backface culling
+        //ay                                 bx                               ax                            by
+        else if ((tri_R10S[1][1]-tri_R10S[0][1])*(tri_R10S[2][0]-tri_R10S[0][0])<(tri_R10S[1][0]-tri_R10S[0][0])*(tri_R10S[2][1]-tri_R10S[0][1])) begin
+            outvalid_R10H = 1'b0;
+        end
         else begin
-            outvalid_R10H = 1'b1;
+            outvalid_R10H = validTri_R10H;
         end
 
 

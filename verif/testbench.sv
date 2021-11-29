@@ -114,9 +114,9 @@ module testbench
         .VERTS      (VERTS          ),
         .AXIS       (AXIS           ),
         .COLORS     (COLORS         ),
-	.FILENAME   ("f_image.ppm"  ),
-	.SAMPS      (SAMPS)
-	    
+    .FILENAME   ("f_image.ppm"  ),
+    .SAMPS      (SAMPS)
+        
     )
     zbuff
     (
@@ -127,7 +127,7 @@ module testbench
         .subSample_RnnnnU   (subSample_RnnnnU   ), // Output: SubSample_Interval
         .ss_w_lg2_RnnnnS    (ss_w_lg2_RnnnnS    ),
 
-	.hit_R18S           (hit_R18S           ), // Sample Location and depth (change for multi)
+    .hit_R18S           (hit_R18S           ), // Sample Location and depth (change for multi)
         .color_R18U         (color_R18U         ), // Color of Sample Hit
         .hit_valid_R18H     (hit_valid_R18H     )  // Is sample hit valid
     );
@@ -170,8 +170,8 @@ module testbench
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-	.PIPE_DEPTH (PIPES_SAMP ),
-	.SAMPS      (SAMPS)
+    .PIPE_DEPTH (PIPES_SAMP ),
+    .SAMPS      (SAMPS)
     )
     smpl_sb 
     (
@@ -183,7 +183,7 @@ module testbench
         .clk            (clk                            ), // Clock
         .rst            (rst                            ), // Reset
 
-	.hit_R18S       (hit_R18S                       ), //Chanfe for multi
+    .hit_R18S       (hit_R18S                       ), //Chanfe for multi
         .color_R18U     (color_R18U                     ), // triangle Color
         .hit_valid_R18H (hit_valid_R18H                 )
     );
@@ -194,8 +194,8 @@ module testbench
         .VERTS      (VERTS          ),
         .AXIS       (AXIS           ),
         .COLORS     (COLORS         ),
-	.PIPE_DEPTH (PIPES_SAMP + 1 ),
-	.SAMPS      (SAMPS)
+    .PIPE_DEPTH (PIPES_SAMP + 1 ),
+    .SAMPS      (SAMPS)
     )
     smpl_cnt_sb
     (
@@ -207,7 +207,7 @@ module testbench
         .clk                (clk                            ), // Clock
         .rst                (rst                            ), // Reset
 
-	.hit_R18S           (hit_R18S                       ), //change for multi
+    .hit_R18S           (hit_R18S                       ), //change for multi
         .color_R18U         (color_R18U                     ), // triangle Color
         .hit_valid_R18H     (hit_valid_R18H                 ),
 
@@ -235,12 +235,12 @@ module testbench
         .VERTS      (VERTS      ),
         .AXIS       (AXIS       ),
         .COLORS     (COLORS     ),
-	.PIPE_DEPTH (PIPES_SAMP ),
-	.SAMPS      (SAMPS)
+    .PIPE_DEPTH (PIPES_SAMP ),
+    .SAMPS      (SAMPS)
     )
     perf_mon
     (
-        .tri_R16S       (top_rast.rast.tri_R16S       ), // 4 Sets X,Y Fixed Point Values
+        .tri_R10S       (top_rast.rast.tri_R16S       ), // 4 Sets X,Y Fixed Point Values
         .color_R16U     (top_rast.rast.color_R16U     ), // triangle Color
         .validSamp_R16H (top_rast.rast.validSamp_R16H ),
         .sample_R16S    (top_rast.rast.sample_R16S    ), // Will change for JIT -todo
@@ -248,7 +248,7 @@ module testbench
         .clk            (clk                          ), // Clock
         .rst            (rst                          ), // Reset
 
-	.hit_R18S       (hit_R18S                     ), //change for multi
+    .hit_R18S       (hit_R18S                     ), //change for multi
         .color_R18U     (top_rast.rast.color_R18U     ), // triangle Color
         .hit_valid_R18H (hit_valid_R18H               )
     );
@@ -329,7 +329,7 @@ module testbench
             //         levels  instance
             $display("time=%10t Starting Wave Capture", $time);
             $vcdplusfile("wave.vpd");
-			$vcdpluson(0); 
+            $vcdpluson(0); 
             $vcdplusmemon(0);
 
         end // if ( $test$plusargs("wave") )

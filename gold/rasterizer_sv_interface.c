@@ -48,7 +48,7 @@ int check_bounding_box(
     int isCorrect = true;
     if(valid_triangle){
         if(valid_bbox != bbox.valid){
-            PRINT_ERROR("bbox_valid", valid_bbox, bbox.valid);
+            //PRINT_ERROR("bbox_valid", valid_bbox, bbox.valid);
             isCorrect = false;
         }
         else if(valid_bbox == true){

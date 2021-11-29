@@ -30,7 +30,7 @@ module perf_monitor
     parameter SAMPS = 4
 )
 (
-    input logic signed   [SIGFIG-1:0]     tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
+    input logic signed   [SIGFIG-1:0]     tri_R10S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]     color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
     input logic                           validSamp_R16H[SAMPS-1:0],
     input logic signed   [SIGFIG-1:0]     sample_R16S[1:0][SAMPS-1:0],
@@ -61,7 +61,7 @@ module perf_monitor
         .clk    (clk        ),
         .reset  (rst        ),
         .en     (1'b1       ),
-        .in     (tri_R16S   ),
+        .in     (tri_R10S   ),
         .out    (tri_RnnS   )
     );
 
@@ -77,7 +77,7 @@ module perf_monitor
         .clk    (clk        ),
         .reset  (rst        ),
         .en     (1'b1       ),
-        .in     (tri_R16S   ),
+        .in     (tri_R10S   ),
         .out    (tri_Rn1S   )
     );
 
