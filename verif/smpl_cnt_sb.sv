@@ -62,7 +62,7 @@ module smpl_cnt_sb
 (
     input logic signed   [SIGFIG-1:0]   tri_R16S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                         validSamp_R16H[SAMPS-1:0],
+    input logic                         validSamp_R16H,
     input logic signed   [SIGFIG-1:0]   sample_R16S[1:0][SAMPS-1:0],
 
     input logic                             clk,                // Clock
@@ -88,7 +88,7 @@ module smpl_cnt_sb
     logic signed   [SIGFIG-1:0] tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic signed   [SIGFIG-1:0] tri_Rn1S[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic unsigned [SIGFIG-1:0] color_RnnU[COLORS-1:0];
-    logic                       validSamp_RnnH[SAMPS-1:0];
+    logic                       validSamp_RnnH;
     logic signed   [SIGFIG-1:0] sample_RnnS[1:0][SAMPS-1:0];             //
     //Pipe Signals for Later Evaluation
 
@@ -130,7 +130,7 @@ module smpl_cnt_sb
     always @( posedge clk ) begin
         #10;
       for (int i=0; i<SAMPS; i++) begin
-        if(reset_to_zero && validSamp_RnnH[i]) begin
+        if(reset_to_zero && validSamp_RnnH) begin
             if(one != check_hash(
               int'(sample_RnnS[0][i]), //s_x
               int'(sample_RnnS[1][i]), //s_y,
@@ -150,7 +150,7 @@ module smpl_cnt_sb
     //Check that the Number of Hits is Correct
     always @( posedge clk ) begin
         #10;
-      if( reset_to_zero && validSamp_RnnH[0] ) begin
+      if( reset_to_zero && validSamp_RnnH ) begin
             //if(one != check_hit_count(
             //        int'(tri_RnnS[0][0]),   //triangle
             //        int'(tri_RnnS[0][1]),   //triangle
@@ -278,9 +278,8 @@ module smpl_cnt_sb
         .out    (sample_RnnS)
     );
 
-    dff2 #(
+    dff #(
         .WIDTH          (1          ),
-        .ARRAY_SIZE     (SAMPS          ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
