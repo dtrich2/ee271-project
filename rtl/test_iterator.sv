@@ -244,9 +244,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     )
     d305
     (
-        .clk    (clk && validTri_R13H ),
+        .clk    (clk  ),
         .reset  (rst            ),
-        .en     (1'b1         ), //try valid triangle
+        .en     (validTri_R13H       ), //try valid triangle
         .in     (next_box_R14S  ),
         .out    (box_R14S       )
     );
