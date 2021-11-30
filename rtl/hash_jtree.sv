@@ -319,7 +319,7 @@ endgenerate
         
    
 
-    logic valid_gate = validSamp_R16H[0];
+    logic valid_gate = 1'b1; //validSamp_R16H[0];
 
     dff3 #(
         .WIDTH(SIGFIG),
