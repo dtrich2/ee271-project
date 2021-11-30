@@ -161,6 +161,8 @@ module sampletest
     end
 
     /* Flop R16 to R18_retime with retiming registers*/
+        
+    //Optimization: Disable flip flops when validSamp_R16H is all 0's
     dff3 #(
         .WIDTH          (SIGFIG         ),
         .ARRAY_SIZE1     (AXIS           ),
@@ -172,7 +174,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (1'b1           ),
+        .en     (validSamp_R16H[0]          ),
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
