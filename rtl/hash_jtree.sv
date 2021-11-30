@@ -332,7 +332,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (validSamp_R16H[0]               ),
+        .en     (1'b1               ),
         .in     (tri_R14S           ),
         .out    (tri_R16S_retime    )
     );
