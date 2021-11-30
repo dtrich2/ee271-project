@@ -32,7 +32,7 @@ module perf_monitor
 (
     input logic signed   [SIGFIG-1:0]     tri_R10S[VERTS-1:0][AXIS-1:0],  // 4 Sets X,Y Fixed Point Values
     input logic unsigned [SIGFIG-1:0]     color_R16U[COLORS-1:0],          // 4 Sets X,Y Fixed Point Values
-    input logic                           validSamp_R16H[SAMPS-1:0],
+    input logic                           validSamp_R16H,
     input logic signed   [SIGFIG-1:0]     sample_R16S[1:0][SAMPS-1:0],
 
     input logic clk,                // Clock
@@ -46,7 +46,7 @@ module perf_monitor
     //Pipe Signals for Later Evaluation
     logic signed   [SIGFIG-1:0]  tri_RnnS[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
     logic signed   [SIGFIG-1:0]  tri_Rn1S[VERTS-1:0][AXIS-1:0];    // 4 Sets X,Y Fixed Point Values
-    logic                        validSamp_RnnH[SAMPS-1:0];
+    logic                        validSamp_RnnH;
     //Pipe Signals for Later Evaluation
 
     dff3 #(
@@ -81,9 +81,8 @@ module perf_monitor
         .out    (tri_Rn1S   )
     );
 
-    dff2 #(
+    dff  #(
         .WIDTH          (1          ),
-        .ARRAY_SIZE     (SAMPS      ),
         .PIPE_DEPTH     (PIPE_DEPTH ),
         .RETIME_STATUS  (0          ) // No retime
     )
@@ -119,9 +118,9 @@ module perf_monitor
          
          for (int i=0; i< SAMPS; i++) begin
 
-          sample_count = validSamp_RnnH[i] ? (sample_count + 1) : sample_count;
+          sample_count = validSamp_RnnH ? (sample_count + 1) : sample_count;
 
-            sample_hit_count = ( validSamp_RnnH[i] && hit_valid_R18H[i] ) ?
+            sample_hit_count = ( validSamp_RnnH && hit_valid_R18H[i] ) ?
                         ( sample_hit_count + 1 ) : sample_hit_count;
 
             triangle_count = ( tri_Rn1S != tri_RnnS ) ?
