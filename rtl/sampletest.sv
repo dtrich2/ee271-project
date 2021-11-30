@@ -164,6 +164,8 @@ module sampletest
 
     /* Flop R16 to R18_retime with retiming registers*/
         
+    logic valid_gate = 1'b1;
+        
     //Optimization: Disable flip flops when validSamp_R16H is all 0's
     dff3 #(
         .WIDTH          (SIGFIG         ),
@@ -176,7 +178,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (validSamp_R16H[0]      ),
+        .en     (valid_gate      ),
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
@@ -191,7 +193,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (validSamp_R16H[0]              ),
+        .en     (valid_gate             ),
         .in     (color_R16U         ),
         .out    (color_R18U_retime  )
     );
