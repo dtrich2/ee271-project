@@ -99,6 +99,7 @@ module sampletest
     logic                           hit_valid_R16H[SAMPS-1:0] ; // Output (YOUR JOB!)
     logic signed [SIGFIG-1:0]       hit_R16S[AXIS-1:0][SAMPS-1:0]; // Sample position
     // Signals in Access Order
+   
 
     // Your job is to produce the value for hit_valid_R16H signal, which indicates whether a sample lies inside the triangle.
     // hit_valid_R16H is high if validSamp_R16H && sample inside triangle (with back face culling)
@@ -174,7 +175,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (validSamp_R16H[0]      ),
+        .en     (|validSamp_R16H[      ),
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
@@ -189,7 +190,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (validSamp_R16H[0]              ),
+        .en     (|validSamp_R16H              ),
         .in     (color_R16U         ),
         .out    (color_R18U_retime  )
     );
