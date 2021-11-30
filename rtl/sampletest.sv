@@ -189,7 +189,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1               ),
+        .en     (validSamp_R16H[0]                ),
         .in     (color_R16U         ),
         .out    (color_R18U_retime  )
     );
@@ -204,7 +204,7 @@ module sampletest
     (
         .clk    (clk                    ),
         .reset  (rst                    ),
-        .en     (1'b1                   ),
+        .en     (validSamp_R16H[0]                   ),
         .in     (hit_valid_R16H         ),
         .out    (hit_valid_R18H_retime  )
     );
@@ -222,7 +222,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (1'b1           ),
+        .en     (validSamp_R16H[0]           ),
         .in     (hit_R18S_retime),
         .out    (hit_R18S       )
     );
@@ -237,7 +237,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1               ),
+        .en     (validSamp_R16H[0]              ),
         .in     (color_R18U_retime  ),
         .out    (color_R18U         )
     );
@@ -252,7 +252,7 @@ module sampletest
     (
         .clk    (clk                    ),
         .reset  (rst                    ),
-        .en     (1'b1                   ),
+        .en     (validSamp_R16H[0]                ),
         .in     (hit_valid_R18H_retime  ),
         .out    (hit_valid_R18H         )
     );
