@@ -118,7 +118,7 @@ module sampletest
           
           
 
-          for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
+        for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
             for (int j=0; j<2 ; j++) begin    //over x and y
                 tri_shift_R16S[i][j]=tri_R16S[i][j]-sample_R16S[j][samp];  //shift by sample
             end
@@ -147,16 +147,9 @@ module sampletest
             end
             hit_valid_R16H[samp]=hit_valid_R16H[samp] & b;
         end
-
+     
       end
-          
-        
-              
-          
-          
-          
-            
-        end
+      
     end
     // END CODE HERE
 
