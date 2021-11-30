@@ -111,8 +111,14 @@ module sampletest
     logic b;
 
   always_comb begin
+      // Don't do anything if not a valid sample
+      
+      
       for (int samp=0; samp<SAMPS; samp++) begin
-            for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
+          
+          if (validSamp_R16H[samp]) begin
+              
+              for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
                 for (int j=0; j<2 ; j++) begin    //over x and y
                     tri_shift_R16S[i][j]=tri_R16S[i][j]-sample_R16S[j][samp];  //shift by sample
                 end
@@ -141,6 +147,18 @@ module sampletest
                 end
                 hit_valid_R16H[samp]=hit_valid_R16H[samp] & b;
             end
+              
+          end
+          
+          else begin
+              hit_valid_R16H[samp] = 1'b0;
+              dist_lg_R16S[samp] = 1'b1; //todo check this
+          end
+              
+          
+          
+          
+            
         end
     end
     // END CODE HERE
@@ -177,7 +195,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     ( (|validSamp_R16H)   ),  //clock gating: validSamp_R16H[0]
+        .en     ( 1'b1   ),  //clock gating: validSamp_R16H[0]
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
