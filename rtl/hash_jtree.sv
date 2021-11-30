@@ -319,7 +319,7 @@ endgenerate
         
    
 
-    logic valid_gate = 1'b1; //validSamp_R16H[0];
+  //  logic valid_gate = 1'b1; //validSamp_R16H[0];
 
     dff3 #(
         .WIDTH(SIGFIG),
@@ -332,7 +332,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (valid_gate             ),
+        .en     (validSamp_R16H[0]              ),
         .in     (tri_R14S           ),
         .out    (tri_R16S_retime    )
     );
@@ -347,7 +347,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (valid_gate              ),
+        .en     (validSamp_R16H[0]               ),
         .in     (color_R14U         ),
         .out    (color_R16U_retime  )
     );
@@ -363,7 +363,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (valid_gate            ),
+        .en     (validSamp_R16H[0]             ),
         .in     (sample_jitted_R14S ),
         .out    (sample_R16S_retime )
     );
