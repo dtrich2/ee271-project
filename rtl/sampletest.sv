@@ -116,7 +116,7 @@ module sampletest
       
       for (int samp=0; samp<SAMPS; samp++) begin
           
-          if (validSamp_R16H[samp]) begin
+          if (1'b1) begin
               
               for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
                 for (int j=0; j<2 ; j++) begin    //over x and y
