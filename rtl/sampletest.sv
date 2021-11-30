@@ -72,7 +72,7 @@ module sampletest
     input logic signed [SIGFIG-1:0]     tri_R16S[VERTS-1:0][AXIS-1:0], // triangle to Iterate Over
     input logic unsigned [SIGFIG-1:0]   color_R16U[COLORS-1:0] , // Color of triangle
     input logic signed [SIGFIG-1:0]     sample_R16S[1:0][SAMPS-1:0], // Sample Location
-    input logic                         validSamp_R16H[SAMPS-1:0], // A valid sample location
+    input logic                         validSamp_R16H, // A valid sample location
 
     input logic clk, // Clock
     input logic rst, // Reset
@@ -116,7 +116,7 @@ module sampletest
       
       for (int samp=0; samp<SAMPS; samp++) begin
           
-              if (validSamp_R16H[samp]) begin
+          if (1'b1) begin //change to   validSamp_R16H
 
                   for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
                 for (int j=0; j<2 ; j++) begin    //over x and y
