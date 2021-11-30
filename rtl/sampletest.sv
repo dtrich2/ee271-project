@@ -164,7 +164,6 @@ module sampletest
 
     /* Flop R16 to R18_retime with retiming registers*/
         
-        logic valid_gate = validSamp_R16H[0];
         
     //Optimization: Disable flip flops when validSamp_R16H is all 0's
     dff3 #(
