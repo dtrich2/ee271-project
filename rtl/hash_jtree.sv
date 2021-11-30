@@ -319,7 +319,7 @@ endgenerate
         
    
 
-   logic valid_gate = 1'b1;
+   logic valid_gate = validSamp_R16H;
 
     dff3 #(
         .WIDTH(SIGFIG),
@@ -363,7 +363,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1               ),
+        .en     (valid_gate            ),
         .in     (sample_jitted_R14S ),
         .out    (sample_R16S_retime )
     );
