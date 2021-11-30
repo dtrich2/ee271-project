@@ -178,7 +178,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (valid_gate      ),
+        .en     (1'b1     ),
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
@@ -193,7 +193,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1             ),
+        .en     (valid_gate            ),
         .in     (color_R16U         ),
         .out    (color_R18U_retime  )
     );
