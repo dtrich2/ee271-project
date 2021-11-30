@@ -116,7 +116,7 @@ module test_iterator
     output logic signed [SIGFIG-1:0]    tri_R14S[VERTS-1:0][AXIS-1:0], //triangle to Sample Test
     output logic unsigned [SIGFIG-1:0]  color_R14U[COLORS-1:0] , //Color of triangle
     output logic signed [SIGFIG-1:0]    sample_R14S[1:0][SAMPS-1:0], //Sample Location to Be Tested
-    output logic                            validSamp_R14H[SAMPS-1:0] //Sample and triangle are Valid
+    output logic                            validSamp_R14H //Sample and triangle are Valid
 );
 
     // This module implement a Moore machine to iterarte sample points in bbox
@@ -130,7 +130,7 @@ module test_iterator
     logic signed [SIGFIG-1:0]       next_tri_R14S[VERTS-1:0][AXIS-1:0];
     logic unsigned  [SIGFIG-1:0]    next_color_R14U[COLORS-1:0] ;
     logic signed [SIGFIG-1:0]       next_sample_R14S[1:0][SAMPS-1:0];
-    logic                               next_validSamp_R14H[SAMPS-1:0];
+    logic                               next_validSamp_R14H;
     logic                               next_halt_RnnnnL;
 
     // Instantiate registers for storing these states
@@ -181,9 +181,8 @@ module test_iterator
         .out    (sample_R14S        )
     );
 
-    dff2 #(
+    dff #(
         .WIDTH(1),
-        .ARRAY_SIZE(SAMPS),
         .PIPE_DEPTH(1),
         .RETIME_STATUS(0) // No retime
     )
@@ -360,8 +359,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
                     // Next sample is valid    
                     //Next sample is lower left vertex
+                    next_validSamp_R14H = 1'b1;
                     for (int j =0; j < SAMPS; j++) begin
-                        next_validSamp_R14H[j] = 1'b1;
+                        //next_validSamp_R14H[j] = 1'b1;
                         
                         next_sample_R14S[0][j] = box_R13S[0][0];
                         //WARNING: MULTIPLICATION
@@ -386,14 +386,15 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
                     // Next sample is invalid
                     // Next sample is lower left vertex
-                    for (int j =0; j < SAMPS; j++) begin
-                        next_validSamp_R14H[j] = 1'b0;
+                    next_validSamp_R14H = 1'b0;
+//                     for (int j =0; j < SAMPS; j++) begin
+//                         next_validSamp_R14H[j] = 1'b0;
                         
-//                         next_sample_R14S[0][j] = box_R13S[0][0];
+// //                         next_sample_R14S[0][j] = box_R13S[0][0];
                     
-//                         next_sample_R14S[1][j] = box_R13S[0][1] ;
+// //                         next_sample_R14S[1][j] = box_R13S[0][1] ;
                      
-                    end            
+//                     end            
 
                     // Set current tri to input tri
                     //next_tri_R14S = tri_R13S;
@@ -424,8 +425,9 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     
                     // Next sample is invalid
                     // Next sample is lower left vertex
+                    next_validSamp_R14H = 1'b0;
                     for (int j =0; j < SAMPS; j++) begin
-                        next_validSamp_R14H[j] = 1'b0;
+                        //next_validSamp_R14H[j] = 1'b0;
                         
                         next_sample_R14S[0][j] = box_R14S[0][0];
                         //WARNING: MULTIPLICATION
@@ -456,16 +458,18 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
                     // Next sample might be valid. See if current sample is on edge. if it is, not valid
                     //Note that some samples could be valid while others are not!!
-                    for (int z =0; z < SAMPS; z++) begin
-                        if (sample_R14S[0][z] > box_R14S[1][0] || sample_R14S[1][z] > box_R14S[1][1]) begin
-                            next_validSamp_R14H[z] = 1'b1;
+                    
+                     next_validSamp_R14H = 1'b1;
+//                     for (int z =0; z < SAMPS; z++) begin
+//                         if (sample_R14S[0][z] > box_R14S[1][0] || sample_R14S[1][z] > box_R14S[1][1]) begin
+//                             next_validSamp_R14H[z] = 1'b1;
                             
-                        end
-                        else begin
-                            next_validSamp_R14H[z] = 1'b1;
-                        end
+//                         end
+//                         else begin
+//                             next_validSamp_R14H[z] = 1'b1;
+//                         end
                         
-                    end
+//                     end
                     
 
                     // Hold
@@ -548,10 +552,10 @@ if(MOD_FSM == 0) begin // Using baseline FSM
     //Check that Proposed Sample is in BBox
     // START CODE HERE
 
-    assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0][0], validSamp_R14H[0]));
-    assert property(rb_lt(rst, sample_R14S[0][0], box_R14S[1][0],  validSamp_R14H[0]));
-    assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1][0], validSamp_R14H[0]));
-    assert property(rb_lt(rst, sample_R14S[1][0], box_R14S[1][1],  validSamp_R14H[0]));
+    assert property(rb_lt(rst, box_R14S[0][0], sample_R14S[0][0], validSamp_R14H));
+    assert property(rb_lt(rst, sample_R14S[0][0], box_R14S[1][0],  validSamp_R14H));
+    assert property(rb_lt(rst, box_R14S[0][1], sample_R14S[1][0], validSamp_R14H));
+    assert property(rb_lt(rst, sample_R14S[1][0], box_R14S[1][1],  validSamp_R14H));
   // END CODE HERE
     //Check that Proposed Sample is in BBox
 
