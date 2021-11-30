@@ -363,7 +363,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (validSamp_R16H[0]             ),
+        .en     (1'b1             ),
         .in     (sample_jitted_R14S ),
         .out    (sample_R16S_retime )
     );
