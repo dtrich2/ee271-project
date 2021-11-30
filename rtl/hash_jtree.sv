@@ -330,7 +330,7 @@ endgenerate
     )
     d_hash_r1
     (
-        .clk    (clk                ),
+        .clk    (clk  && validSamp_R16H[0]),
         .reset  (rst                ),
         .en     (1'b1               ),
         .in     (tri_R14S           ),
