@@ -116,38 +116,45 @@ module sampletest
       
       for (int samp=0; samp<SAMPS; samp++) begin
           
-          
+              if (validSamp_R16H[samp]) begin
 
-        for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
-            for (int j=0; j<2 ; j++) begin    //over x and y
-                tri_shift_R16S[i][j]=tri_R16S[i][j]-sample_R16S[j][samp];  //shift by sample
-            end
-        end
-    // (2) Organize edges (form three edges for triangles)
-        for (int k=0; k<2 ; k++) begin    //over x and y in each vertex
-            for (int j=0; j<2 ; j++) begin        //over each vertex in edge        
-                for (int i=0; i<EDGES-1 ; i++) begin        //over each edge in triangle
-                    edge_R16S[i][j][k]=tri_shift_R16S[i+j][k];  //assign to value from triangle
+                  for (int i=0; i<VERTS ; i++) begin    //over every vertex in triangle
+                for (int j=0; j<2 ; j++) begin    //over x and y
+                    tri_shift_R16S[i][j]=tri_R16S[i][j]-sample_R16S[j][samp];  //shift by sample
                 end
             end
-            edge_R16S[EDGES-1][0][k]=tri_shift_R16S[EDGES-1][k];  //assign to value from triangle
-            edge_R16S[EDGES-1][1][k]=tri_shift_R16S[0][k];  //assign to value from triangle
-        end
-    // (3) Calculate distance x_1 * y_2 - x_2 * y_1
-        for (int i=0; i<EDGES ; i++) begin    //over each edge in triangle
-            dist_lg_R16S[i]=edge_R16S[i][0][0]*edge_R16S[i][1][1]-edge_R16S[i][1][0]*edge_R16S[i][0][1];
-        end
-    // (4) Check distance and assign hit_valid_R16H.
-      hit_valid_R16H[samp]=validSamp_R16H[samp];
-        for (int i=0; i<EDGES ; i++) begin
-            if (i==1) begin
-                b=(dist_lg_R16S[i]<0);
-            end else begin
-                b = (dist_lg_R16S[i]<=0);
+        // (2) Organize edges (form three edges for triangles)
+            for (int k=0; k<2 ; k++) begin    //over x and y in each vertex
+                for (int j=0; j<2 ; j++) begin        //over each vertex in edge        
+                    for (int i=0; i<EDGES-1 ; i++) begin        //over each edge in triangle
+                        edge_R16S[i][j][k]=tri_shift_R16S[i+j][k];  //assign to value from triangle
+                    end
+                end
+                edge_R16S[EDGES-1][0][k]=tri_shift_R16S[EDGES-1][k];  //assign to value from triangle
+                edge_R16S[EDGES-1][1][k]=tri_shift_R16S[0][k];  //assign to value from triangle
             end
-            hit_valid_R16H[samp]=hit_valid_R16H[samp] & b;
-        end
-     
+        // (3) Calculate distance x_1 * y_2 - x_2 * y_1
+            for (int i=0; i<EDGES ; i++) begin    //over each edge in triangle
+                dist_lg_R16S[i]=edge_R16S[i][0][0]*edge_R16S[i][1][1]-edge_R16S[i][1][0]*edge_R16S[i][0][1];
+            end
+        // (4) Check distance and assign hit_valid_R16H.
+          hit_valid_R16H[samp]=validSamp_R16H[samp];
+            for (int i=0; i<EDGES ; i++) begin
+                if (i==1) begin
+                    b=(dist_lg_R16S[i]<0);
+                end else begin
+                    b = (dist_lg_R16S[i]<=0);
+                end
+                hit_valid_R16H[samp]=hit_valid_R16H[samp] & b;
+            end
+          end
+          
+          else begin
+              hit_valid_R16H[samp] = 1'b0;
+             
+              
+          end
+
       end
       
     end
