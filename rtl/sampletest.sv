@@ -174,7 +174,7 @@ module sampletest
     (
         .clk    (clk            ),
         .reset  (rst            ),
-        .en     (1'b1       ),
+        .en     (validSamp_R16H[0]      ),
         .in     (hit_R16S       ),
         .out    (hit_R18S_retime)
     );
