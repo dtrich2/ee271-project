@@ -332,7 +332,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1              ),
+        .en     (validSamp_R16H[0]               ),
         .in     (tri_R14S           ),
         .out    (tri_R16S_retime    )
     );
@@ -347,7 +347,7 @@ endgenerate
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (validSamp_R16H[0]               ),
+        .en     (1'b1               ),
         .in     (color_R14U         ),
         .out    (color_R16U_retime  )
     );
