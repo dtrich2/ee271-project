@@ -382,24 +382,24 @@ if(MOD_FSM == 0) begin // Using baseline FSM
                     // We keep waiting, and do not hold the pipline above
                     next_halt_RnnnnL = 1'b1;
 
-                    next_box_R14S = box_R13S;
+                    //next_box_R14S = box_R13S;
 
                     // Next sample is invalid
                     // Next sample is lower left vertex
-//                     for (int j =0; j < SAMPS; j++) begin
-//                         next_validSamp_R14H[j] = 1'b0;
+                    for (int j =0; j < SAMPS; j++) begin
+                        next_validSamp_R14H[j] = 1'b0;
                         
 //                         next_sample_R14S[0][j] = box_R13S[0][0];
                     
 //                         next_sample_R14S[1][j] = box_R13S[0][1] ;
                      
-//                     end            
+                    end            
 
                     // Set current tri to input tri
-                    next_tri_R14S = tri_R13S;
+                    //next_tri_R14S = tri_R13S;
 
                      // Set current to input
-                    next_color_R14U = color_R13U;
+                    //next_color_R14U = color_R13U;
                     
                 end
 
