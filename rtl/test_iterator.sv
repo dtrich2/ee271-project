@@ -386,14 +386,14 @@ if(MOD_FSM == 0) begin // Using baseline FSM
 
                     // Next sample is invalid
                     // Next sample is lower left vertex
-                    for (int j =0; j < SAMPS; j++) begin
-                        next_validSamp_R14H[j] = 1'b0;
+//                     for (int j =0; j < SAMPS; j++) begin
+//                         next_validSamp_R14H[j] = 1'b0;
                         
-                        next_sample_R14S[0][j] = box_R13S[0][0];
+//                         next_sample_R14S[0][j] = box_R13S[0][0];
                     
-                        next_sample_R14S[1][j] = box_R13S[0][1] ;
+//                         next_sample_R14S[1][j] = box_R13S[0][1] ;
                      
-                    end            
+//                     end            
 
                     // Set current tri to input tri
                     next_tri_R14S = tri_R13S;
