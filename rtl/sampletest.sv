@@ -189,7 +189,7 @@ module sampletest
     (
         .clk    (clk                ),
         .reset  (rst                ),
-        .en     (1'b1                ),
+        .en     (validSamp_R16H[0]              ),
         .in     (color_R16U         ),
         .out    (color_R18U_retime  )
     );
